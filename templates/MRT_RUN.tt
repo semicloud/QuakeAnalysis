@@ -1,0 +1,5 @@
+cd %1%bin
+set MRT_HOME=%1%
+set MRT_DATA_DIR=%1%data
+
+%1%bin\resample.exe -p %2%

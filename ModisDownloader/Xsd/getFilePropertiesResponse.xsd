@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="getFilePropertiesResponse" targetNamespace="http://modapsws.gsfc.nasa.gov/xsd" xmlns:mstns="http://modapsws.gsfc.nasa.gov/xsd" xmlns="http://modapsws.gsfc.nasa.gov/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="checksum" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="fileId" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="fileName" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="fileSizeBytes" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="fileType" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="ingestTime" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="online" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="startTime" msdata:Prefix="mws" type="xs:string" />
+  <xs:attribute name="type" msdata:Prefix="mws" type="xs:string" />
+  <xs:element name="getFilePropertiesResponse" msdata:IsDataSet="true" msdata:Locale="en-US" msdata:Prefix="mws">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="return" form="unqualified">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="mstns:checksum" minOccurs="0" msdata:Ordinal="0" />
+              <xs:element ref="mstns:fileId" minOccurs="0" msdata:Ordinal="1" />
+              <xs:element ref="mstns:fileName" minOccurs="0" msdata:Ordinal="2" />
+              <xs:element ref="mstns:fileSizeBytes" minOccurs="0" msdata:Ordinal="3" />
+              <xs:element ref="mstns:fileType" minOccurs="0" msdata:Ordinal="4" />
+              <xs:element ref="mstns:ingestTime" minOccurs="0" msdata:Ordinal="5" />
+              <xs:element ref="mstns:online" minOccurs="0" msdata:Ordinal="6" />
+              <xs:element ref="mstns:startTime" minOccurs="0" msdata:Ordinal="7" />
+            </xs:sequence>
+            <xs:attribute ref="mstns:type" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,12 @@
+# tif文件根目录，该目录下必须只能有一类tif数据，且文件名中第4位开始必须是doy，形如xx_yyyydoy.tif
+DataDir: E:\modis_workspace_test\SampleData\MOD11A1\
+# 开始日期
+StartDate: 20180301
+# 结束日期
+EndDate: 20181231
+# 历史数据年份
+HistYear: 2016
+# 辅助数据个数
+SupportFileCount: 1
+# 输出数据目录
+OutputDataDir: E:\modis_workspace_test\SampleData\MOD11A1BGI\

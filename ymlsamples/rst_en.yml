@@ -1,0 +1,12 @@
+# tif文件根目录，该目录下必须只能有一类tif数据，且文件名中第4位开始必须是doy，形如xx_yyyydoy.tif
+DataDir: E:\modis_workspace_test\SampleData\
+# 开始日期
+StartDate: 20180603
+# 结束日期
+EndDate: 20180803
+# 历史值填充tif文件生成路径
+PrepTifDir: E:\modis_workspace_test\background\
+# k
+PrepSupport: 2
+# 输出tif路径
+OutputDataDir: E:\modis_workspace_test\rst\

@@ -1,0 +1,24 @@
+# HDF文件列表Txt
+InputHdfFile: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\proc_MxD021km_hdf_list.txt
+# 保存中间计算结果的Tmp目录
+TempDir: D:\modis_workspace\tmp\
+# 最小经度
+MinLon: 113
+# 最大经度
+MaxLon: 115
+# 最小纬度
+MinLat: 39
+# 最大纬度
+MaxLat: 42
+# 波段
+Band: 31
+# MRTKernelType..
+MRTKernelType: NN
+# MRTProjectionType..
+MRTProjectionType: EQRECT
+# MRTProjectionArgs..
+MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+# MRTPixelSize..
+MRTPixelSize: 1000
+# 预处理结果数据集路径
+OutputImageFile: D:\123.tif

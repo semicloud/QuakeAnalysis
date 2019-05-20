@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{50D11EB1-3363-40E3-A77D-78E3E2A095EA}</ProjectGuid>
+    <RootNamespace>procMxD021km</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\gdal\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDK\yaml-cpp-master\build\Debug;C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\gdal\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDK\yaml-cpp-master\build\Release;C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
+copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
+copy C:\SDK\yaml-cpp-master\build\Debug\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
+
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log_setup-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_log_setup-vc141-mt-gd-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-gd-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_log-vc141-mt-gd-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-gd-x64-1_69.dll
+
+copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)Terra_MODIS_rad2BT_LUT.txt
+copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)Aqua_MODIS_rad2BT_LUT.txt
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
+copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
+copy C:\SDK\yaml-cpp-master\build\Release\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
+
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log_setup-vc141-mt-x64-1_69.dll $(TargetDir)boost_log_setup-vc141-mt-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-x64-1_69.dll $(TargetDir)boost_log-vc141-mt-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll
+copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-x64-1_69.dll
+
+copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)Terra_MODIS_rad2BT_LUT.txt
+copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)Aqua_MODIS_rad2BT_LUT.txt</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Input_file.cpp" />
+    <ClCompile Include="Options_yaml.cpp" />
+    <ClCompile Include="Preprocess_bt.cpp" />
+    <ClCompile Include="program.cpp" />
+    <ClCompile Include="Rad2bt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Prm.tt" />
+    <Text Include="RunPrm.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="Input_file.h" />
+    <ClInclude Include="Options_yaml.h" />
+    <ClInclude Include="Preprocess_bt.h" />
+    <ClInclude Include="Rad2bt.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\modis_api\modis_api.vcxproj">
+      <Project>{2e8b7f32-78f3-4c40-a68d-6f5f95590feb}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

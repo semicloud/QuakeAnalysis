@@ -1,0 +1,6 @@
+app-key: "NO USE"
+file-id-service: "https://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/searchForFiles?product=<product_name>&collection=61&start=<start>&stop=<stop>&north=<north>&south=<south>&west=<west>&east=<east>&coordsOrTiles=coords&dayNightBoth=<day_night_both>"
+file-property-service: "http://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getFileProperties?fileIds=<file_ids>"
+file-url-service: "https://modwebsrv.modaps.eosdis.nasa.gov/axis2/services/MODAPSservices/getFileUrls?fileIds=<file_ids>"
+user-agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763"
+font-size: 9

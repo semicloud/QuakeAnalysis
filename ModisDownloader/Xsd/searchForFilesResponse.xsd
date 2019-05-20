@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="searchForFilesResponse" targetNamespace="http://modapsws.gsfc.nasa.gov/xsd" xmlns:mstns="http://modapsws.gsfc.nasa.gov/xsd" xmlns="http://modapsws.gsfc.nasa.gov/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="searchForFilesResponse" msdata:IsDataSet="true" msdata:Locale="en-US" msdata:Prefix="mws">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="return" form="unqualified" nillable="true">
+          <xs:complexType>
+            <xs:simpleContent msdata:ColumnName="return_Text" msdata:Ordinal="0">
+              <xs:extension base="xs:string">
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

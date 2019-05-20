@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QuakeAnalysis.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DT" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">震前多参数异常自动提取软件</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

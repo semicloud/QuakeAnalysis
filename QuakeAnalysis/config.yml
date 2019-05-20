@@ -1,0 +1,33 @@
+﻿---
+version: 0.1
+default-parameter: 
+  mxd02-sds: "EV_1KM_Emissive, 1"
+  mxd03-sds: "SolarZenith"
+  mxd35-sds: "Cloud_Mask, 1"
+  ulc-lng: 110.0
+  ulc-lat: 40.0
+  lrc-lng: 112.0
+  lrc-lat: 42.0
+
+data-directory:
+  #value1: liqinyong
+  hdf:
+    mod02: modis_workspace\MXD02\MOD02\
+    myd02: modis_workspace\MXD02\MYD02\
+    mod03: modis_workspace\MXD03\MOD03\
+    myd03: modis_workspace\MXD03\MYD03\
+    mod04: modis_workspace\MXD04\MOD04\
+    myd04: modis_workspace\MXD04\MYD04\
+    mod05: modis_workspace\MXD05\MOD05\
+    myd05: modis_workspace\MXD05\MYD05\
+    mod11: modis_workspace\MXD11\MOD11\
+    myd11: modis_workspace\MXD11\MYD11\
+    mod35: modis_workspace\MXD35\MOD35\
+    myd35: modis_workspace\MXD35\MYD35\
+  standard:
+    mod02: modis_workspace\Standard\BT\BT_MOD\
+    myd02: modis_workspace\Standard\BT\BT_MYD\
+  std-map:
+    mod02: modis_workspace\Std_Map\BT\BT_MOD\
+    myd02: modis_workspace\Std_Map\BT\BT_MYD\
+...

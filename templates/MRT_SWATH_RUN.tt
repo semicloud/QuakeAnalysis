@@ -1,0 +1,5 @@
+cd %1%bin
+set MRTSWATH_HOME="%1%"
+set MRTSWATH_DATA_DIR="%1%data"
+
+swath2grid.exe -pf=%2%

@@ -1,0 +1,7 @@
+cd %1%bin
+set MRTDATADIR="%1%data\"
+set LD_LIBRARY_PATH="%1%bin\"
+set MRTBINDIR="%1%bin\"
+set PGSHOME="%1%TOOLKIT_MTD\"
+
+%1%bin\swtif.exe -p %2%

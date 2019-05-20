@@ -1,0 +1,36 @@
+﻿WorkSpaceFolder: E:\modis_workspace\
+SelectedProducts: MOD02;MYD02;MOD04;MYD04;MOD11
+StartDate: 2018003
+EndDate: 2018010
+
+Archive:
+	DataFolder: E:\Data\
+
+Preprocess:
+	BT: 
+		InputSdsName: xxx
+		OutputSpatialSubType: LAT_LONG
+
+	CM:
+		Key1: Value1
+		Key2: Value2
+
+Plot:
+	BT:
+		Key1: Value1
+		Key2: Value2
+
+	CM: 
+		Key1: Value1
+		Key2: Value2
+		Key3: Value3
+
+Ref:
+	BT: 
+		Method: 1
+		
+	CM: 
+		Method: 2
+
+Ano: 
+	

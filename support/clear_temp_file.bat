@@ -1,0 +1,10 @@
+del *.ipdb
+del *.iobj
+del *.exp
+del *.lib
+del *.pdb
+del Heg_bat.tt
+del Heg_prm.tt
+del Prm.tt
+del RunPrm.tt
+del clear_temp_file.bat

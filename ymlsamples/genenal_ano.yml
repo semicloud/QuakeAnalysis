@@ -1,0 +1,8 @@
+# 月份tif文件列表文件
+InputMonthTifFile: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\genenal_ano_month_tif_list.txt
+# 历史月份tif文件列表文件
+InputRefTifFile: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\general_ano_ref_tif_list.txt
+# 最终结果输出文件
+OutputImageFile: D:\123.tif
+# Temp操作目录
+TempDir: D:\modis_workspace_test\

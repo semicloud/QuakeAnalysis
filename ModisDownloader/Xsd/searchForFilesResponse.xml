@@ -1,0 +1,24 @@
+<mws:searchForFilesResponse xmlns:mws="http://modapsws.gsfc.nasa.gov/xsd">
+	<return>4356175896</return>
+	<return>4356175897</return>
+	<return>4356961046</return>
+	<return>4356960839</return>
+	<return>4356969709</return>
+	<return>4357016766</return>
+	<return>4357012244</return>
+	<return>4357124798</return>
+	<return>4357747107</return>
+	<return>4357769118</return>
+	<return>4358312223</return>
+	<return>4358312880</return>
+	<return>4358351230</return>
+	<return>4358416807</return>
+	<return>4358735418</return>
+	<return>4358735419</return>
+	<return>4358736030</return>
+	<return>4358745602</return>
+	<return>4358745603</return>
+	<return>4359184491</return>
+	<return>4359190817</return>
+	<return>4359190619</return>
+</mws:searchForFilesResponse>

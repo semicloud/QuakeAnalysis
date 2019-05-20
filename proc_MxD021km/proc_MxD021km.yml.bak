@@ -1,0 +1,21 @@
+lut_table: Terra_MODIS_rad2BT_LUT.txt
+rad_band: 31
+
+sds_brightness_temperature: EV_1KM_Emissive, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+sds_solar_zenith_angle: SolarZenith
+sds_cloud_mask: Cloud_Mask, 1
+
+suffix_bt: _EV_1KM_Emissive_b10
+suffix_sza: _SolarZenith
+suffix_cm: _Cloud_Mask_b0
+suffix_preprocessed_bt: _preprocessed
+
+no_data_value_bt: 65535
+no_data_value_sza: -32767
+
+scale_sza: 0.01
+
+threshold_sza: 85
+threshold_cm: 6
+
+tolerance: 1e-5
