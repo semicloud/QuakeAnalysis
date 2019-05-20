@@ -208,7 +208,7 @@ xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
 
 copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
 copy $(SolutionDir)support\clear_temp_file.bat $(TargetDir)clear_temp_file.bat
-copy $(SolutionDir)support\README.md $(TargetDir)DEVELOP_REPORT.md
+copy $(SolutionDir)\README.md $(TargetDir)README.md
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
