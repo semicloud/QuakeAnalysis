@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using DevExpress.XtraPrinting.Native;
 using MathNet.Numerics.LinearAlgebra;
 using NLog;
 using OSGeo.GDAL;

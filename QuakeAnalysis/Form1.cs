@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using DevExpress.Utils.Extensions;
 using MathNet.Numerics.LinearAlgebra.Double;
 using OSGeo.GDAL;
 using QuakeAnalysis.Entity;
@@ -35,7 +34,8 @@ namespace QuakeAnalysis
 
             var matrix = DenseMatrix.Build.Dense(item.Elements.Count, 73);
 
-            Enumerable.Range(0, item.Elements.Count).ForEach(i => matrix.SetRow(i, item.Elements[i].Values.ToArray()));
+            Enumerable.Range(0, item.Elements.Count).ToList()
+                .ForEach(i => matrix.SetRow(i, item.Elements[i].Values.ToArray()));
 
             var tiffPath = "demo.tif";
 
@@ -43,8 +43,8 @@ namespace QuakeAnalysis
             Console.WriteLine("Using Driver:" + driver);
 
             var array = matrix.ToRowMajorArray();
-            var min = (int) array.Min();
-            var max = (int) array.Max();
+            var min = (int)array.Min();
+            var max = (int)array.Max();
             Console.WriteLine("Min:" + matrix.ToRowMajorArray().Min());
             Console.WriteLine("Max:" + matrix.ToRowMajorArray().Max());
 
@@ -65,8 +65,8 @@ namespace QuakeAnalysis
             // add color to dataset
             var colorTable = new ColorTable(PaletteInterp.GPI_RGB);
 
-            Enumerable.Range(min, max).ForEach(i =>
-                colorTable.SetColorEntry(i, GetColorEntry(Color.Blue, Color.Red, t: (float) i / max)));
+            Enumerable.Range(min, max).ToList().ForEach(i =>
+                colorTable.SetColorEntry(i, GetColorEntry(Color.Blue, Color.Red, t: (float)i / max)));
 
             ba.SetColorTable(colorTable);
 
@@ -88,10 +88,10 @@ namespace QuakeAnalysis
         {
             return new ColorEntry
             {
-                c1 = (short) (a.R + (b.R - a.R) * t),
-                c2 = (short) (a.G + (b.G - a.G) * t),
-                c3 = (short) (a.R + (b.R - a.R) * t),
-                c4 = (short) (a.A + (b.A - a.A) * t)
+                c1 = (short)(a.R + (b.R - a.R) * t),
+                c2 = (short)(a.G + (b.G - a.G) * t),
+                c3 = (short)(a.R + (b.R - a.R) * t),
+                c4 = (short)(a.A + (b.A - a.A) * t)
             };
         }
 
