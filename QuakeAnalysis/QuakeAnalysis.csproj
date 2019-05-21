@@ -148,6 +148,7 @@
     </Compile>
     <Compile Include="GdalConfiguration.cs" />
     <Compile Include="GdalHelper.cs" />
+    <Compile Include="GlobalModisMain.cs" />
     <Compile Include="Method\Interop\Rad2Bt.cs" />
     <Compile Include="Method\Modis\BackgroundField.cs" />
     <Compile Include="Method\Modis\Hdf2GTiff.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Method\Modis\BTProcess.cs" />
     <Compile Include="Method\Modis\Rst.cs" />
     <Compile Include="Method\Modis\Vorticity.cs" />
+    <Compile Include="ModisMainConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -168,6 +170,9 @@
     <Compile Include="Test\MyTest.cs" />
     <None Include="adasm_demo.yml" />
     <None Include="config.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="modis_main.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\open_32x32.png" />

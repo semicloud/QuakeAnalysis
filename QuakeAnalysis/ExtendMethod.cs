@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Statistics;
 using System;
+using System.Drawing;
 
 namespace QuakeAnalysis
 {
@@ -19,6 +20,19 @@ namespace QuakeAnalysis
                 Math.Round(enumerable.StandardDeviation(), rbit));
         }
 
-        
+        public static Font ChangeFontSize(this Font font, float fontSize)
+        {
+            if (font != null)
+            {
+                float currentSize = font.Size;
+                if (currentSize != fontSize)
+                {
+                    font = new Font(font.Name, fontSize, font.Style,
+                        font.Unit, font.GdiCharSet, font.GdiVerticalFont);
+                }
+            }
+
+            return font;
+        }
     }
 }

@@ -30,8 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnWSFolder = new System.Windows.Forms.Button();
+            this.txtWSFolder = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -42,28 +42,29 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBox14 = new System.Windows.Forms.CheckBox();
-            this.checkBox15 = new System.Windows.Forms.CheckBox();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox13 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.txtEndDay = new System.Windows.Forms.TextBox();
+            this.txtEndYear = new System.Windows.Forms.TextBox();
+            this.txtStartDay = new System.Windows.Forms.TextBox();
+            this.txtStartYear = new System.Windows.Forms.TextBox();
+            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpStart = new System.Windows.Forms.DateTimePicker();
+            this.rbtnDOY = new System.Windows.Forms.RadioButton();
+            this.rbtnYMD = new System.Windows.Forms.RadioButton();
+            this.gboxData = new System.Windows.Forms.GroupBox();
+            this.ckBoxMYD11 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMOD11 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMYD05 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMOD05 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMYD04 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMOD04 = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMYD02 = new System.Windows.Forms.CheckBox();
+            this.ckBoxMOD02 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.button7 = new System.Windows.Forms.Button();
@@ -83,17 +84,16 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnRun = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button10 = new System.Windows.Forms.Button();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cboxFontSize = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.gboxData.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -124,11 +124,11 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.btnWSFolder);
+            this.groupBox1.Controls.Add(this.txtWSFolder);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.groupBox5);
-            this.groupBox1.Controls.Add(this.groupBox4);
+            this.groupBox1.Controls.Add(this.gboxData);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
@@ -137,21 +137,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "全局设置";
             // 
-            // button1
+            // btnWSFolder
             // 
-            this.button1.Location = new System.Drawing.Point(232, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(46, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "浏览";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnWSFolder.Location = new System.Drawing.Point(232, 19);
+            this.btnWSFolder.Name = "btnWSFolder";
+            this.btnWSFolder.Size = new System.Drawing.Size(46, 23);
+            this.btnWSFolder.TabIndex = 6;
+            this.btnWSFolder.Text = "浏览";
+            this.btnWSFolder.UseVisualStyleBackColor = true;
+            this.btnWSFolder.Click += new System.EventHandler(this.btnWSFolder_Click);
             // 
-            // textBox1
+            // txtWSFolder
             // 
-            this.textBox1.Location = new System.Drawing.Point(77, 20);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(152, 21);
-            this.textBox1.TabIndex = 4;
+            this.txtWSFolder.Location = new System.Drawing.Point(77, 20);
+            this.txtWSFolder.Name = "txtWSFolder";
+            this.txtWSFolder.Size = new System.Drawing.Size(152, 21);
+            this.txtWSFolder.TabIndex = 4;
             // 
             // label1
             // 
@@ -172,14 +173,14 @@
             this.groupBox5.Controls.Add(this.label9);
             this.groupBox5.Controls.Add(this.label8);
             this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Controls.Add(this.textBox5);
-            this.groupBox5.Controls.Add(this.textBox4);
-            this.groupBox5.Controls.Add(this.textBox3);
-            this.groupBox5.Controls.Add(this.textBox2);
-            this.groupBox5.Controls.Add(this.dateTimePicker2);
-            this.groupBox5.Controls.Add(this.dateTimePicker1);
-            this.groupBox5.Controls.Add(this.radioButton2);
-            this.groupBox5.Controls.Add(this.radioButton1);
+            this.groupBox5.Controls.Add(this.txtEndDay);
+            this.groupBox5.Controls.Add(this.txtEndYear);
+            this.groupBox5.Controls.Add(this.txtStartDay);
+            this.groupBox5.Controls.Add(this.txtStartYear);
+            this.groupBox5.Controls.Add(this.dtpEnd);
+            this.groupBox5.Controls.Add(this.dtpStart);
+            this.groupBox5.Controls.Add(this.rbtnDOY);
+            this.groupBox5.Controls.Add(this.rbtnYMD);
             this.groupBox5.Location = new System.Drawing.Point(8, 284);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(270, 166);
@@ -259,150 +260,150 @@
             this.label7.TabIndex = 21;
             this.label7.Text = "开始时间：";
             // 
-            // textBox5
+            // txtEndDay
             // 
-            this.textBox5.Location = new System.Drawing.Point(161, 143);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(46, 21);
-            this.textBox5.TabIndex = 20;
+            this.txtEndDay.Location = new System.Drawing.Point(161, 143);
+            this.txtEndDay.Name = "txtEndDay";
+            this.txtEndDay.Size = new System.Drawing.Size(46, 21);
+            this.txtEndDay.TabIndex = 20;
             // 
-            // textBox4
+            // txtEndYear
             // 
-            this.textBox4.Location = new System.Drawing.Point(88, 142);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(46, 21);
-            this.textBox4.TabIndex = 19;
+            this.txtEndYear.Location = new System.Drawing.Point(88, 142);
+            this.txtEndYear.Name = "txtEndYear";
+            this.txtEndYear.Size = new System.Drawing.Size(46, 21);
+            this.txtEndYear.TabIndex = 19;
             // 
-            // textBox3
+            // txtStartDay
             // 
-            this.textBox3.Location = new System.Drawing.Point(161, 116);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(46, 21);
-            this.textBox3.TabIndex = 18;
+            this.txtStartDay.Location = new System.Drawing.Point(161, 116);
+            this.txtStartDay.Name = "txtStartDay";
+            this.txtStartDay.Size = new System.Drawing.Size(46, 21);
+            this.txtStartDay.TabIndex = 18;
             // 
-            // textBox2
+            // txtStartYear
             // 
-            this.textBox2.Location = new System.Drawing.Point(88, 116);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(46, 21);
-            this.textBox2.TabIndex = 8;
+            this.txtStartYear.Location = new System.Drawing.Point(88, 116);
+            this.txtStartYear.Name = "txtStartYear";
+            this.txtStartYear.Size = new System.Drawing.Size(46, 21);
+            this.txtStartYear.TabIndex = 8;
             // 
-            // dateTimePicker2
+            // dtpEnd
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(88, 71);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(138, 21);
-            this.dateTimePicker2.TabIndex = 17;
+            this.dtpEnd.Location = new System.Drawing.Point(88, 71);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(138, 21);
+            this.dtpEnd.TabIndex = 17;
             // 
-            // dateTimePicker1
+            // dtpStart
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(88, 44);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(138, 21);
-            this.dateTimePicker1.TabIndex = 16;
+            this.dtpStart.Location = new System.Drawing.Point(88, 44);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(138, 21);
+            this.dtpStart.TabIndex = 16;
             // 
-            // radioButton2
+            // rbtnDOY
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(22, 96);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(59, 16);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "年积日";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.rbtnDOY.AutoSize = true;
+            this.rbtnDOY.Location = new System.Drawing.Point(22, 96);
+            this.rbtnDOY.Name = "rbtnDOY";
+            this.rbtnDOY.Size = new System.Drawing.Size(59, 16);
+            this.rbtnDOY.TabIndex = 1;
+            this.rbtnDOY.TabStop = true;
+            this.rbtnDOY.Text = "年积日";
+            this.rbtnDOY.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // rbtnYMD
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(22, 22);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(59, 16);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "年月日";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.rbtnYMD.AutoSize = true;
+            this.rbtnYMD.Location = new System.Drawing.Point(22, 22);
+            this.rbtnYMD.Name = "rbtnYMD";
+            this.rbtnYMD.Size = new System.Drawing.Size(59, 16);
+            this.rbtnYMD.TabIndex = 0;
+            this.rbtnYMD.TabStop = true;
+            this.rbtnYMD.Text = "年月日";
+            this.rbtnYMD.UseVisualStyleBackColor = true;
             // 
-            // groupBox4
+            // gboxData
             // 
-            this.groupBox4.Controls.Add(this.checkBox14);
-            this.groupBox4.Controls.Add(this.checkBox15);
-            this.groupBox4.Controls.Add(this.checkBox12);
-            this.groupBox4.Controls.Add(this.checkBox13);
-            this.groupBox4.Controls.Add(this.checkBox1);
-            this.groupBox4.Controls.Add(this.checkBox4);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Controls.Add(this.checkBox3);
-            this.groupBox4.Controls.Add(this.checkBox2);
-            this.groupBox4.Location = new System.Drawing.Point(8, 46);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(270, 232);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "数据";
+            this.gboxData.Controls.Add(this.ckBoxMYD11);
+            this.gboxData.Controls.Add(this.ckBoxMOD11);
+            this.gboxData.Controls.Add(this.ckBoxMYD05);
+            this.gboxData.Controls.Add(this.ckBoxMOD05);
+            this.gboxData.Controls.Add(this.ckBoxMYD04);
+            this.gboxData.Controls.Add(this.ckBoxMOD04);
+            this.gboxData.Controls.Add(this.label5);
+            this.gboxData.Controls.Add(this.label4);
+            this.gboxData.Controls.Add(this.label3);
+            this.gboxData.Controls.Add(this.label2);
+            this.gboxData.Controls.Add(this.ckBoxMYD02);
+            this.gboxData.Controls.Add(this.ckBoxMOD02);
+            this.gboxData.Location = new System.Drawing.Point(8, 46);
+            this.gboxData.Name = "gboxData";
+            this.gboxData.Size = new System.Drawing.Size(270, 232);
+            this.gboxData.TabIndex = 3;
+            this.gboxData.TabStop = false;
+            this.gboxData.Text = "数据";
             // 
-            // checkBox14
+            // ckBoxMYD11
             // 
-            this.checkBox14.AutoSize = true;
-            this.checkBox14.Location = new System.Drawing.Point(143, 197);
-            this.checkBox14.Name = "checkBox14";
-            this.checkBox14.Size = new System.Drawing.Size(54, 16);
-            this.checkBox14.TabIndex = 18;
-            this.checkBox14.Text = "MYD11";
-            this.checkBox14.UseVisualStyleBackColor = true;
+            this.ckBoxMYD11.AutoSize = true;
+            this.ckBoxMYD11.Location = new System.Drawing.Point(143, 197);
+            this.ckBoxMYD11.Name = "ckBoxMYD11";
+            this.ckBoxMYD11.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMYD11.TabIndex = 18;
+            this.ckBoxMYD11.Text = "MYD11";
+            this.ckBoxMYD11.UseVisualStyleBackColor = true;
             // 
-            // checkBox15
+            // ckBoxMOD11
             // 
-            this.checkBox15.AutoSize = true;
-            this.checkBox15.Location = new System.Drawing.Point(80, 197);
-            this.checkBox15.Name = "checkBox15";
-            this.checkBox15.Size = new System.Drawing.Size(54, 16);
-            this.checkBox15.TabIndex = 17;
-            this.checkBox15.Text = "MOD11";
-            this.checkBox15.UseVisualStyleBackColor = true;
+            this.ckBoxMOD11.AutoSize = true;
+            this.ckBoxMOD11.Location = new System.Drawing.Point(80, 197);
+            this.ckBoxMOD11.Name = "ckBoxMOD11";
+            this.ckBoxMOD11.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMOD11.TabIndex = 17;
+            this.ckBoxMOD11.Text = "MOD11";
+            this.ckBoxMOD11.UseVisualStyleBackColor = true;
             // 
-            // checkBox12
+            // ckBoxMYD05
             // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(143, 140);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(54, 16);
-            this.checkBox12.TabIndex = 16;
-            this.checkBox12.Text = "MYD05";
-            this.checkBox12.UseVisualStyleBackColor = true;
+            this.ckBoxMYD05.AutoSize = true;
+            this.ckBoxMYD05.Location = new System.Drawing.Point(143, 140);
+            this.ckBoxMYD05.Name = "ckBoxMYD05";
+            this.ckBoxMYD05.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMYD05.TabIndex = 16;
+            this.ckBoxMYD05.Text = "MYD05";
+            this.ckBoxMYD05.UseVisualStyleBackColor = true;
             // 
-            // checkBox13
+            // ckBoxMOD05
             // 
-            this.checkBox13.AutoSize = true;
-            this.checkBox13.Location = new System.Drawing.Point(80, 140);
-            this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(54, 16);
-            this.checkBox13.TabIndex = 15;
-            this.checkBox13.Text = "MOD05";
-            this.checkBox13.UseVisualStyleBackColor = true;
+            this.ckBoxMOD05.AutoSize = true;
+            this.ckBoxMOD05.Location = new System.Drawing.Point(80, 140);
+            this.ckBoxMOD05.Name = "ckBoxMOD05";
+            this.ckBoxMOD05.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMOD05.TabIndex = 15;
+            this.ckBoxMOD05.Text = "MOD05";
+            this.ckBoxMOD05.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // ckBoxMYD04
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(143, 83);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(54, 16);
-            this.checkBox1.TabIndex = 14;
-            this.checkBox1.Text = "MYD04";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.ckBoxMYD04.AutoSize = true;
+            this.ckBoxMYD04.Location = new System.Drawing.Point(143, 83);
+            this.ckBoxMYD04.Name = "ckBoxMYD04";
+            this.ckBoxMYD04.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMYD04.TabIndex = 14;
+            this.ckBoxMYD04.Text = "MYD04";
+            this.ckBoxMYD04.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // ckBoxMOD04
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(80, 83);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(54, 16);
-            this.checkBox4.TabIndex = 13;
-            this.checkBox4.Text = "MOD04";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.ckBoxMOD04.AutoSize = true;
+            this.ckBoxMOD04.Location = new System.Drawing.Point(80, 83);
+            this.ckBoxMOD04.Name = "ckBoxMOD04";
+            this.ckBoxMOD04.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMOD04.TabIndex = 13;
+            this.ckBoxMOD04.Text = "MOD04";
+            this.ckBoxMOD04.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -440,25 +441,25 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "亮温：";
             // 
-            // checkBox3
+            // ckBoxMYD02
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(143, 26);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(54, 16);
-            this.checkBox3.TabIndex = 6;
-            this.checkBox3.Text = "MYD02";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.ckBoxMYD02.AutoSize = true;
+            this.ckBoxMYD02.Location = new System.Drawing.Point(143, 26);
+            this.ckBoxMYD02.Name = "ckBoxMYD02";
+            this.ckBoxMYD02.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMYD02.TabIndex = 6;
+            this.ckBoxMYD02.Text = "MYD02";
+            this.ckBoxMYD02.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // ckBoxMOD02
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(80, 26);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(54, 16);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "MOD02";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.ckBoxMOD02.AutoSize = true;
+            this.ckBoxMOD02.Location = new System.Drawing.Point(80, 26);
+            this.ckBoxMOD02.Name = "ckBoxMOD02";
+            this.ckBoxMOD02.Size = new System.Drawing.Size(54, 16);
+            this.ckBoxMOD02.TabIndex = 5;
+            this.ckBoxMOD02.Text = "MOD02";
+            this.ckBoxMOD02.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -485,6 +486,15 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "流程";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(189, 87);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 29;
+            this.button2.Text = "设置";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // button11
             // 
@@ -654,7 +664,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.btnRun);
-            this.panel1.Controls.Add(this.button8);
+            this.panel1.Controls.Add(this.btnSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(299, 463);
             this.panel1.Name = "panel1";
@@ -671,36 +681,37 @@
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
-            // button8
+            // btnSave
             // 
-            this.button8.Location = new System.Drawing.Point(57, 14);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 27;
-            this.button8.Text = "保存";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnSave.Location = new System.Drawing.Point(57, 14);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 27;
+            this.btnSave.Text = "保存";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button10);
+            this.panel2.Controls.Add(this.btnAbout);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(596, 463);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(292, 46);
             this.panel2.TabIndex = 4;
             // 
-            // button10
+            // btnAbout
             // 
-            this.button10.Location = new System.Drawing.Point(208, 14);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 30;
-            this.button10.Text = "关于";
-            this.button10.UseVisualStyleBackColor = true;
+            this.btnAbout.Location = new System.Drawing.Point(208, 14);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(75, 23);
+            this.btnAbout.TabIndex = 30;
+            this.btnAbout.Text = "关于";
+            this.btnAbout.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.comboBox1);
+            this.panel3.Controls.Add(this.cboxFontSize);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 463);
@@ -708,13 +719,14 @@
             this.panel3.Size = new System.Drawing.Size(290, 46);
             this.panel3.TabIndex = 5;
             // 
-            // comboBox1
+            // cboxFontSize
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(45, 15);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(57, 20);
-            this.comboBox1.TabIndex = 1;
+            this.cboxFontSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboxFontSize.FormattingEnabled = true;
+            this.cboxFontSize.Location = new System.Drawing.Point(45, 15);
+            this.cboxFontSize.Name = "cboxFontSize";
+            this.cboxFontSize.Size = new System.Drawing.Size(57, 20);
+            this.cboxFontSize.TabIndex = 1;
             // 
             // label6
             // 
@@ -724,15 +736,6 @@
             this.label6.Size = new System.Drawing.Size(41, 12);
             this.label6.TabIndex = 0;
             this.label6.Text = "字号：";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(189, 87);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 29;
-            this.button2.Text = "设置";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // FrmModisMain
             // 
@@ -748,8 +751,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gboxData.ResumeLayout(false);
+            this.gboxData.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -770,20 +773,20 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.GroupBox gboxData;
+        private System.Windows.Forms.RadioButton rbtnDOY;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtWSFolder;
+        private System.Windows.Forms.Button btnWSFolder;
+        private System.Windows.Forms.CheckBox ckBoxMOD02;
+        private System.Windows.Forms.CheckBox ckBoxMYD02;
+        private System.Windows.Forms.RadioButton rbtnYMD;
+        private System.Windows.Forms.DateTimePicker dtpEnd;
+        private System.Windows.Forms.DateTimePicker dtpStart;
+        private System.Windows.Forms.TextBox txtEndDay;
+        private System.Windows.Forms.TextBox txtEndYear;
+        private System.Windows.Forms.TextBox txtStartDay;
+        private System.Windows.Forms.TextBox txtStartYear;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.CheckBox checkBox10;
         private System.Windows.Forms.CheckBox checkBox9;
@@ -798,25 +801,25 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnArchive;
         private System.Windows.Forms.Button btnRun;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox14;
-        private System.Windows.Forms.CheckBox checkBox15;
-        private System.Windows.Forms.CheckBox checkBox12;
-        private System.Windows.Forms.CheckBox checkBox13;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox ckBoxMYD11;
+        private System.Windows.Forms.CheckBox ckBoxMOD11;
+        private System.Windows.Forms.CheckBox ckBoxMYD05;
+        private System.Windows.Forms.CheckBox ckBoxMOD05;
+        private System.Windows.Forms.CheckBox ckBoxMYD04;
+        private System.Windows.Forms.CheckBox ckBoxMOD04;
         private System.Windows.Forms.CheckBox checkBox18;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cboxFontSize;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;

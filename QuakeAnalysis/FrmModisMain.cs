@@ -14,14 +14,30 @@ namespace QuakeAnalysis
         private string _dataFolder;
         private static Logger g = LogManager.GetCurrentClassLogger();
 
+        private static readonly float[] SUPPORT_FONT_SIZES =
+            {9, 10, 11, 12, 13, 14, 15};
+
+        private void cboxFontSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            float fontSize = Convert.ToSingle(cboxFontSize.SelectedValue);
+            this.Font = this.Font.ChangeFontSize(fontSize);
+            GlobalModisMain.Config.FontSize = fontSize;
+            GlobalModisMain.Config.SaveToFile();
+        }
+
         public FrmModisMain()
         {
             InitializeComponent();
+            this.Font = this.Font.ChangeFontSize(GlobalModisMain.Config.FontSize);
             StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void FrmModisMain_Load(object sender, EventArgs e)
         {
+            cboxFontSize.DataSource = SUPPORT_FONT_SIZES;
+            cboxFontSize.SelectedIndexChanged += cboxFontSize_SelectedIndexChanged;
+            cboxFontSize.SelectedIndex = SUPPORT_FONT_SIZES.ToList()
+                .IndexOf(GlobalModisMain.Config.FontSize);
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -68,7 +84,37 @@ namespace QuakeAnalysis
 
         public List<string> GetCheckedProducts()
         {
-            return null;
+            List<string> ans = new List<string>();
+            foreach (Control control in gboxData.Controls)
+            {
+                if (control is CheckBox)
+                {
+                    CheckBox checkBox = (CheckBox)control;
+                    if (checkBox.Checked)
+                    {
+                        ans.Add(checkBox.Text);
+                    }
+                }
+            }
+            ans.Sort();
+            g.Debug($"Checked products:{string.Join(",", ans)}");
+
+            return ans;
+        }
+
+        private void btnWSFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog =
+                new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtWSFolder.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            GetCheckedProducts();
         }
     }
 }
