@@ -16,6 +16,9 @@ namespace QuakeAnalysis
         [YamlMember(Alias = "font-size", ApplyNamingConventions = false)]
         public float FontSize { get; set; }
 
+        [YamlMember(Alias = "test-attr", ApplyNamingConventions = false)]
+        public float TestAttr { get; set; }
+
         public static ModisMainConfig CreateInstance()
         {
             var deserializer = new DeserializerBuilder().

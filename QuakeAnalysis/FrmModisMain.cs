@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NLog;
 using QuakeAnalysis.Entity;
+using QuakeAnalysis.Properties;
 
 namespace QuakeAnalysis
 {
@@ -38,6 +39,7 @@ namespace QuakeAnalysis
             cboxFontSize.SelectedIndexChanged += cboxFontSize_SelectedIndexChanged;
             cboxFontSize.SelectedIndex = SUPPORT_FONT_SIZES.ToList()
                 .IndexOf(GlobalModisMain.Config.FontSize);
+            rbtnYMD.Checked = true;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -47,11 +49,11 @@ namespace QuakeAnalysis
 
         private void btnArchive_Click(object sender, EventArgs e)
         {
-            var frmModisArchive = new FrmModisArchive();
+            var frmModisArchive = new FrmDataArchive();
             frmModisArchive.StartPosition = FormStartPosition.CenterParent;
             if (frmModisArchive.ShowDialog() == DialogResult.OK)
             {
-                _dataFolder = frmModisArchive.GetDataFolder();
+                _dataFolder = frmModisArchive.DataFolder;
             }
         }
 
@@ -82,7 +84,7 @@ namespace QuakeAnalysis
             g.Info($"arichve modis files from directory [{dataFolder}]. complete.");
         }
 
-        public List<string> GetCheckedProducts()
+        private List<string> GetCheckedProducts()
         {
             List<string> ans = new List<string>();
             foreach (Control control in gboxData.Controls)
@@ -114,7 +116,39 @@ namespace QuakeAnalysis
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            GetCheckedProducts();
+            var checkedProducts = GetCheckedProducts();
+            if (checkedProducts.Count == 0)
+            {
+                MessageBox.Show("未选择数据！", Settings.Default.DT,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (dtpStart.Value >= dtpEnd.Value)
+            {
+                MessageBox.Show("开始时间必须小于结束时间！", Settings.Default.DT,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        private void rbtnYMD_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpStart.Enabled = rbtnYMD.Checked;
+            dtpEnd.Enabled = rbtnYMD.Checked;
+        }
+
+        private void rbtnDOY_CheckedChanged(object sender, EventArgs e)
+        {
+            txtStartYear.Enabled = rbtnDOY.Checked;
+            txtEndYear.Enabled = rbtnDOY.Checked;
+            txtStartDay.Enabled = rbtnDOY.Checked;
+            txtEndDay.Enabled = rbtnDOY.Checked;
+        }
+
+        private void ckBoxArchive_CheckedChanged(object sender, EventArgs e)
+        {
+            btnArchive.Enabled = ckBoxArchive.Checked;
         }
     }
 }

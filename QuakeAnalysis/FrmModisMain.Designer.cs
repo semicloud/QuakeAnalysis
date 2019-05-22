@@ -79,7 +79,7 @@
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.ckBoxArchive = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -151,6 +151,7 @@
             // 
             this.txtWSFolder.Location = new System.Drawing.Point(77, 20);
             this.txtWSFolder.Name = "txtWSFolder";
+            this.txtWSFolder.ReadOnly = true;
             this.txtWSFolder.Size = new System.Drawing.Size(152, 21);
             this.txtWSFolder.TabIndex = 4;
             // 
@@ -262,6 +263,7 @@
             // 
             // txtEndDay
             // 
+            this.txtEndDay.Enabled = false;
             this.txtEndDay.Location = new System.Drawing.Point(161, 143);
             this.txtEndDay.Name = "txtEndDay";
             this.txtEndDay.Size = new System.Drawing.Size(46, 21);
@@ -269,6 +271,7 @@
             // 
             // txtEndYear
             // 
+            this.txtEndYear.Enabled = false;
             this.txtEndYear.Location = new System.Drawing.Point(88, 142);
             this.txtEndYear.Name = "txtEndYear";
             this.txtEndYear.Size = new System.Drawing.Size(46, 21);
@@ -276,6 +279,7 @@
             // 
             // txtStartDay
             // 
+            this.txtStartDay.Enabled = false;
             this.txtStartDay.Location = new System.Drawing.Point(161, 116);
             this.txtStartDay.Name = "txtStartDay";
             this.txtStartDay.Size = new System.Drawing.Size(46, 21);
@@ -283,6 +287,7 @@
             // 
             // txtStartYear
             // 
+            this.txtStartYear.Enabled = false;
             this.txtStartYear.Location = new System.Drawing.Point(88, 116);
             this.txtStartYear.Name = "txtStartYear";
             this.txtStartYear.Size = new System.Drawing.Size(46, 21);
@@ -309,13 +314,14 @@
             this.rbtnDOY.Name = "rbtnDOY";
             this.rbtnDOY.Size = new System.Drawing.Size(59, 16);
             this.rbtnDOY.TabIndex = 1;
-            this.rbtnDOY.TabStop = true;
             this.rbtnDOY.Text = "年积日";
             this.rbtnDOY.UseVisualStyleBackColor = true;
+            this.rbtnDOY.CheckedChanged += new System.EventHandler(this.rbtnDOY_CheckedChanged);
             // 
             // rbtnYMD
             // 
             this.rbtnYMD.AutoSize = true;
+            this.rbtnYMD.Checked = true;
             this.rbtnYMD.Location = new System.Drawing.Point(22, 22);
             this.rbtnYMD.Name = "rbtnYMD";
             this.rbtnYMD.Size = new System.Drawing.Size(59, 16);
@@ -323,6 +329,7 @@
             this.rbtnYMD.TabStop = true;
             this.rbtnYMD.Text = "年月日";
             this.rbtnYMD.UseVisualStyleBackColor = true;
+            this.rbtnYMD.CheckedChanged += new System.EventHandler(this.rbtnYMD_CheckedChanged);
             // 
             // gboxData
             // 
@@ -478,7 +485,7 @@
             this.groupBox2.Controls.Add(this.checkBox8);
             this.groupBox2.Controls.Add(this.checkBox7);
             this.groupBox2.Controls.Add(this.checkBox6);
-            this.groupBox2.Controls.Add(this.checkBox5);
+            this.groupBox2.Controls.Add(this.ckBoxArchive);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(299, 3);
             this.groupBox2.Name = "groupBox2";
@@ -563,6 +570,7 @@
             // 
             // btnArchive
             // 
+            this.btnArchive.Enabled = false;
             this.btnArchive.Location = new System.Drawing.Point(189, 35);
             this.btnArchive.Name = "btnArchive";
             this.btnArchive.Size = new System.Drawing.Size(75, 23);
@@ -631,15 +639,16 @@
             this.checkBox6.Text = "2.预处理";
             this.checkBox6.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // ckBoxArchive
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(24, 39);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(60, 16);
-            this.checkBox5.TabIndex = 14;
-            this.checkBox5.Text = "1.归档";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.ckBoxArchive.AutoSize = true;
+            this.ckBoxArchive.Location = new System.Drawing.Point(24, 39);
+            this.ckBoxArchive.Name = "ckBoxArchive";
+            this.ckBoxArchive.Size = new System.Drawing.Size(60, 16);
+            this.ckBoxArchive.TabIndex = 14;
+            this.ckBoxArchive.Text = "1.归档";
+            this.ckBoxArchive.UseVisualStyleBackColor = true;
+            this.ckBoxArchive.CheckedChanged += new System.EventHandler(this.ckBoxArchive_CheckedChanged);
             // 
             // groupBox3
             // 
@@ -793,7 +802,7 @@
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox ckBoxArchive;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
