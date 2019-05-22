@@ -150,5 +150,18 @@ namespace QuakeAnalysis
         {
             btnArchive.Enabled = ckBoxArchive.Checked;
         }
+
+        private void ckBoxPreprocess_CheckedChanged(object sender, EventArgs e)
+        {
+            btnPreprocess.Enabled = ckBoxPreprocess.Checked;
+        }
+
+        private void btnPreprocess_Click(object sender, EventArgs e)
+        {
+            FrmModisPreprocess frmModisPreprocess =
+                new FrmModisPreprocess(GetCheckedProducts());
+            frmModisPreprocess.StartPosition = FormStartPosition.CenterScreen;
+            frmModisPreprocess.ShowDialog();
+        }
     }
 }

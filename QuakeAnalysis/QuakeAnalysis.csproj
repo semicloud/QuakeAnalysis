@@ -140,6 +140,12 @@
     <Compile Include="FrmModisMain.Designer.cs">
       <DependentUpon>FrmModisMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmModisPreprocess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmModisPreprocess.Designer.cs">
+      <DependentUpon>FrmModisPreprocess.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmSetRasterMap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmModisMain.resx">
       <DependentUpon>FrmModisMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmModisPreprocess.resx">
+      <DependentUpon>FrmModisPreprocess.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSetRasterMap.resx">
       <DependentUpon>FrmSetRasterMap.cs</DependentUpon>

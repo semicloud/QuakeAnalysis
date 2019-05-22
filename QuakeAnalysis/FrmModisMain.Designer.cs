@@ -64,7 +64,7 @@
             this.ckBoxMYD02 = new System.Windows.Forms.CheckBox();
             this.ckBoxMOD02 = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnPreprocess = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.checkBox18 = new System.Windows.Forms.CheckBox();
             this.button7 = new System.Windows.Forms.Button();
@@ -78,7 +78,7 @@
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.ckBoxPreprocess = new System.Windows.Forms.CheckBox();
             this.ckBoxArchive = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -470,7 +470,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.btnPreprocess);
             this.groupBox2.Controls.Add(this.button11);
             this.groupBox2.Controls.Add(this.checkBox18);
             this.groupBox2.Controls.Add(this.button7);
@@ -484,7 +484,7 @@
             this.groupBox2.Controls.Add(this.checkBox9);
             this.groupBox2.Controls.Add(this.checkBox8);
             this.groupBox2.Controls.Add(this.checkBox7);
-            this.groupBox2.Controls.Add(this.checkBox6);
+            this.groupBox2.Controls.Add(this.ckBoxPreprocess);
             this.groupBox2.Controls.Add(this.ckBoxArchive);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(299, 3);
@@ -494,14 +494,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "流程";
             // 
-            // button2
+            // btnPreprocess
             // 
-            this.button2.Location = new System.Drawing.Point(189, 87);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 29;
-            this.button2.Text = "设置";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnPreprocess.Enabled = false;
+            this.btnPreprocess.Location = new System.Drawing.Point(189, 87);
+            this.btnPreprocess.Name = "btnPreprocess";
+            this.btnPreprocess.Size = new System.Drawing.Size(75, 23);
+            this.btnPreprocess.TabIndex = 29;
+            this.btnPreprocess.Text = "设置";
+            this.btnPreprocess.UseVisualStyleBackColor = true;
+            this.btnPreprocess.Click += new System.EventHandler(this.btnPreprocess_Click);
             // 
             // button11
             // 
@@ -629,15 +631,16 @@
             this.checkBox7.Text = "3.标准数据出图";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
-            // checkBox6
+            // ckBoxPreprocess
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(24, 91);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(72, 16);
-            this.checkBox6.TabIndex = 15;
-            this.checkBox6.Text = "2.预处理";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.ckBoxPreprocess.AutoSize = true;
+            this.ckBoxPreprocess.Location = new System.Drawing.Point(24, 91);
+            this.ckBoxPreprocess.Name = "ckBoxPreprocess";
+            this.ckBoxPreprocess.Size = new System.Drawing.Size(72, 16);
+            this.ckBoxPreprocess.TabIndex = 15;
+            this.ckBoxPreprocess.Text = "2.预处理";
+            this.ckBoxPreprocess.UseVisualStyleBackColor = true;
+            this.ckBoxPreprocess.CheckedChanged += new System.EventHandler(this.ckBoxPreprocess_CheckedChanged);
             // 
             // ckBoxArchive
             // 
@@ -801,7 +804,7 @@
         private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox ckBoxPreprocess;
         private System.Windows.Forms.CheckBox ckBoxArchive;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button6;
@@ -837,6 +840,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnPreprocess;
     }
 }
