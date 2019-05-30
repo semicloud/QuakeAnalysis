@@ -3,6 +3,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import gdal
 import osr
+import pandas as pd
+
+
+def get_marker_color(mag: float):
+    if mag < 4.0:
+        return 'go'
+    elif 4.0 <= mag < 6:
+        return 'mo'
+    elif mag >= 6.0:
+        return 'ro'
+
 
 min_lon = 100
 max_lon = 140
@@ -54,7 +65,7 @@ print('after filter')
 print(len(city_info))
 
 for info, pos in zip(city_info, city_pos):
-    m.plot(pos[0], pos[1], color='green', marker='o', markersize=4)
+    m.plot(pos[0], pos[1], color='green', marker='x', markersize=4)
     # xpt, ypt = m(pos[0], pos[1])
     # plt.text(xpt + 0.2, ypt + 0.2, info["NAME"])
 
@@ -73,9 +84,22 @@ print("min=%d, max=%d" % (np.min(data), np.max(data)))
 clevls = np.arange(np.min(data), np.max(data), 1)  # how to decide color levels?
 print(clevls)
 # Color map, see here: https://matplotlib.org/gallery/color/colormap_reference.html
-cs = m.contourf(x, y, data, clevls, cmap=plt.cm.get_cmap('plasma'))
+cs = m.contourf(x, y, data, clevls, cmap=plt.cm.get_cmap('terrain'))
 cbar = m.colorbar(cs, location='right', pad='5%')
 cbar.set_label('LST')
 
+#  Add earthquakes
+df = pd.read_csv('earthquakes.csv')
+min_marker_size = 1.5
+print(df)
+for lat, lon, mag in zip(df['latitude'], df['longitude'], df['mag']):
+    x, y = m(lon, lat)
+    m.plot(x, y, get_marker_color(mag), markersize=mag * min_marker_size)
+    plt.text(x, y, mag)
+
 plt.title('MODIS Land Surface Temperature 20190420', pad='20')
-plt.show()
+# plt.show()
+
+plt.savefig(r'figure.png', dpi=600, bbox_inches='tight')  # plt.show() and plt.savefig() are not good friend.
+
+del m
