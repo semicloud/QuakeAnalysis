@@ -109,10 +109,10 @@ void generate_txt_for_general_ano()
 
 void generate_mxd11a1_ymls()
 {
-	const gr::date start(2018, 6, 3), end(2018, 8, 5);
+	const gr::date start(2019, 4, 20), end(2019, 4, 20);
 	const string workspace_dir = "e:\\modis_workspace_test\\";
 	const string temp_dir = "e:\\modis_workspace_test\\tmp\\";
-	const double min_lon = 113, max_lon = 119, min_lat = 40, max_lat = 45;
+	const double min_lon = 110, max_lon = 140, min_lat = 20, max_lat = 50;
 	modis_api::File_operation::clear_directory(temp_dir);
 	if (!fs::exists(temp_dir)) fs::create_directories(temp_dir);
 	vector<string> yml_paths;
