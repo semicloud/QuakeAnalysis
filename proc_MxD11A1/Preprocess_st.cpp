@@ -123,8 +123,11 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 		BOOST_LOG_TRIVIAL(debug) << "调用MRT提取.tif文件成功，提取的文件为：" << mrt_tif_path;
 
 		const string mrt_gdal_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal.tif";
+		// Fix iss01, see BUGFIX.md
+		const string gdal_arguments = "-a_srs \"+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs\" -ot Float32";
+		BOOST_LOG_TRIVIAL(debug) << "gdal argument:" << gdal_arguments;
 		// 调用gdal更改数据类型，改成Float32
-		modis_api::Gdal_operation::translate_copy(mrt_tif_path, mrt_gdal_tif_path, "-ot Float32");
+		modis_api::Gdal_operation::translate_copy(mrt_tif_path, mrt_gdal_tif_path, gdal_arguments);
 
 		const string mrt_gdal_scaled_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal_scaled.tif";
 		if (boost::filesystem::exists(mrt_gdal_scaled_tif_path)) boost::filesystem::remove(mrt_gdal_scaled_tif_path);
