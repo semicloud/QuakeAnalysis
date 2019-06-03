@@ -6,7 +6,7 @@ import rasterio
 
 # thank https://gis.stackexchange.com/questions/224619/how-to-map-albers-projection-raster-in-basemap-of-python
 
-tif_file_path = r'E:\modis_workspace_test\SampleData\MOD11A1\st_2019110.tif'
+tif_file_path = r'E:\modis_workspace_test\MOD021km\bt_2019110.tif'
 fault_shp_path = r'E:\modis_workspace_test\faults\faults_deng_simple'
 country_shp_path = r'E:\modis_workspace_test\faults\ne_50m_admin_0_countries_polyline'
 
@@ -43,8 +43,8 @@ m = Basemap(llcrnrlon=llll[0], llcrnrlat=llll[1], urcrnrlon=urll[0], urcrnrlat=u
 m.drawparallels(np.arange(0, 81, 10), labels=[True, False, False, False])
 m.drawmeridians(np.arange(10., 351, 10), labels=[False, False, False, True])
 
-# m.drawcoastlines()
-# m.drawcountries(linewidth=2)
+m.drawcoastlines()
+m.drawcountries(linewidth=2)
 
 # LST don't need fault data
 # m.readshapefile(fault_shp_path, name='', linewidth=0.5, color='red')
@@ -52,7 +52,7 @@ m.readshapefile(country_shp_path, name='', linewidth=2)
 
 m.imshow(data, origin='upper', extent=extent, cmap='nipy_spectral')
 cbar = m.colorbar(location='right')
-cbar.set_label('Land surface temperature (K)', fontsize=13)
+cbar.set_label('Brightness Temperature (K?)', fontsize=13)
 
 #  Add earthquakes LST don't need earthquakes
 # df = pd.read_csv('earthquakes.csv')
@@ -63,8 +63,8 @@ cbar.set_label('Land surface temperature (K)', fontsize=13)
 #     m.plot(lon, lat, plot_utils.get_marker_color(mag), markersize=mag * min_marker_size)
 #     plt.text(lon, lat, mag)
 
-plt.title('MODIS Land Surface Temperature 20190420', pad='10', fontsize=20)
+plt.title('MODIS Brightness Temperature 20190420', pad='10', fontsize=20)
 
 # plt.show()
 
-plt.savefig('figure_mod11a1_2019110.png', dpi=600, bbox_inches='tight')
+plt.savefig('figure_mod021km_2019110.png', dpi=600, bbox_inches='tight')
