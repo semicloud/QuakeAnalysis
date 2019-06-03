@@ -8,6 +8,7 @@ import rasterio
 
 tif_file_path = r'E:\modis_workspace_test\SampleData\MOD11A1\st_2019110.tif'
 fault_shp_path = r'E:\modis_workspace_test\faults\faults_deng_simple'
+country_shp_path = r'E:\modis_workspace_test\faults\ne_50m_admin_0_countries_polyline'
 
 with rasterio.open(tif_file_path) as ds_raster:
     meta = ds_raster.meta
@@ -42,11 +43,12 @@ m = Basemap(llcrnrlon=llll[0], llcrnrlat=llll[1], urcrnrlon=urll[0], urcrnrlat=u
 m.drawparallels(np.arange(0, 81, 10), labels=[True, False, False, False])
 m.drawmeridians(np.arange(10., 351, 10), labels=[False, False, False, True])
 
-m.drawcoastlines()
-m.drawcountries(linewidth=2)
+# m.drawcoastlines()
+# m.drawcountries(linewidth=2)
 
 # LST don't need fault data
 # m.readshapefile(fault_shp_path, name='', linewidth=0.5, color='red')
+m.readshapefile(country_shp_path, name='', linewidth=2)
 
 m.imshow(data, origin='upper', extent=extent, cmap='nipy_spectral')
 cbar = m.colorbar(location='right')
