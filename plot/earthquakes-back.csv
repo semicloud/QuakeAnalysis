@@ -1,0 +1,35 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2019-05-02T07:57:58.857Z,30.4709,103.1619,10,4.7,mb,,34,5.475,0.62,us,us70003fk8,2019-05-22T08:24:31.040Z,"29km WNW of Linqiong, China",earthquake,8.1,1.9,0.055,102,reviewed,us,us
+2019-05-02T10:44:42.471Z,24.4715,121.9822,35,6.5,mb,,115,0.461,1.25,us,us70003fmk,2019-05-02T12:43:55.356Z,"19km SE of Su'ao, Taiwan",earthquake,4.3,2,0.062,77,reviewed,us,us
+2019-05-02T11:12:00.954Z,46.4567,115.2289,10,4.6,mb,,97,4.141,1.39,us,us70003fmv,2019-05-07T13:18:48.040Z,"55km S of Dzuunbulag, Mongolia",earthquake,5.7,1.9,0.052,111,reviewed,us,us
+2019-05-03T08:15:28.148Z,32.0259,138.0357,395.98,4.1,mb,,89,1.834,0.83,us,us70003g5u,2019-05-23T06:30:18.040Z,"202km SW of Hachijo-jima, Japan",earthquake,10.3,8.7,0.111,22,reviewed,us,us
+2019-05-04T11:51:23.787Z,21.68,119.7859,27.16,4.5,mb,,99,1.649,0.61,us,us70003gmc,2019-05-04T12:23:59.040Z,"105km WSW of Hengchun, Taiwan",earthquake,7.9,5.6,0.082,44,reviewed,us,us
+2019-05-06T02:44:11.900Z,31.1227,139.9972,92.25,4.4,mb,,204,1.992,0.82,us,us70003ll5,2019-05-16T02:15:20.040Z,"218km S of Hachijo-jima, Japan",earthquake,14.9,10.7,0.109,24,reviewed,us,us
+2019-05-06T17:56:03.896Z,26.2457,129.5528,10,4.7,mb,,169,1.288,0.81,us,us70003hl3,2019-05-22T19:31:06.040Z,"161km ESE of Nago, Japan",earthquake,5.7,1.8,0.072,58,reviewed,us,us
+2019-05-08T15:48:46.877Z,24.8613,122.4559,127.28,4.4,mb,,46,0.639,0.94,us,us70003id4,2019-05-20T01:19:44.040Z,"67km ENE of Su'ao, Taiwan",earthquake,5.6,4.4,0.064,70,reviewed,us,us
+2019-05-08T16:32:12.587Z,27.1438,126.7531,89.84,4.4,mb,,130,1.39,0.66,us,us70003ifh,2019-05-20T02:53:39.040Z,"132km NW of Ishikawa, Japan",earthquake,7.2,12.4,0.111,23,reviewed,us,us
+2019-05-09T22:43:22.960Z,31.7987,131.8702,22,5.7,mww,,24,1.566,0.72,us,us70003j3g,2019-05-13T03:47:53.180Z,"44km ESE of Miyazaki-shi, Japan",earthquake,5.8,1.7,0.046,46,reviewed,us,us
+2019-05-09T23:48:42.764Z,31.7719,131.8503,22,6.1,mww,,17,1.58,0.67,us,us70003j46,2019-05-20T02:15:49.324Z,"43km ESE of Miyazaki-shi, Japan",earthquake,5,1.8,0.058,29,reviewed,us,us
+2019-05-10T00:07:38.432Z,31.6825,131.7928,35,5.1,mb,,59,1.633,0.65,us,us70003j4s,2019-05-10T04:09:24.544Z,"41km ENE of Nichinan, Japan",earthquake,6.3,1.9,0.031,336,reviewed,us,us
+2019-05-10T04:53:47.580Z,31.3957,131.7856,10,4.6,mb,,117,1.888,1.27,us,us70003j6g,2019-05-10T05:34:04.861Z,"45km ESE of Nichinan, Japan",earthquake,7.9,1.9,0.074,54,reviewed,us,us
+2019-05-10T11:40:36.397Z,31.756,131.8657,35.27,4.9,mb,,71,1.6,1.07,us,us70003j8n,2019-05-10T12:02:25.040Z,"45km ESE of Miyazaki-shi, Japan",earthquake,6.2,6.7,0.039,209,reviewed,us,us
+2019-05-10T23:59:41.052Z,32.6987,132.3236,35,4.9,mww,,36,1.289,0.77,us,us70003jl5,2019-05-11T10:15:26.989Z,"46km SW of Sukumo, Japan",earthquake,6,1.9,0.073,18,reviewed,us,us
+2019-05-11T21:55:28.497Z,39.9834,100.2935,10,4.2,mb,,52,8.996,0.74,us,us70003jwh,2019-05-24T02:07:16.040Z,"117km N of Zhangye, China",earthquake,3.4,1.9,0.08,43,reviewed,us,us
+2019-05-12T06:07:45.377Z,32.7046,132.3158,36.34,4.7,mb,,101,1.281,0.48,us,us70003jzi,2019-05-12T11:28:35.739Z,"46km WSW of Sukumo, Japan",earthquake,7.6,8.8,0.092,36,reviewed,us,us
+2019-05-13T08:55:21.227Z,24.7337,122.0092,93.46,6.4,mb,,58,0.522,0.69,us,us70003kai,2019-05-20T08:52:15.040Z,"21km NE of Su'ao, Taiwan",earthquake,5.3,6.3,0.055,96,reviewed,us,us
+2019-05-15T05:24:32.952Z,29.7257,130.6783,35,6.4,mb,,37,3.393,1.55,us,us70003ld5,2019-05-16T13:55:40.675Z,"115km SSW of Nishinoomote, Japan",earthquake,6.7,1.9,0.026,510,reviewed,us,us
+2019-05-15T08:32:05.002Z,32.2975,137.5062,423.45,4.2,mb,,74,2.109,0.71,us,us70003let,2019-05-15T12:12:30.040Z,"213km SE of Shingu, Japan",earthquake,11.1,13.6,0.124,18,reviewed,us,us
+2019-05-15T08:54:39.948Z,25.6984,125.6949,101.82,4.6,mb,,83,2.576,1.08,us,us70003lf8,2019-05-15T12:07:24.040Z,"107km NNE of Hirara, Japan",earthquake,5.2,9.6,0.05,118,reviewed,us,us
+2019-05-15T20:33:37.450Z,28.1554,103.6621,37.67,4.8,mb,,30,7.776,0.64,us,usd0009i8f,2019-05-15T22:12:55.798Z,"9km ESE of Xiluodu, China",earthquake,7.3,6.3,0.054,107,reviewed,us,us
+2019-05-15T22:08:19.494Z,24.4886,100.0363,10,4,mb,,96,3.214,1.21,us,us60003r7j,2019-05-28T00:11:10.040Z,"10km NW of Aihua, China",earthquake,5.8,2,0.231,5,reviewed,us,us
+2019-05-17T14:00:40.445Z,27.9437,139.8477,450.04,4.5,mb,,70,2.24,0.66,us,us70003mhw,2019-05-17T14:14:24.040Z,"252km WNW of Chichi-shima, Japan",earthquake,9.9,8.8,0.054,99,reviewed,us,us
+2019-05-17T22:24:52.486Z,45.2046,124.6114,16.53,4.8,mb,,30,5.354,0.77,us,us70003mum,2019-05-20T05:23:14.512Z,"16km W of Fuyu, China",earthquake,8.2,4.2,0.039,205,reviewed,us,us
+2019-05-18T16:38:31.805Z,23.9882,122.2065,10,4.4,mb,,126,0.588,0.48,us,us70003n1l,2019-05-18T18:39:59.040Z,"61km E of Hualian, Taiwan",earthquake,3.8,1.5,0.241,5,reviewed,us,us
+2019-05-19T01:59:51.442Z,31.6618,131.8339,35,4.5,mb,,253,1.668,1.03,us,us60003t3s,2019-05-30T01:03:52.040Z,"44km E of Nichinan, Japan",earthquake,2.8,2,0.204,7,reviewed,us,us
+2019-05-19T14:50:11.169Z,32.622,132.3206,35,4.4,mb,,124,1.314,0.91,us,us70003n95,2019-05-28T20:30:55.541Z,"51km SW of Sukumo, Japan",earthquake,7,2,0.155,12,reviewed,us,us
+2019-05-22T01:37:24.778Z,23.9315,121.6498,25.62,4.4,mwr,,116,0.246,0.7,us,us60003qgn,2019-05-22T02:26:17.040Z,"6km SE of Hualian, Taiwan",earthquake,4.1,5.1,0.06,27,reviewed,us,us
+2019-05-23T06:12:49.109Z,24.0151,121.5603,16.23,6.7,mb,,72,0.161,0.63,us,us60003r0x,2019-05-23T11:00:11.121Z,"6km NW of Hualian, Taiwan",earthquake,3.2,4,0.046,147,reviewed,us,us
+2019-05-24T03:40:17.116Z,36.0017,139.3324,111,6.6,mb,,140,1.061,0.93,us,us60003rjg,2019-05-25T11:45:29.483Z,"7km NW of Sakado, Japan",earthquake,6.6,7.2,0.119,21,reviewed,us,us
+2019-05-25T06:27:40.611Z,23.2024,121.391,22.22,4.1,mb,,104,0.208,0.84,us,us60003s0n,2019-05-25T06:47:23.040Z,"55km NNE of Taitung City, Taiwan",earthquake,3.7,2.7,0.262,4,reviewed,us,us
+2019-05-26T00:26:22.482Z,29.389,130.6721,28.37,4.7,mb,,110,3.31,1.09,us,us60003s8g,2019-05-26T00:41:23.040Z,"152km SSW of Nishinoomote, Japan",earthquake,6.7,5.6,0.058,91,reviewed,us,us
+2019-05-26T15:47:23.771Z,28.874,130.5609,10,4.9,mb,,71,2.868,0.44,us,us60003sg5,2019-05-26T16:32:23.040Z,"119km ENE of Naze, Japan",earthquake,7.2,1.9,0.06,88,reviewed,us,us

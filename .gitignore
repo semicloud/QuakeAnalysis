@@ -6,6 +6,8 @@
 *.dll
 *.ico
 *.png
+.idea/
+__pycache__/
 eddy_fieldChp/
 proc_MxD021kmChp/
 QuakeAnalysis/Data/

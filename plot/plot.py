@@ -33,11 +33,12 @@ plt.figure(figsize=(12, 8))  # by inches, 1 inch means 80 pixels
 
 # The default value is cyl, or Cylindrical Equidistant projection
 # also known as Equirectangular projection or Plate Carrée
-m = Basemap(projection='cyl', lon_0=lon_0, lat_0=lat_0, resolution='i',
+m = Basemap(projection='cyl', lon_0=0, lat_0=0, lon_1=0, resolution='i',
             llcrnrlon=min_lon, urcrnrlon=max_lon,
-            llcrnrlat=min_lat, urcrnrlat=max_lat, lat_ts=lat_0)
-# m.drawcoastlines()
-# m.drawcountries(linewidth=2)
+            llcrnrlat=min_lat, urcrnrlat=max_lat, lat_ts=0)
+print("map.proj4string: " + m.proj4string)
+m.drawcoastlines()
+m.drawcountries(linewidth=2)
 m.drawparallels(np.arange(0, 81, 10), labels=[True, False, False, False])
 m.drawmeridians(np.arange(10., 351, 10), labels=[False, False, False, True])
 
@@ -49,7 +50,7 @@ m.drawmeridians(np.arange(10., 351, 10), labels=[False, False, False, True])
 m.readshapefile(fault_shp, name='', linewidth=0.5, color='red')  # name can be empty for line shapefile
 # m.readshapefile(block_shp, name='', linewidth=1, color='blue')
 m.readshapefile(city_shp, name='city', linewidth=5, color='green')
-m.readshapefile(china_shp, name='', linewidth=1, color='black')
+# m.readshapefile(china_shp, name='', linewidth=1, color='black')
 
 print('before filter')
 print(len(m.city))
@@ -80,22 +81,25 @@ print(ny)
 print(nx)
 lons, lats = m.makegrid(nx, ny)
 x, y = m(lons, lats)
+print(x)
+print(y)
 print("min=%d, max=%d" % (np.min(data), np.max(data)))
+
 clevls = np.arange(np.min(data), np.max(data), 1)  # how to decide color levels?
-print(clevls)
+# print(clevls)
 # Color map, see here: https://matplotlib.org/gallery/color/colormap_reference.html
-cs = m.contourf(x, y, data, clevls, cmap=plt.cm.get_cmap('terrain'))
+cs = m.contourf(x, y, np.flipud(data), cmap=plt.cm.get_cmap('terrain'), latlon=True)
 cbar = m.colorbar(cs, location='right', pad='5%')
 cbar.set_label('LST')
 
 #  Add earthquakes
 df = pd.read_csv('earthquakes.csv')
 min_marker_size = 1.5
-print(df)
+# print(df)
 for lat, lon, mag in zip(df['latitude'], df['longitude'], df['mag']):
-    x, y = m(lon, lat)
-    m.plot(x, y, get_marker_color(mag), markersize=mag * min_marker_size)
-    plt.text(x, y, mag)
+    # x, y = m(lon, lat)
+    m.plot(lon, lat, get_marker_color(mag), markersize=mag * min_marker_size)
+    plt.text(lon, lat, mag)
 
 plt.title('MODIS Land Surface Temperature 20190420', pad='20')
 # plt.show()
