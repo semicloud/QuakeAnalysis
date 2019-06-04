@@ -12,6 +12,7 @@ eddy_fieldChp/
 proc_MxD021kmChp/
 QuakeAnalysis/Data/
 packages_/
+packages_py/
 # User-specific files
 *.rsuser
 *.suo
