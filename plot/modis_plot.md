@@ -21,3 +21,5 @@ PyCharm
 * 2019-06-03
   * Nearly complete plot_mod11a1.py, plot_mod021km.py
   * Add correct projection to basemap, see https://gis.stackexchange.com/questions/224619/how-to-map-albers-projection-raster-in-basemap-of-python 
+* 2019-06-05
+  * Add plot_mod04_3k.py, plot_mod05_l2.py, the *fundamental* data plotting almost done, next we will deal with the GUI part, after that, we will go on our *abnormal* plotting work.
