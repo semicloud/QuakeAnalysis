@@ -6,6 +6,7 @@
 *.dll
 *.ico
 *.png
+*.jpg
 .idea/
 __pycache__/
 eddy_fieldChp/

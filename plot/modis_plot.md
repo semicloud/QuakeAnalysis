@@ -23,3 +23,7 @@ PyCharm
   * Add correct projection to basemap, see https://gis.stackexchange.com/questions/224619/how-to-map-albers-projection-raster-in-basemap-of-python 
 * 2019-06-05
   * Add plot_mod04_3k.py, plot_mod05_l2.py, the *fundamental* data plotting almost done, next we will deal with the GUI part, after that, we will go on our *abnormal* plotting work.
+* 2019-06-10
+  * changing `imshow()` to `pcolormesh()`, in order to fit the extent of base map (not the fore map, namely .tif file), see Jiao_Plot.py. Thanks, Dr.Jiao.
+  * Add modis_plot.yml to project, a configuration file used plotting
+  * Add modis_plot.py, the main script of plotting map
