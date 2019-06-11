@@ -29,3 +29,6 @@ PyCharm
   * Add modis_plot.py, the main script of plotting map
 * 2019-06-11
   * complete modis_plot.py and modis_plot.yml, retrieve several arguments from plot script.
+  * Using Cython convert py to exe, see Py2exe.bat, before that, one should use pip install Cython first 
+  * `pip install Cython`
+
