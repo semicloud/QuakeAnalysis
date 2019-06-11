@@ -30,7 +30,7 @@ args = parser.parse_args()
 
 ### Parse variables ###
 
-plot_variables = yaml.load(open(args.yml), Loader=yaml.FullLoader)
+plot_variables = yaml.load(open(args.yml, encoding='utf-8'), Loader=yaml.FullLoader)
 plot_title = plot_variables['PlotTitle']
 plot_title_size = plot_variables['PlotTitleSize']
 plot_extent = plot_variables['PlotExtent']

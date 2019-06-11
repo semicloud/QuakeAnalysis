@@ -8,6 +8,7 @@
 *.png
 *.jpg
 *.pdf
+*.exe
 .idea/
 __pycache__/
 eddy_fieldChp/

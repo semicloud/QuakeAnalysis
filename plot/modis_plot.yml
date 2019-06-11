@@ -24,7 +24,7 @@ QuakeRecord: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\earthquake
 # 输入文件
 InputFile: E:\modis_workspace_test\MOD021km\bt_2019110.tif
 # 输出文件，注意后缀名
-OutputFile: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\bt_2019110.pdf
+OutputFile: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\bt_2019110.png
 # 输出文件dpi
 OutputDpi: 600
 # 输出文件大小，单位为英寸
