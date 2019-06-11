@@ -7,6 +7,7 @@
 *.ico
 *.png
 *.jpg
+*.pdf
 .idea/
 __pycache__/
 eddy_fieldChp/

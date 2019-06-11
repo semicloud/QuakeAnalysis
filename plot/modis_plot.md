@@ -27,3 +27,5 @@ PyCharm
   * changing `imshow()` to `pcolormesh()`, in order to fit the extent of base map (not the fore map, namely .tif file), see Jiao_Plot.py. Thanks, Dr.Jiao.
   * Add modis_plot.yml to project, a configuration file used plotting
   * Add modis_plot.py, the main script of plotting map
+* 2019-06-11
+  * complete modis_plot.py and modis_plot.yml, retrieve several arguments from plot script.
