@@ -163,5 +163,21 @@ namespace QuakeAnalysis
             frmModisPreprocess.StartPosition = FormStartPosition.CenterScreen;
             frmModisPreprocess.ShowDialog();
         }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmEddySetting frmEddySetting = new FrmEddySetting();
+            frmEddySetting.ShowDialog();
+        }
     }
 }
