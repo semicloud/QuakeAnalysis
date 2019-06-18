@@ -49,16 +49,16 @@
 - [x] Changing *Method* to *AnoMethod*
 - [x] Changing *OutputEddyFieldImageFile* to *OutputAnoFile*
 - [x] Changing *RefTifFile* to *RefListFile*
-- [ ] Changing *eddy_field.exe* to *eddy_field_ano.exe*
+- [x] Changing *eddy_field.exe* to *eddy_field_ano.exe*
 - [ ] Sample data sending
 - [ ] Send code
 
 ### general_ano.exe
 
-- [ ] Changing *general_ano.exe* to *juping_ano.exe*
-- [ ] Changing *TempDir* to *TmpPath*
-- [ ] Changing *InputMonthTifFile* to *MonthListFile*
-- [ ] Changing *InputRefTifFile* to *RefListFile*
+- [x] Changing *general_ano.exe* to *juping_ano.exe*
+- [x] Changing *TempDir* to *TmpPath*
+- [x] Changing *InputMonthTifFile* to *MonthListFile*
+- [x] Changing *InputRefTifFile* to *RefListFile*
 - [ ] Sending code
 
 ### rst_en.exe

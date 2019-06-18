@@ -41,3 +41,6 @@
 
 1. 更新了若干yml文件的属性名，代码也做了相应的修改
 2. 更新Heg版本至2.15.1
+3. 修正了若干程序不清空temp文件夹的bug
+4. 合并modis_plot分支
+5. 修改目标文件名：eddy_field -> eddy_field_ano.exe， genenal_ano.exe -> juping_ano.exe

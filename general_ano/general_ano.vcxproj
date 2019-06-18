@@ -74,6 +74,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDK\yaml-cpp-master\build\Release;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath);C:\SDK\armadillo-9.200.7\examples\lib_win64</LibraryPath>
+    <TargetName>juping_ano.exe</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,6 +83,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\yaml-cpp-master\build\Debug;$(LibraryPath);C:\SDK\armadillo-9.200.7\examples\lib_win64</LibraryPath>
+    <TargetName>juping_ano</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
