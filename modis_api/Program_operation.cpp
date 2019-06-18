@@ -30,7 +30,7 @@ bool modis_api::Program_operation::run(const std::string& cmd_str)
 	si.cb = sizeof si;
 	ZeroMemory(&pi, sizeof pi);
 
-	if (!CreateProcess(NULL, string_2_lpwstr(cmd_str), NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi))
+	if (!CreateProcess(NULL, string_2_lpwstr(cmd_str), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi))
 	{
 		BOOST_LOG_TRIVIAL(error) << "调用" << cmd_str << "出错，错误消息：" << GetLastError();
 		return false;
