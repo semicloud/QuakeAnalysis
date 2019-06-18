@@ -1,7 +1,7 @@
 # HDF文件列表Txt
-InputHdfFile: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\proc_MxD021km_hdf_list.txt
+HDFListFile: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\proc_MxD021km_hdf_list.txt
 # 保存中间计算结果的Tmp目录
-TempDir: D:\modis_workspace\tmp\
+TmpPath: E:\modis_workspace\tmp\
 # 最小经度
 MinLon: 113
 # 最大经度

@@ -1,4 +1,4 @@
-D:\modis_workspace\Standard\MOD_BT\2015\bt_2015352.tif
-D:\modis_workspace\Standard\MOD_BT\2016\bt_2016352.tif
-D:\modis_workspace\Standard\MOD_BT\2017\bt_2017352.tif
-D:\modis_workspace\Standard\MOD_BT\2018\bt_2018352.tif
+E:\modis_workspace\Standard\MOD_BT\2015\bt_2015352.tif
+E:\modis_workspace\Standard\MOD_BT\2016\bt_2016352.tif
+E:\modis_workspace\Standard\MOD_BT\2017\bt_2017352.tif
+E:\modis_workspace\Standard\MOD_BT\2018\bt_2018352.tif

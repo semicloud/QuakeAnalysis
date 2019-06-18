@@ -43,13 +43,13 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Water Vapor预处理，使用的.yml文件为：" << yml_path;
 
-	vector<string> attr_names = { "HdfFilePath", "MinLon", "MaxLon", "MinLat",
+	vector<string> attr_names = { "HDFListFile", "MinLon", "MaxLon", "MinLat",
 		"MaxLat", "ResamplingType","OutputProjectionType",
-		"OutputProjectionParameters","OutputImageFile", "TempDir" };
+		"OutputProjectionParameters","OutputImageFile", "TmpPath" };
 	for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const string& attr_name)
 	{ check_node(yml_path, node, attr_name); });
 	//.hdf文件列表文件，该文件是一个.txt文件
-	const string hdf_file_list_file_path = node["HdfFilePath"].as<string>();
+	const string hdf_file_list_file_path = node["HDFListFile"].as<string>();
 	if (!boost::filesystem::exists(hdf_file_list_file_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << ".hdf列表文件" << hdf_file_list_file_path << "不存在";
@@ -67,7 +67,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	const string output_projection_parameters = node["OutputProjectionParameters"].as<string>();
 	//const string output_type = node["OutputType"].as<string>();
 	const string output_image_file = node["OutputImageFile"].as<string>(); //final output
-	string temp_dir = node["TempDir"].as<string>();
+	string temp_dir = node["TmpPath"].as<string>();
 	if (temp_dir.at(temp_dir.size() - 1) != '\\')
 	{
 		temp_dir.push_back('\\');

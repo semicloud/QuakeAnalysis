@@ -57,13 +57,13 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Surface Temperature预处理，使用的.yml文件为：" << yml_path;
 
-	vector<string> attr_names = { "InputHdfFile","TempDir", "MinLon", "MaxLon", "MinLat",
+	vector<string> attr_names = { "HDFListFile","TmpPath", "MinLon", "MaxLon", "MinLat",
 		"MaxLat", "OutputImageFile", "ResamplingType", "OutputProjectionType",
 		"OutputProjectionParameters","Datum","OutputPixelSize" };
 	for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const string& attr_name)
 	{ check_node(yml_path, node, attr_name); });
 
-	const string hdf_file_list_file_path = node["InputHdfFile"].as<string>();
+	const string hdf_file_list_file_path = node["HDFListFile"].as<string>();
 	if (!boost::filesystem::exists(hdf_file_list_file_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << ".hdf列表文件" << hdf_file_list_file_path << "不存在";
@@ -76,7 +76,7 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	const double max_lat = node["MaxLat"].as<double>();
 	const string output_image_file = node["OutputImageFile"].as<string>();
 
-	string temp_dir = node["TempDir"].as<string>();
+	string temp_dir = node["TmpPath"].as<string>();
 
 	const string spatial_subset_type = node["SpatialSubsetType"].as<string>();
 	const string resampling_type = node["ResamplingType"].as<string>();

@@ -19,24 +19,24 @@ Eddy_field_options_yaml::Eddy_field_options_yaml(std::string& path)
 		BOOST_LOG_TRIVIAL(error) << ex.what();
 	}
 
-	_modis_workspace_folder = config["ModisWorkspaceFolder"].as<std::string>();
+	_modis_workspace_folder = config["Workspace"].as<std::string>();
 	if (_modis_workspace_folder[_modis_workspace_folder.size() - 1] != '\\')
 		_modis_workspace_folder = _modis_workspace_folder + "\\";
-	_need_compute_ref = config["NeedComputeRef"].as<bool>();
-	_need_compute_eddy_field = config["NeedComputeEddyField"].as<bool>();
+	_need_compute_ref = config["CalcRef"].as<bool>();
+	_need_compute_eddy_field = config["CalcAno"].as<bool>();
 	_input_image_file = config["InputImageFile"].as<std::string>();
-	_method = config["Method"].as<int>();
+	_method = config["AnoMethod"].as<int>();
 	//_dateStr = config["Date"].as<std::string>();
 	//_data = config["Data"].as<std::string>();
 	//_type = config["Type"].as<std::string>();
-	_support_ref_tif_file = config["RefTifFile"].as<std::string>();
+	_support_ref_tif_file = config["RefListFile"].as<std::string>();
 	if (_need_compute_ref && !boost::filesystem::exists(_support_ref_tif_file))
 	{
 		BOOST_LOG_TRIVIAL(error) << "背景场tif列表文件：" << _support_ref_tif_file << "不存在，无法生成背景场！";
 		exit(EXIT_FAILURE);
 	}
 	_ref_image_file = config["RefImageFile"].as<std::string>();
-	_output_eddy_field_image_file = config["OutputEddyFieldImageFile"].as<std::string>();
+	_output_eddy_field_image_file = config["OutputAnoFile"].as<std::string>();
 }
 
 Eddy_field_options_yaml::~Eddy_field_options_yaml() = default;

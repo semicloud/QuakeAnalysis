@@ -103,19 +103,19 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	check_node(node, "InputMonthTifFile");
-	check_node(node, "InputRefTifFile");
+	check_node(node, "MonthListFile");
+	check_node(node, "RefListFile");
 	check_node(node, "OutputImageFile");
-	check_node(node, "TempDir");
+	check_node(node, "TmpPath");
 
 	//最终输出图片路径
 	const fs::path path_output_image = node["OutputImageFile"].as<string>();
 	//Temp目录路径
-	const fs::path dir_temp = node["TempDir"].as<string>();
+	const fs::path dir_temp = node["TmpPath"].as<string>();
 	//计算月平均的tif文件列表txt文件路径
-	const fs::path path_month_tif_file = node["InputMonthTifFile"].as<string>();
+	const fs::path path_month_tif_file = node["MonthListFile"].as<string>();
 	//计算历史月平均的tif文件列表txt文件路径
-	const fs::path path_ref_tif_file = node["InputRefTifFile"].as<string>();
+	const fs::path path_ref_tif_file = node["RefListFile"].as<string>();
 
 	if (!fs::exists(path_month_tif_file))
 	{

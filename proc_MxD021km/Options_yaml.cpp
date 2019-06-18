@@ -15,8 +15,8 @@ proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 		BOOST_LOG_TRIVIAL(error) << e.what();
 		exit(EXIT_FAILURE);
 	}
-	_input_hdf_file = node["InputHdfFile"].as<string>();
-	_temp_dir = node["TempDir"].as<string>();
+	_input_hdf_file = node["HDFListFile"].as<string>();
+	_temp_dir = node["TmpPath"].as<string>();
 	if (_temp_dir[_temp_dir.size() - 1] != '\\')
 		_temp_dir.push_back('\\');
 	_min_lon = node["MinLon"].as<double>();
@@ -37,7 +37,7 @@ proc_MxD021km::Options_yaml::~Options_yaml() = default;
 
 void proc_MxD021km::Options_yaml::check_node(const YAML::Node& node)
 {
-	vector<string> node_names = { "InputHdfFile", "TempDir" ,"MinLon", "MaxLon", "MinLat", "MaxLat","Band",
+	vector<string> node_names = { "HDFListFile", "TmpPath" ,"MinLon", "MaxLon", "MinLat", "MaxLat","Band",
 		"MRTKernelType","MRTProjectionType","MRTProjectionArgs","MRTPixelSize","OutputImageFile" };
 	for (const auto& node_name : node_names)
 		if (!node[node_name]) // Node²»´æÔÚ
