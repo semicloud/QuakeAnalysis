@@ -52,7 +52,7 @@ const float OFFSET = 0.0f;
  * \param yml_path .yml配置文件路径
  * \param node
  */
-void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML::Node& node)
+void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode)
 {
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Surface Temperature预处理，使用的.yml文件为：" << yml_path;
@@ -198,4 +198,10 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";
+
+	if (!debug_mode)
+	{
+		modis_api::File_operation::clear_directory(temp_dir);
+		BOOST_LOG_TRIVIAL(info) << "Temp目录" << temp_dir << "已清空..";
+	}
 }

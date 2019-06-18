@@ -35,6 +35,7 @@ int main(int argc, char** argv)
 		("version,v", "显示版本信息")
 		("yml,y", boost::program_options::value(&yml_path), ".yml文件路径")
 		("debug,d", "使用debug模式运行该程序");
+	bool debug_mode = false;
 	try
 	{
 		store(boost::program_options::command_line_parser(argc, argv).options(desc).run(), vm);
@@ -65,6 +66,7 @@ int main(int argc, char** argv)
 		{
 			modis_api::set_logger_severity(boost::log::trivial::debug);
 			BOOST_LOG_TRIVIAL(debug) << "本程序将以debug模式运行";
+			debug_mode = true;
 		}
 		try
 		{
@@ -84,7 +86,7 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	proc_MxD11A1::Preprocess_st::preprocess(yml_path, node);
+	proc_MxD11A1::Preprocess_st::preprocess(yml_path, node, debug_mode);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

@@ -30,7 +30,7 @@
 - [ ] drop parameter *INPUT_LAT_LONG*
 - [ ] drop parameter *Datum: NoDatum*
 - [x] Changing *TempDir* to *TmpPath*
-- [ ] tmp folder no clear
+- [x] tmp folder no clear
 - [ ] data is illegal, valid data generally under 320K
 - [ ] No Datum information, generally WGS84 [in map info] 
 

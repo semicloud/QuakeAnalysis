@@ -17,7 +17,7 @@ namespace proc_MxD11A1
 	public:
 		Preprocess_st();
 		~Preprocess_st();
-		static void preprocess(const string& yml_path, const YAML::Node& node);
+		static void preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode);
 	};
 }
 
