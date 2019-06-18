@@ -67,7 +67,7 @@ const int NO_DATA_VALUE = -9999; //经过GDAL裁剪后，NO_DATA_VALUE是否还是-9999
  * \param yml_path .yml文件路径
  * \param node YAML::Node
  */
-void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const YAML::Node& node)
+void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode)
 {
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Aerosol预处理，使用的.yml文件为：" << yml_path;
@@ -135,17 +135,17 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 		 * heg这么牛逼的软件，system()都不能运行，只能使用CreateProcess运行
 		 * CreateProcess启动了就不管了，这样就让程序睡一段时间，等heg提取完毕
 		 */
-		// auto sleep_time = 0;
-		// while (!boost::filesystem::exists(heg_tif_path))
-		// {
-		// 	++sleep_time;
-		// 	Sleep(1000);
-		// 	if (sleep_time == MAX_SLEEP)
-		// 	{
-		// 		BOOST_LOG_TRIVIAL(error) << "调用Heg提取.tif文件失败";
-		// 		break;
-		// 	}
-		// }
+		 // auto sleep_time = 0;
+		 // while (!boost::filesystem::exists(heg_tif_path))
+		 // {
+		 // 	++sleep_time;
+		 // 	Sleep(1000);
+		 // 	if (sleep_time == MAX_SLEEP)
+		 // 	{
+		 // 		BOOST_LOG_TRIVIAL(error) << "调用Heg提取.tif文件失败";
+		 // 		break;
+		 // 	}
+		 // }
 		if (!boost::filesystem::exists(heg_tif_path))
 		{
 			BOOST_LOG_TRIVIAL(error) << "未找到提取的.tif文件：" << heg_tif_path;
@@ -229,6 +229,12 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";
+	// 非debug模式下，程序运行结束清空temp目录
+	if (!debug_mode)
+	{
+		modis_api::File_operation::clear_directory(temp_dir);
+		BOOST_LOG_TRIVIAL(info) << "Temp目录" << temp_dir << "已清空..";
+	}
 
 }
 

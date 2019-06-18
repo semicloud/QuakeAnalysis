@@ -14,7 +14,7 @@ namespace proc_MxD04_3k
 	public:
 		Preprocess_aerosol();
 		~Preprocess_aerosol();
-		static void preprocess(const std::string& yml_path, const YAML::Node& node);
+		static void preprocess(const std::string& yml_path, const YAML::Node& node, bool debug_mode);
 	};
 }
 

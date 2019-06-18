@@ -43,6 +43,7 @@ int main(int argc, char** argv)
 		("version,v", "显示版本信息")
 		("yml,y", po::value(&yml_path), ".yml文件路径")
 		("debug,d", "使用debug模式运行该程序");
+	bool debug_mode = false;
 	try
 	{
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
@@ -72,6 +73,7 @@ int main(int argc, char** argv)
 		if (vm.count("debug"))
 		{
 			modis_api::set_logger_severity(boost::log::trivial::debug);
+			debug_mode = true;
 			BOOST_LOG_TRIVIAL(debug) << "本程序将以debug模式运行";
 		}
 		try
@@ -92,7 +94,7 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	proc_MxD04_3k::Preprocess_aerosol::preprocess(yml_path, node);
+	proc_MxD04_3k::Preprocess_aerosol::preprocess(yml_path, node, debug_mode);
 
 	//proc_MxD04_3k::Preprocess_aerosol::run("D:\\ddd111\\heg_MOD04_3K.A2016353.0330.061.2017329090849.bat");
 	//proc_MxD04_3k::Preprocess_aerosol::run("D:\\ddd111\\heg_MOD04_3K.A2016353.0335.061.2017329090901.bat");
