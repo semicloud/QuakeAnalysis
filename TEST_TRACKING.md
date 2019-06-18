@@ -9,8 +9,8 @@
 
 ### proc_MxD04_3k.exe
 
-- [ ] tmp folder no deleted
-- [ ] heg cmd window present
+- [x] tmp folder no deleted
+- [x] heg cmd window present
 - [ ] Why so many negative values?
 - [ ] projection name should not be WGS_84
 - [x] Changing *HdfFilePath* to *HDFListFile*
