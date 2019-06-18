@@ -146,7 +146,7 @@ void archive(const string& workspace_dir, const string& data_dir, bool is_copy, 
 		const int current = static_cast<int>(it - hdf_paths.cbegin()) + 1;
 		BOOST_LOG_TRIVIAL(debug) << "源文件：" << source;
 		BOOST_LOG_TRIVIAL(debug) << "目标文件：" << dest;
-		BOOST_LOG_TRIVIAL(info) << dest_path.filename().string() << "已归档";
+		BOOST_LOG_TRIVIAL(info) << dest_path.filename().string() << " 已归档";
 		/*if (source.size() >= PRINT_PATH_THRESHOLD && dest.size() >= PRINT_PATH_THRESHOLD)
 			BOOST_LOG_TRIVIAL(info) << "[" << source.substr(0, PRINT_PATH_THRESHOLD) << "...] --> [..."
 			<< dest.substr(dest.size() - PRINT_PATH_THRESHOLD, dest.size() - 1) << "] "
