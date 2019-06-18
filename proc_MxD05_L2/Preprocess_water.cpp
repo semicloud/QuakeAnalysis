@@ -38,7 +38,7 @@ void proc_MxD05_L2::Preprocess_water::check_node(const std::string& yml_path, co
 	}
 }
 
-void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, const YAML::Node& node)
+void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, const YAML::Node& node, bool debug_mode)
 {
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Water Vapor预处理，使用的.yml文件为：" << yml_path;
@@ -208,4 +208,10 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";
+
+	if(!debug_mode)
+	{
+		modis_api::File_operation::clear_directory(temp_dir);
+		BOOST_LOG_TRIVIAL(info) << "Temp目录" << temp_dir << "已清空..";
+	}
 }
