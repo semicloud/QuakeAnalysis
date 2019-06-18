@@ -101,8 +101,9 @@ copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-gd-x64-1_69.dll $(Tar
 copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll
 copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-gd-x64-1_69.dll
 
-copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)Terra_MODIS_rad2BT_LUT.txt
-copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)Aqua_MODIS_rad2BT_LUT.txt
+mkdir $(TargetDir)data
+copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)data\Terra_MODIS_rad2BT_LUT.txt
+copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS_rad2BT_LUT.txt
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -157,8 +158,9 @@ copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-x64-1_69.dll $(Target
 copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll
 copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-x64-1_69.dll
 
-copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)Terra_MODIS_rad2BT_LUT.txt
-copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)Aqua_MODIS_rad2BT_LUT.txt</Command>
+mkdir $(TargetDir)data
+copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)data\Terra_MODIS_rad2BT_LUT.txt
+copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS_rad2BT_LUT.txt</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

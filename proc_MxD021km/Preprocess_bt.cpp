@@ -35,8 +35,8 @@ const float proc_MxD021km::Preprocess_bt::TOLERANCE = 1E-05f;
  */
 const int AVAILABLE_BANDS[16] = { 20,21,22,23,24,25,27,28,29,30,31,32,33,34,35,36 };
 
-const string proc_MxD021km::Preprocess_bt::MOD_LUT_TABLE_NAME = "Terra_MODIS_rad2BT_LUT.txt";
-const string proc_MxD021km::Preprocess_bt::MYD_LUT_TABLE_NAME = "Aqua_MODIS_rad2BT_LUT.txt";
+const string proc_MxD021km::Preprocess_bt::MOD_LUT_TABLE_NAME = "data//Terra_MODIS_rad2BT_LUT.txt";
+const string proc_MxD021km::Preprocess_bt::MYD_LUT_TABLE_NAME = "data//Aqua_MODIS_rad2BT_LUT.txt";
 
 
 

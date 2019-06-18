@@ -1,0 +1,1 @@
+aria2c.exe -i all_download.txt -d F:\xx -l d.log --log-level notice --file-allocation=none
