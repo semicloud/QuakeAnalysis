@@ -1,0 +1,31 @@
+# 图件标题
+PlotTitle: Brightness Temperature 2019110
+# 图件标题字号
+PlotTitleSize: 16
+# 图件地理范围：最小经度,最大经度,经度跨度,最小纬度,最大纬度,纬度跨度
+PlotExtent: 100,140,10,20,50,10
+
+# color map name
+BarName: nipy_spectral
+# Color Bar 标题
+BarTitle: Brightness Temperature(K)
+# Color Bar 标题字号
+BarTitleSize: 12
+
+# 边界Shape file
+ShpBoundary: E:\modis_workspace_test\faults\ne_50m_admin_0_countries_polyline
+# 断裂带Shape file
+ShpFault: E:\modis_workspace_test\faults\faults_deng_simple
+# 城市Shape file
+ShpCity: E:\modis_workspace_test\faults\cities
+# 地震目录文件
+QuakeRecord: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\earthquakes.csv
+
+# 输入文件
+InputFile: E:\modis_workspace_test\MOD021km\bt_2019110.tif
+# 输出文件，注意后缀名
+OutputFile: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\bt_2019110.png
+# 输出文件dpi
+OutputDpi: 600
+# 输出文件大小，单位为英寸
+OutputSize: 12,8
