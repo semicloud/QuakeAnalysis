@@ -60,7 +60,7 @@ const int BAND_NUMBER = 1;
 const double OUTPUT_PIXEL_SIZE_X = 3000, OUTPUT_PIXEL_SIZE_Y = 3000;
 const float SCALE = 0.001f, OFFSET = 0.0f;
 const int MAX_SLEEP = 5;
-const int NO_DATA_VALUE = -9999; //经过GDAL裁剪后，NO_DATA_VALUE是否还是-9999
+const float NO_DATA_VALUE = -9999; //经过GDAL裁剪后，NO_DATA_VALUE是否还是-9999
 
 /**
  * \brief 预处理水汽数据
@@ -181,7 +181,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 
 		mat_optional->transform([](float dn) -> float
 		{
-			if ((dn - NO_DATA_VALUE) < 1E-5) return 0;
+			if (dn < 0 ) return 0;
 			return (dn - OFFSET) * SCALE;
 		});
 

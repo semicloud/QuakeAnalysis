@@ -11,7 +11,7 @@
 
 - [x] tmp folder no deleted
 - [x] heg cmd window present
-- [ ] Why so many negative values?
+- [x] Why so many negative values?
 - [ ] projection name should not be WGS_84
 - [x] Changing *HdfFilePath* to *HDFListFile*
 - [x] Changing *TempDir* to *TmpPath*

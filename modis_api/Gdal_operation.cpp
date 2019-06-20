@@ -188,6 +188,7 @@ bool modis_api::Gdal_operation::translate_copy(const std::string& source_path, c
 {
 	const std::string cmd = boost::filesystem::current_path().string()
 		+ str(boost::format("\\gdal_translate.exe %1% %2% %3%") % param % source_path % dest_path);
+	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
 	return (system(cmd.c_str()) == 0);
 }
 
