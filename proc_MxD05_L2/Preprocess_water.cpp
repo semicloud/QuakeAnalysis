@@ -206,6 +206,13 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	modis_api::Gdal_operation::write_fmat_to_tif(output_image_file, *mean_mat_optional);
 	BOOST_LOG_TRIVIAL(debug) << "成功向最终结果文件" << output_image_file << "写入DN值";
 
+	const std::string gdal_edit_command = str(boost::format("gdal_edit.py -a_nodata -1 %1%") % output_image_file);
+	const int ans = system(gdal_edit_command.c_str());
+	BOOST_LOG_TRIVIAL(debug) << "设置NODATAVALUE，命令：" << gdal_edit_command;
+	BOOST_LOG_TRIVIAL(debug) << "返回：" << ans;
+	if (ans < 0)
+		BOOST_LOG_TRIVIAL(error) << "调用gdal_edit.py出现异常，可能未正确设置NODATAVALUE";
+
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";
 
