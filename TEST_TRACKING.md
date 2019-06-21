@@ -36,7 +36,7 @@
 
 ### proc_MxD021km.exe
 
-- [ ] put Aqua_MODIS_rad2BT_LUT.txt and Terra_MODIS_rad2BT_LUT.txt  to /data folder
+- [x] put Aqua_MODIS_rad2BT_LUT.txt and Terra_MODIS_rad2BT_LUT.txt  to /data folder
 - [x] Changing *InputHdfFile* to *HDFListFile*
 - [x] Changing *TempDir* to *TmpPath*
 - [ ] Hide matrix information on log info level
@@ -63,5 +63,5 @@
 
 ### rst_en.exe
 
-- [ ] Changing *rst_en.exe* to *rst_en_ano.exe*
+- [x] Changing *rst_en.exe* to *rst_en_ano.exe*
 - [ ] .yml file is not well organised, we will have a talk

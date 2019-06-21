@@ -74,6 +74,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\armadillo-9.200.7\include;C:\SDK\yaml-cpp-master\include;C:\SDK\gsl_x64-windows\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\yaml-cpp-master\build\Release;C:\SDK\gsl_x64-windows\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>rst_en_ano</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,6 +83,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\armadillo-9.200.7\include;C:\SDK\yaml-cpp-master\include;C:\SDK\gsl_x64-windows\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\yaml-cpp-master\build\Debug;C:\SDK\gsl_x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>rst_en_ano</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
