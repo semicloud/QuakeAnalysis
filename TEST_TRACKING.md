@@ -18,7 +18,7 @@
 
 ### proc_MxD05_L2.exe
 
-- [ ] the valid of water vapor is 0~20 cm, many abnormal value presented
+- [x] the valid of water vapor is 0~20 cm, many abnormal value presented
 - [x] heg cmd window present, as proc_MxD04_3k.exe
 - [x] Changing *HdfFilePath* to *HDFListFile*
 - [x] Changing *TempDir* to *TmpPath*
