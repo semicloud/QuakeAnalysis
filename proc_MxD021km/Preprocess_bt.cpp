@@ -54,7 +54,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	std::vector<std::string> preprocessed_bt_file_paths;
 
 	arma::uword ROW_COUNT = 0, COLUMN_COUNT = 0;
-	//lut表文件路径，TODO:目前以hdf列表的第一个hdf文件的文件类型作为加载lut表的标识
+	//lut表文件路径，目前以hdf列表的第一个hdf文件的文件类型作为加载lut表的标识
 	const string path_first_hdf = File_operation::read_file_all_lines(options.input_hdf_file()).at(1);
 	BOOST_LOG_TRIVIAL(debug) << "First hdf: " << path_first_hdf;
 	const string lut_table_path = get_lut_table(path_first_hdf);
@@ -163,16 +163,16 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 #pragma endregion 
 
 		arma::fmat bt_matrix = *Gdal_operation::read_tif_to_fmat(bt_tif_file_path);
-		BOOST_LOG_TRIVIAL(info) << "提取亮温DN值：" << Mat_operation::mat_desc(bt_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "提取亮温DN值：" << Mat_operation::mat_desc(bt_matrix);
 
 		arma::fmat sza_matrix = *Gdal_operation::read_tif_to_fmat(sza_tif_file_path);
-		BOOST_LOG_TRIVIAL(info) << "提取太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "提取太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
 
 		//Gdal_operation::translate_copy(sza_tif_file_path, tmp_folder + sza_file_without_extension + "_dddddddddd.tif");
 		//Gdal_operation::write_fmat_to_tif(tmp_folder + sza_file_without_extension + "_dddddddddd.tif", sza_matrix);
 
 		arma::fmat cm_matrix = *Gdal_operation::read_tif_to_fmat(cm_tif_file_path);
-		BOOST_LOG_TRIVIAL(info) << "提取云掩膜DN值：" << Mat_operation::mat_desc(cm_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "提取云掩膜DN值：" << Mat_operation::mat_desc(cm_matrix);
 
 		if (bt_matrix.n_rows != sza_matrix.n_rows || bt_matrix.n_rows != cm_matrix.n_rows
 			|| sza_matrix.n_rows != cm_matrix.n_rows ||
@@ -193,7 +193,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		BOOST_LOG_TRIVIAL(info) << "读取亮温系数矫正参数，Scale=" << bt_scale << "， Offset=" << bt_offset;
 
 		bt_matrix.transform([&bt_scale, &bt_offset](const float dn) { return abs(dn - NO_DATA_VALUE_BT) > TOLERANCE ? (dn - bt_offset) * bt_scale : 0; });
-		BOOST_LOG_TRIVIAL(info) << "系数矫正后的亮温DN值：" << Mat_operation::mat_desc(bt_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "系数矫正后的亮温DN值：" << Mat_operation::mat_desc(bt_matrix);
 		// 如果是debug模式，则保存每一步的计算结果
 		if (global_is_debug)
 		{
@@ -202,7 +202,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 			Gdal_operation::write_fmat_to_tif(bt_step1_tif_file_path, bt_matrix);
 		}
 		bt_matrix.transform([&bt_lut, &rad_lut, &line_number](const float dn) {return Rad2bt::calc_band_bt(bt_lut, rad_lut, line_number, dn); });
-		BOOST_LOG_TRIVIAL(info) << "辐亮度转换后的亮温值：" << Mat_operation::mat_desc(bt_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "辐亮度转换后的亮温值：" << Mat_operation::mat_desc(bt_matrix);
 		if (global_is_debug)
 		{
 			const string bt_step2_tif_file_path = tmp_folder + bt_file_without_extension + "_bt_step2.tif";
@@ -215,7 +215,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		arma::uvec idx = arma::find(sza_matrix < (NO_DATA_VALUE_SZA + 1));
 		sza_matrix.elem(idx).zeros();
 		sza_matrix = sza_matrix * SCALE_SZA;
-		BOOST_LOG_TRIVIAL(info) << "系数修正后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "系数修正后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
 		if (global_is_debug)
 		{
 			const string sza_step1_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step1.tif";
@@ -224,7 +224,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		}
 
 		sza_matrix.transform([](float dn) { return dn > THRESHOLD_SZA ? 1 : 0; });
-		BOOST_LOG_TRIVIAL(info) << ">85处理后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
+		BOOST_LOG_TRIVIAL(debug) << ">85处理后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
 		if (global_is_debug)
 		{
 			const string sza_step2_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step2.tif";
@@ -237,7 +237,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		{
 			return (static_cast<int>(dn) & THRESHOLD_CM) == THRESHOLD_CM ? 1 : 0;
 		});
-		BOOST_LOG_TRIVIAL(info) << "提取清空数据后，云掩膜DN值：" << Mat_operation::mat_desc(cm_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "提取清空数据后，云掩膜DN值：" << Mat_operation::mat_desc(cm_matrix);
 		if (global_is_debug)
 		{
 			const string cm_step1_tif_file_path = tmp_folder + cm_file_without_extension + "_cm_step1.tif";
@@ -247,7 +247,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 
 		//最终计算结果
 		arma::fmat result_matrix = bt_matrix % sza_matrix % cm_matrix;
-		BOOST_LOG_TRIVIAL(info) << "三矩阵相乘，DN值：" << Mat_operation::mat_desc(result_matrix);
+		BOOST_LOG_TRIVIAL(debug) << "三矩阵相乘，DN值：" << Mat_operation::mat_desc(result_matrix);
 
 		//调用GDAL将最终计算结果保存到GTiff
 		//预处理后的数据集名为原数据集名后+preprocessed
