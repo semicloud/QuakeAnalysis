@@ -153,10 +153,10 @@ int main(int argc, char** argv)
 	transform(vec_month_tif_files.begin(), vec_month_tif_files.end(), back_inserter(mats_month), read_tif);
 	transform(vec_ref_tif_files.begin(), vec_ref_tif_files.end(), back_inserter(mats_ref), read_tif);
 
-	arma::fmat mean_mats_month = *modis_api::Mat_operation::mean_mat_by_each_pixel(mats_month);
+	arma::fmat mean_mats_month = *modis_api::Mat_operation::mean_mat_by_each_pixel(mats_month, 0);
 	BOOST_LOG_TRIVIAL(debug) << "月份平均值计算完毕，共有" << mats_month.size() << "个文件参与计算";
 
-	arma::fmat mean_mats_ref = *modis_api::Mat_operation::mean_mat_by_each_pixel(mats_ref);
+	arma::fmat mean_mats_ref = *modis_api::Mat_operation::mean_mat_by_each_pixel(mats_ref, 0);
 	BOOST_LOG_TRIVIAL(debug) << "历史月份平均值计算完毕，共有" << mats_ref.size() << "个文件参与计算";
 
 	arma::fmat result = mean_mats_month - mean_mats_ref;

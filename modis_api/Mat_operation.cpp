@@ -51,7 +51,8 @@ bool modis_api::Mat_operation::same_size(const std::vector<arma::fmat>& mat_list
 	return row_all_equal && col_all_equal;
 }
 
-boost::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list)
+boost::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(
+	std::vector<arma::fmat>& mat_list, int default_value)
 {
 	if (!same_size(mat_list))
 	{
@@ -71,7 +72,7 @@ boost::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(std
 			float no_zeros_count = 0;
 			for (const auto& mat : mat_list)
 			{
-				if (mat(i, j) != 0)
+				if (mat(i, j) != default_value)
 				{
 					sum += mat(i, j);
 					++no_zeros_count;

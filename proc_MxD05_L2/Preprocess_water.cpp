@@ -158,7 +158,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 
 		mat_optional->transform([](float dn) -> float
 		{
-			if (dn < 0) return 0;
+			if (dn < 0) return -1;
 			//if ((dn - NO_DATA_VALUE) < 1E-5) return 0;
 			return (dn - OFFSET) * SCALE;
 		});
@@ -168,6 +168,12 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 
 		modis_api::Gdal_operation::write_fmat_to_tif(heg_gdal_scaled_tif_path, *mat_optional);
 		BOOST_LOG_TRIVIAL(debug) << "Scale操作完成，处理结果文件为：" << heg_gdal_scaled_tif_path;
+
+		bool isOK = modis_api::Gdal_operation::set_no_data_value(heg_gdal_scaled_tif_path, -1);
+		if (isOK)
+			BOOST_LOG_TRIVIAL(debug) << "已设置" << heg_gdal_scaled_tif_path << "的NO_DATA_VALUE属性为-1";
+		else
+			BOOST_LOG_TRIVIAL(error) << "设置" << heg_gdal_scaled_tif_path << "的NO_DATA_VALUE属性失败";
 
 		preprocessed_file_paths.push_back(heg_gdal_scaled_tif_path);
 		BOOST_LOG_TRIVIAL(info) << hdf_file_path << "文件预处理完成";
@@ -180,7 +186,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
 		[](const string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
-	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list);
+	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, -1);
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";
@@ -216,7 +222,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";
 
-	if(!debug_mode)
+	if (!debug_mode)
 	{
 		modis_api::File_operation::clear_directory(temp_dir);
 		BOOST_LOG_TRIVIAL(info) << "Temp目录" << temp_dir << "已清空..";

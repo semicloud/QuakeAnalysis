@@ -288,7 +288,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	transform(preprocessed_bt_file_paths.begin(), preprocessed_bt_file_paths.end(),
 		mats.begin(), [](const string p) { return *Gdal_operation::read_tif_to_fmat(p); });
 
-	auto final_matrix = Mat_operation::mean_mat_by_each_pixel(mats);
+	auto final_matrix = Mat_operation::mean_mat_by_each_pixel(mats, 0);
 	if (!final_matrix)
 	{
 		BOOST_LOG_TRIVIAL(error) << "ºÏ³ÉDNÖµÊ§°Ü..";

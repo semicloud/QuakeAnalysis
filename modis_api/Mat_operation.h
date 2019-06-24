@@ -44,9 +44,10 @@ namespace modis_api
 		/**
 		 * \brief 求多个矩阵的平均值，结果还是一个矩阵，要求各个矩阵的行列数一样
 		 * \param mat_list
+		 * \param default_value 矩阵的默认值，遇到此默认值则跳过
 		 * \return
 		 */
-		static boost::optional<arma::fmat> mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list);
+		static boost::optional<arma::fmat> mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list, int default_value);
 
 		/**
 		 * \brief 矩阵描述

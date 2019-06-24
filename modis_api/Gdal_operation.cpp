@@ -83,7 +83,7 @@ bool modis_api::Gdal_operation::get_geo_trans_and_proj(const std::string& fn,
 
 	BOOST_LOG_TRIVIAL(debug) << "读取" << fn << "文件的GEO_TRANS属性：" <<
 		boost::algorithm::join(svec, ",");
-	BOOST_LOG_TRIVIAL(debug) << "读取" << fn << "文件的PROJ_REF属性：" << 
+	BOOST_LOG_TRIVIAL(debug) << "读取" << fn << "文件的PROJ_REF属性：" <<
 		out_proj;
 
 	GDALClose(gdal_dataset);
@@ -191,6 +191,37 @@ bool modis_api::Gdal_operation::translate_copy(const std::string& source_path, c
 	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
 	return (system(cmd.c_str()) == 0);
 }
+
+bool modis_api::Gdal_operation::set_no_data_value(const std::string& source_path, float no_data_value)
+{
+	const string cmd = str(boost::format("gdal_edit.py -a_nodata %1% %2%") % no_data_value % source_path);
+	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
+	return system(cmd.c_str()) == 0;
+}
+
+float modis_api::Gdal_operation::get_no_data_value(const std::string& source_path)
+{
+	if (!fs::exists(source_path) || !fs::is_regular_file(source_path))
+	{
+		BOOST_LOG_TRIVIAL(error) << "目标tif文件" << source_path << "不存在，或格式错误！";
+		return false;
+	}
+
+	GDALRegister_GTiff();
+
+	GDALDataset* data_set = static_cast<GDALDataset*>(GDALOpenShared(source_path.c_str(), GA_ReadOnly));
+	if (data_set == nullptr)
+	{
+		BOOST_LOG_TRIVIAL(error) << "无法打开文件" << source_path;
+		return false;
+	}
+
+	GDALRasterBand* band = data_set->GetRasterBand(1);
+	const 	float no_data_value = static_cast<float>(band->GetNoDataValue());
+	BOOST_LOG_TRIVIAL(debug) << "文件" << source_path << "的NO_DATA_VALUE为" << no_data_value;
+	return no_data_value;
+}
+
 
 boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_offsets(const std::string& hdf_path)
 {

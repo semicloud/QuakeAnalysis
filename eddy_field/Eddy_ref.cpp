@@ -102,7 +102,7 @@ void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 			BOOST_LOG_TRIVIAL(error) << "读取dn值失败，跳过" << file_path << "的处理";
 	}
 
-	auto mean_mat = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list);
+	auto mean_mat = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, 0);
 	if (!mean_mat)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵大小不同，无法生成背景场！";
@@ -174,7 +174,7 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 		ef_mat_list.push_back(*ef_mat);
 	}
 
-	auto ef_mat_list_mean = modis_api::Mat_operation::mean_mat_by_each_pixel(ef_mat_list);
+	auto ef_mat_list_mean = modis_api::Mat_operation::mean_mat_by_each_pixel(ef_mat_list,0);
 	if (!ef_mat_list_mean)
 	{
 		BOOST_LOG_TRIVIAL(error) << "涡度矩阵大小不同，无法生成背景场！";

@@ -44,6 +44,23 @@ namespace modis_api
 		 */
 		static bool translate_copy(const string& source_path, const string& dest_path, const string& param = "");
 
+
+		/**
+		 * \brief 调用gdal_edit.py设置tif文件的NO_DATA_VALUE属性
+		 * \param source_path tif文件路径
+		 * \param no_data_value NO_DATA_VALUE值
+		 * \return 成功返回true，失败返回false
+		 */
+		static bool set_no_data_value(const std::string& source_path, float no_data_value);
+
+
+		/**
+		 * \brief 获取目标文件的NO_DATA_VALUE
+		 * \param source_path 目标tif文件路径
+		 * \return 目标tif文件的NO_DATA_VALUE属性
+		 */
+		static float get_no_data_value(const string& source_path);
+
 		/**
 		 * \brief 读取MXD02XXX.HDF文件中的radiance_scales和radiance_offsets
 		 * 返回值是2*16矩阵，该矩阵的第一行是radiance_scales的值，第二行是radiance_offsets的值

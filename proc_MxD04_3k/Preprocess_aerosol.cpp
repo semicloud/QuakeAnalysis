@@ -201,7 +201,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 	vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
 		[](const string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
-	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list);
+	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list,0);
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";
