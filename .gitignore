@@ -9,6 +9,7 @@
 *.jpg
 *.pdf
 *.exe
+ymlsamples_desktop/
 .idea/
 __pycache__/
 eddy_fieldChp/

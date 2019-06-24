@@ -47,6 +47,8 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	if (input_files.empty()) return;
 
 	const std::string tmp_folder = options.temp_dir();
+	if (!boost::filesystem::exists(tmp_folder))
+		boost::filesystem::create_directory(tmp_folder);
 	BOOST_LOG_TRIVIAL(info) << "Çå¿ÕTmpÄ¿Â¼£º" << tmp_folder;
 	File_operation::clear_directory(tmp_folder);
 
