@@ -39,7 +39,7 @@
 - [x] put Aqua_MODIS_rad2BT_LUT.txt and Terra_MODIS_rad2BT_LUT.txt  to /data folder
 - [x] Changing *InputHdfFile* to *HDFListFile*
 - [x] Changing *TempDir* to *TmpPath*
-- [ ] Hide matrix information on log info level
+- [x] Hide matrix information on log info level
 
 ### eddy_filed.exe
 
