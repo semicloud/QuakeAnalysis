@@ -16,7 +16,6 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
-using namespace std;
 namespace gr = boost::gregorian;
 namespace fs = boost::filesystem;
 namespace m = modis_api;
@@ -26,12 +25,12 @@ inline void init_logger() {
 	m::init_console_logger();
 	m::set_logger_severity(boost::log::trivial::debug);
 }
-string get_doy_date(const gr::date& date);
-gr::date get_date(const string& date_str);
+std::string get_doy_date(const gr::date& date);
+gr::date get_date(const std::string& date_str);
 
 void generate_mxd11a1_ymls();
 void generate_txt_for_general_ano();
-void prepare_general_ano_tif(const string& dir_data, const unsigned year, const unsigned month, vector<string>& vec_month, vector<string>& vec_ref);
+void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref);
 
 int main()
 {
@@ -40,13 +39,13 @@ int main()
 	//generate_txt_for_general_ano();
 }
 
-void prepare_general_ano_tif(const string& dir_data, const unsigned year, const unsigned month, vector<string>& vec_month, vector<string>& vec_ref)
+void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)
 {
 	fs::recursive_directory_iterator it(dir_data);
 	for (; it != fs::recursive_directory_iterator(); ++it)
 	{
 		if (it->path().extension() != ".tif") continue;
-		string file_name = it->path().filename().string();
+		std::string file_name = it->path().filename().string();
 		unsigned file_year = boost::lexical_cast<unsigned>(file_name.substr(3, 4));
 		unsigned file_day = boost::lexical_cast<unsigned>(trim_left_copy_if(file_name.substr(7, 3), boost::is_any_of("0")));
 		unsigned file_month = (gr::date(file_year, 1, 1) + gr::days(file_day - 1)).month().as_number();
@@ -73,16 +72,16 @@ void generate_txt_for_general_ano()
 	fs::path dir_data = dir_workspace / "Standard" / "MOD11A1" / "\\";
 	const unsigned year = 2018, month = 1;
 	BOOST_LOG_TRIVIAL(debug) << "data dir: " << dir_data.string();
-	vector<string> vec_month, vec_ref;
+	std::vector<std::string> vec_month, vec_ref;
 	prepare_general_ano_tif(dir_data.string(), year, month, vec_month, vec_ref);
 
 	sort(vec_month.begin(), vec_month.end());
 	sort(vec_ref.begin(), vec_ref.end());
 
-	ostringstream oss;
-	for_each(vec_month.begin(), vec_month.end(), [&oss](string& p) {oss << p << endl; });
+	std::ostringstream oss;
+	for_each(vec_month.begin(), vec_month.end(), [&oss](std::string& p) {oss << p << std::endl; });
 	if (fs::exists(path_txt_month_tif)) fs::remove(path_txt_month_tif);
-	ofstream ofs(path_txt_month_tif.string());
+	std::ofstream ofs(path_txt_month_tif.string());
 	if (ofs)
 	{
 		ofs << oss.str();
@@ -94,7 +93,7 @@ void generate_txt_for_general_ano()
 	if (fs::exists(path_txt_ref_tif)) fs::remove(path_txt_ref_tif);
 	oss.clear();
 	oss.str(""); // trick
-	for_each(vec_ref.begin(), vec_ref.end(), [&oss](string& p) {oss << p << endl; });
+	for_each(vec_ref.begin(), vec_ref.end(), [&oss](std::string& p) {oss << p << std::endl; });
 	ofs.open(path_txt_ref_tif.string());
 	if (ofs)
 	{
@@ -110,18 +109,18 @@ void generate_txt_for_general_ano()
 void generate_mxd11a1_ymls()
 {
 	const gr::date start(2019, 4, 20), end(2019, 4, 20);
-	const string workspace_dir = "e:\\modis_workspace_test\\";
-	const string temp_dir = "e:\\modis_workspace_test\\tmp\\";
+	const std::string workspace_dir = "e:\\modis_workspace_test\\";
+	const std::string temp_dir = "e:\\modis_workspace_test\\tmp\\";
 	const double min_lon = 110, max_lon = 140, min_lat = 20, max_lat = 50;
 	modis_api::File_operation::clear_directory(temp_dir);
 	if (!fs::exists(temp_dir)) fs::create_directories(temp_dir);
-	vector<string> yml_paths;
+	std::vector<std::string> yml_paths;
 
 	for (auto it = gr::day_iterator(start); it <= end; ++it)
 	{
 		const gr::date d = *it;
-		const string doy_date = get_doy_date(d);
-		const string year = doy_date.substr(0, 4), day = doy_date.substr(4, 3);
+		const std::string doy_date = get_doy_date(d);
+		const std::string year = doy_date.substr(0, 4), day = doy_date.substr(4, 3);
 		BOOST_LOG_TRIVIAL(debug) << "year:" << year << ",day:" << day;
 		const fs::path hdf_files_dir = fs::path(workspace_dir) / "MOD11A1" / year / day;
 		BOOST_LOG_TRIVIAL(debug) << "hdf files path:" << hdf_files_dir;
@@ -130,23 +129,23 @@ void generate_mxd11a1_ymls()
 			BOOST_LOG_TRIVIAL(error) << "目录" << hdf_files_dir.string() << "不存在";
 			continue;
 		}
-		vector<string> hdf_file_paths;
+		std::vector<std::string> hdf_file_paths;
 		for (auto dit = fs::directory_iterator(hdf_files_dir); dit != fs::directory_iterator(); ++dit)
 		{
 			if (dit->path().extension().string() == ".hdf")
 				hdf_file_paths.push_back(dit->path().string());
 		}
-		ostringstream oss;
-		for (const string& hdf_file_path : hdf_file_paths)
+		std::ostringstream oss;
+		for (const std::string& hdf_file_path : hdf_file_paths)
 		{
 			BOOST_LOG_TRIVIAL(debug) << "\t" << hdf_file_path;
-			oss << hdf_file_path << endl;
+			oss << hdf_file_path << std::endl;
 		}
 
 		const fs::path hdf_files_txt_path = fs::path(temp_dir) / str(boost::format("MOD11A1_%1%_HDF_LIST.txt") % doy_date);
 		BOOST_LOG_TRIVIAL(debug) << "hdf list file:" << hdf_files_txt_path.string();
 		if (exists(hdf_files_txt_path)) fs::remove(hdf_files_txt_path);
-		ofstream ofs(hdf_files_txt_path.string());
+		std::ofstream ofs(hdf_files_txt_path.string());
 		if (ofs)
 		{
 			ofs << oss.str();
@@ -201,21 +200,21 @@ void generate_mxd11a1_ymls()
 		yml_paths.push_back(yml_path.string());
 	}
 
-	cout << "I am ready to run proc_MxD11A1.exe..";
+	std::cout << "I am ready to run proc_MxD11A1.exe..";
 	Sleep(5000);
 
-	for (const string& yml_path : yml_paths)
+	for (const std::string& yml_path : yml_paths)
 	{
-		const string cmd = (fs::current_path() / "proc_MxD11A1.exe").string() + " --yml " + yml_path + " -d";
-		cout << cmd << endl;
+		const std::string cmd = (fs::current_path() / "proc_MxD11A1.exe").string() + " --yml " + yml_path + " -d";
+		std::cout << cmd << std::endl;
 		system(cmd.c_str());
-		cout << yml_path << " is executed." << endl;
+		std::cout << yml_path << " is executed." << std::endl;
 		Sleep(500);
 	}
 }
 
 
-string get_doy_date(const gr::date& date)
+std::string get_doy_date(const gr::date& date)
 {
 	const auto first_day = boost::gregorian::date(date.year(), 1, 1);
 	const auto day_span = (date - first_day).days() + 1;
@@ -226,10 +225,10 @@ string get_doy_date(const gr::date& date)
 		doy = "0" + std::to_string(day_span);
 	else
 		doy = std::to_string(day_span);
-	return boost::lexical_cast<string>(date.year()) + doy;
+	return boost::lexical_cast<std::string>(date.year()) + doy;
 }
 
-gr::date get_date(const string& date_str)
+gr::date get_date(const std::string& date_str)
 {
 	BOOST_LOG_TRIVIAL(debug) << "convert date_str " << date_str << " to date..";
 	const auto year = boost::lexical_cast<int>(date_str.substr(0, 4));
