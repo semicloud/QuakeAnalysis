@@ -3,8 +3,6 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 
-using namespace std;
-
 namespace proc_MxD11A1
 {
 	/**
@@ -12,12 +10,12 @@ namespace proc_MxD11A1
 	 */
 	class Preprocess_st
 	{
-		static void check_node(const string& yml_path, const YAML::Node& node, const string& attr_name);
-		static string wrap_output_projection_parameters_str(const string& old);
+		static void check_node(const std::string& yml_path, const YAML::Node& node, const std::string& attr_name);
+		static std::string wrap_output_projection_parameters_str(const std::string& old);
 	public:
 		Preprocess_st();
 		~Preprocess_st();
-		static void preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode);
+		static void preprocess(const std::string& yml_path, const YAML::Node& node, bool debug_mode);
 	};
 }
 

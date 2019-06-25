@@ -1,17 +1,17 @@
 #include "pch.h"
+#include "Preprocess_st.h"
 #include "../modis_api/File_operation.h"
 #include "../modis_api/Gdal_operation.h"
 #include "../modis_api/Mat_operation.h"
 #include "../modis_api/Mrt_utils.h"
-#include "Preprocess_st.h"
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <sstream>
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
 
 
-void proc_MxD11A1::Preprocess_st::check_node(const string& yml_path, const YAML::Node& node, const string& attr_name)
+void proc_MxD11A1::Preprocess_st::check_node(const std::string& yml_path, const YAML::Node& node, const std::string& attr_name)
 {
 	if (!node[attr_name])
 	{
@@ -25,16 +25,16 @@ void proc_MxD11A1::Preprocess_st::check_node(const string& yml_path, const YAML:
  * \param old
  * \return
  */
-string proc_MxD11A1::Preprocess_st::wrap_output_projection_parameters_str(const string& old)
+std::string proc_MxD11A1::Preprocess_st::wrap_output_projection_parameters_str(const std::string& old)
 {
-	ostringstream oss;
-	vector<string> svec;
+	std::ostringstream oss;
+	std::vector<std::string> svec;
 	split(svec, old, boost::is_any_of(" "));
-	if (svec.size() != 15) throw runtime_error("wrong output_projection_parameters!");
-	oss << "( " << endl << svec.at(0) << " " << svec.at(1) << " " << svec.at(2) << endl
-		<< svec.at(3) << " " << svec.at(4) << " " << svec.at(5) << endl
-		<< svec.at(6) << " " << svec.at(7) << " " << svec.at(8) << endl
-		<< svec.at(9) << " " << svec.at(10) << " " << svec.at(11) << endl
+	if (svec.size() != 15) throw std::runtime_error("wrong output_projection_parameters!");
+	oss << "( " << std::endl << svec.at(0) << " " << svec.at(1) << " " << svec.at(2) << std::endl
+		<< svec.at(3) << " " << svec.at(4) << " " << svec.at(5) << std::endl
+		<< svec.at(6) << " " << svec.at(7) << " " << svec.at(8) << std::endl
+		<< svec.at(9) << " " << svec.at(10) << " " << svec.at(11) << std::endl
 		<< svec.at(12) << " " << svec.at(13) << " " << svec.at(14) << " )";
 	BOOST_LOG_TRIVIAL(debug) << "wrap output_projection_parameters: " << oss.str();
 	return oss.str();
@@ -52,7 +52,7 @@ const float OFFSET = 0.0f;
  * \param yml_path .yml配置文件路径
  * \param node
  */
-void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode)
+void proc_MxD11A1::Preprocess_st::preprocess(const std::string& yml_path, const YAML::Node& node, bool debug_mode)
 {
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Surface Temperature预处理，使用的.yml文件为：" << yml_path;
@@ -60,13 +60,13 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	const std::string DATUM = "NoDatum";
 	const std::string SPATIAL_SUBSET_TYPE = "INPUT_LAT_LONG";
 
-	vector<string> attr_names = { "HDFListFile","TmpPath", "MinLon", "MaxLon", "MinLat",
+	std::vector<std::string> attr_names = { "HDFListFile","TmpPath", "MinLon", "MaxLon", "MinLat",
 		"MaxLat", "OutputImageFile", "ResamplingType", "OutputProjectionType",
 		"OutputProjectionParameters","OutputPixelSize" };
-	for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const string& attr_name)
+	std::for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const std::string& attr_name)
 	{ check_node(yml_path, node, attr_name); });
 
-	const string hdf_file_list_file_path = node["HDFListFile"].as<string>();
+	const std::string hdf_file_list_file_path = node["HDFListFile"].as<std::string>();
 	if (!boost::filesystem::exists(hdf_file_list_file_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << ".hdf列表文件" << hdf_file_list_file_path << "不存在";
@@ -77,14 +77,14 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	const double max_lon = node["MaxLon"].as<double>();
 	const double min_lat = node["MinLat"].as<double>();
 	const double max_lat = node["MaxLat"].as<double>();
-	const string output_image_file = node["OutputImageFile"].as<string>();
+	const std::string output_image_file = node["OutputImageFile"].as<std::string>();
 
-	string temp_dir = node["TmpPath"].as<string>();
+	std::string temp_dir = node["TmpPath"].as<std::string>();
 
-	const string resampling_type = node["ResamplingType"].as<string>();
-	const string output_projection_type = node["OutputProjectionType"].as<string>();
-	const string output_projection_parameters =
-		wrap_output_projection_parameters_str(node["OutputProjectionParameters"].as<string>());
+	const std::string resampling_type = node["ResamplingType"].as<std::string>();
+	const std::string output_projection_type = node["OutputProjectionType"].as<std::string>();
+	const std::string output_projection_parameters =
+		wrap_output_projection_parameters_str(node["OutputProjectionParameters"].as<std::string>());
 	const double output_pixel_size = node["OutputPixelSize"].as<double>();
 
 	if (temp_dir.at(temp_dir.size() - 1) != '\\')
@@ -94,9 +94,9 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	}
 	BOOST_LOG_TRIVIAL(info) << yml_path << "文件有效性检查完毕";
 
-	vector<string> hdf_files = modis_api::File_operation::read_file_all_lines(hdf_file_list_file_path);
+	std::vector<std::string> hdf_files = modis_api::File_operation::read_file_all_lines(hdf_file_list_file_path);
 	BOOST_LOG_TRIVIAL(info) << "共需处理" << hdf_files.size() << "个.hdf文件";
-	for (const string& p : hdf_files)
+	for (const std::string& p : hdf_files)
 		BOOST_LOG_TRIVIAL(debug) << "\t" << p;
 
 	if (!boost::filesystem::exists(temp_dir))
@@ -107,10 +107,10 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	modis_api::File_operation::clear_directory(temp_dir);
 	BOOST_LOG_TRIVIAL(info) << "Temp目录：" << temp_dir << "准备完毕";
 
-	vector<string> preprocessed_file_paths;
-	for (const string& hdf_file_path : hdf_files)
+	std::vector<std::string> preprocessed_file_paths;
+	for (const std::string& hdf_file_path : hdf_files)
 	{
-		const string mrt_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_mrt.tif";
+		const std::string mrt_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_mrt.tif";
 		modis_api::Mrt_utils::run_mrt(hdf_file_path, min_lon, max_lon, min_lat, max_lat, mrt_tif_path, temp_dir,
 			SPATIAL_SUBSET_TYPE, resampling_type, output_projection_type,
 			output_projection_parameters, DATUM, output_pixel_size);
@@ -123,14 +123,14 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 		}
 		BOOST_LOG_TRIVIAL(debug) << "调用MRT提取.tif文件成功，提取的文件为：" << mrt_tif_path;
 
-		const string mrt_gdal_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal.tif";
+		const std::string mrt_gdal_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal.tif";
 		// Fix iss01, see BUGFIX.md
-		const string gdal_arguments = "-a_srs \"+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs\" -ot Float32";
+		const std::string gdal_arguments = "-a_srs \"+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs\" -ot Float32";
 		BOOST_LOG_TRIVIAL(debug) << "gdal argument:" << gdal_arguments;
 		// 调用gdal更改数据类型，改成Float32
 		modis_api::Gdal_operation::translate_copy(mrt_tif_path, mrt_gdal_tif_path, gdal_arguments);
 
-		const string mrt_gdal_scaled_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal_scaled.tif";
+		const std::string mrt_gdal_scaled_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_gdal_scaled.tif";
 		if (boost::filesystem::exists(mrt_gdal_scaled_tif_path)) boost::filesystem::remove(mrt_gdal_scaled_tif_path);
 		boost::filesystem::copy_file(mrt_gdal_tif_path, mrt_gdal_scaled_tif_path);
 		boost::optional<arma::fmat> mat_optional = modis_api::Gdal_operation::read_tif_to_fmat(mrt_gdal_scaled_tif_path);
@@ -165,12 +165,12 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	}
 
 	BOOST_LOG_TRIVIAL(info) << "合成处理，共需合成" << preprocessed_file_paths.size() << "个.tif文件";
-	for (const string& p : preprocessed_file_paths)
+	for (const std::string& p : preprocessed_file_paths)
 		BOOST_LOG_TRIVIAL(debug) << "\t" << p;
 
-	vector<arma::fmat> mat_list;
+	std::vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
-		[](const string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
+		[](const std::string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
 	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, 0);
 	if (!mean_mat_optional)
 	{
