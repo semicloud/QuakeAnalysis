@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Hdf_to_gtiff.h"
-#include <boost/filesystem.hpp>
 #include "Mrt_swath_prm_run.h"
+#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 
 namespace fs = boost::filesystem;

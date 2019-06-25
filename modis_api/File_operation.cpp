@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "File_operation.h"
 #include <algorithm>
-#include <boost/format.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
 #include <boost/log/core.hpp>
-#include <boost/log/trivial.hpp>
 #include <boost/log/expressions.hpp>
+#include <boost/log/trivial.hpp>
 #include <fstream>
 
 namespace fs = boost::filesystem;

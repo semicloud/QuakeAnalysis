@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include <sstream>
-#include <fstream>
-#include <boost/format.hpp>
 #include "Mrt_swath_prm.h"
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
+#include <fstream>
+#include <sstream>
 
 
 modis_api::Mrt_swath_prm::~Mrt_swath_prm()

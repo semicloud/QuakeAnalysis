@@ -9,9 +9,10 @@
 #include <armadillo>
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
+#include <yaml-cpp/yaml.h>
+
 #include <iostream>
 #include <string>
-#include <yaml-cpp/yaml.h>
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;

@@ -1,8 +1,8 @@
+#include "Eddy_ref.h"
 #include "..//modis_api//Gdal_operation.h"
 #include "..//modis_api//Mat_operation.h"
-#include "armadillo"
 #include "Eddy_field.h"
-#include "Eddy_ref.h"
+#include <armadillo>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>

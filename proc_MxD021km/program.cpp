@@ -1,6 +1,8 @@
 #pragma warning(disable: 4251)
 
+#include "../modis_api/Logger_setting.h"
 #include "globals.h"
+#include "Input_file.h"
 #include "Options_yaml.h"
 #include "Preprocess_bt.h"
 #include <armadillo>
@@ -12,8 +14,6 @@
 #include <gdal_priv.h>
 #include <iostream>
 #include <yaml-cpp/yaml.h>
-#include "../modis_api/Logger_setting.h"
-#include "Input_file.h"
 
 using namespace arma;
 

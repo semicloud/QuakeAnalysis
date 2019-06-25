@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "Date_utils.h"
-#include <sstream>
-#include <boost/log/trivial.hpp>
-#include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <boost/date_time/local_time/dst_transition_day_rules.hpp>
+#include <boost/log/trivial.hpp>
+#include <sstream>
 
 
 modis_api::Date_utils::Date_utils()

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Windows.h"
 #include "Program_operation.h"
+#include "Windows.h"
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 

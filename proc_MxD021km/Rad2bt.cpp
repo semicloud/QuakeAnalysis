@@ -1,12 +1,12 @@
 #include "Rad2bt.h"
-#include <fstream>
-#include <string>
-#include <boost/filesystem.hpp>
-#include <boost/log/trivial.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include <sstream>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/log/trivial.hpp>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 boost::optional<arma::fmat> Rad2bt::load_lut_table(const std::string& lut_path)
 {

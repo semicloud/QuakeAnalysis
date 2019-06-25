@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
 #include "Hdf_file.h"
-#include <boost/log/trivial.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/format/free_funcs.hpp>
+#include <boost/log/trivial.hpp>
 
 
 modis_api::Hdf_file::Hdf_file(const std::string &file_path)

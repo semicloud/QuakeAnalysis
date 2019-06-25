@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 #include "Mat_operation.h"
+#include "../eddy_field/Eddy_field.h"
 #include <boost/log/trivial.hpp>
 #include <numeric>
-#include "../eddy_field/Eddy_field.h"
 
 modis_api::Mat_operation::Mat_operation()
 {

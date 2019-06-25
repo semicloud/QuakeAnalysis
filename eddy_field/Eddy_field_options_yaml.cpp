@@ -1,9 +1,10 @@
 #include "Eddy_field_options_yaml.h"
-#include <iostream>
+#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <yaml-cpp/exceptions.h>
 #include <yaml-cpp/yaml.h>
-#include <boost/filesystem.hpp>
+#include <iostream>
+
 
 Eddy_field_options_yaml::Eddy_field_options_yaml(std::string& path)
 {

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "Mrt_utils.h"
-#include <boost/log/trivial.hpp>
+#include "Program_operation.h"
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
-#include "Program_operation.h"
+#include <boost/log/trivial.hpp>
 
 namespace  fs = boost::filesystem;
 std::string modis_api::Mrt_utils::load_template_string(const  std::string& file_path)

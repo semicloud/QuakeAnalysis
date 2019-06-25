@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "Heg_utils.h"
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <boost/log/trivial.hpp>
-#include <boost/format/free_funcs.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <Windows.h>
 #include "Program_operation.h"
+#include <boost/filesystem.hpp>
+#include <boost/format/free_funcs.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <Windows.h>
 
 std::string modis_api::Heg_utils::load_template_string(const std::string& file_path)
 {

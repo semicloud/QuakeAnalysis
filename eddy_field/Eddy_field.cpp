@@ -1,5 +1,5 @@
-#include "..//modis_api//Gdal_operation.h"
 #include "Eddy_field.h"
+#include "..//modis_api//Gdal_operation.h"
 #include <boost/log/trivial.hpp>
 #include <string>
 

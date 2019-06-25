@@ -2,14 +2,14 @@
 
 #include "Gdal_operation.h"
 #include <armadillo>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/log/core.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/expressions.hpp>
-#include <gdal_priv.h>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/join.hpp>
+#include <boost/log/core.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/trivial.hpp>
+#include <gdal_priv.h>
 
 namespace fs = boost::filesystem;
 
