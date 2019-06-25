@@ -3,19 +3,18 @@
 
 #include "pch.h"
 #include "../modis_api/Logger_setting.h"
+#include "boost/filesystem.hpp"
+#include "boost/program_options.hpp"
+#include "Preprocess_water.h"
 #include <iostream>
 #include <string>
 #include <vector>
-#include "boost/program_options.hpp"
-#include "boost/filesystem.hpp"
-#include "Preprocess_water.h"
 
-using namespace std;
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
-const string PROGRAM = "proc_MxD05_L2";
-const string VERSION = "1.0";
+const std::string PROGRAM = "proc_MxD05_L2";
+const std::string VERSION = "1.0";
 
 void init_logger()
 {
@@ -44,22 +43,22 @@ int main(int argc, char** argv)
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cerr << e.what();
+		std::cerr << e.what();
 		return EXIT_FAILURE;
 	}
 
 	if (vm.count("help"))
 	{
-		cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << endl;
-		cout << desc << endl;
+		std::cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << std::endl;
+		std::cout << desc << std::endl;
 		return EXIT_SUCCESS;
 	}
 
 	if (vm.count("version"))
 	{
-		cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << endl;
+		std::cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -76,7 +75,7 @@ int main(int argc, char** argv)
 			BOOST_LOG_TRIVIAL(info) << "YAML PATH:" << yml_path;
 			node = YAML::LoadFile(yml_path);
 		}
-		catch (exception& ex)
+		catch (std::exception& ex)
 		{
 			BOOST_LOG_TRIVIAL(error) << "解析Yml文件" << yml_path << "失败：";
 			BOOST_LOG_TRIVIAL(error) << ex.what();
