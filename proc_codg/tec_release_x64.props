@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\gdal\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\gdal\lib;C:\SDK\yaml-cpp-master\build\Release;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>gdal_i.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
