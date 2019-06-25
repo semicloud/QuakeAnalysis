@@ -3,20 +3,19 @@
 #include <boost/log/expressions/attr.hpp>
 #include <boost/format/free_funcs.hpp>
 
-
 proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 {
 	try
 	{
 		check_node(node);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		BOOST_LOG_TRIVIAL(error) << e.what();
 		exit(EXIT_FAILURE);
 	}
-	_input_hdf_file = node["HDFListFile"].as<string>();
-	_temp_dir = node["TmpPath"].as<string>();
+	_input_hdf_file = node["HDFListFile"].as<std::string>();
+	_temp_dir = node["TmpPath"].as<std::string>();
 	if (_temp_dir[_temp_dir.size() - 1] != '\\')
 		_temp_dir.push_back('\\');
 	_min_lon = node["MinLon"].as<double>();
@@ -37,10 +36,10 @@ proc_MxD021km::Options_yaml::~Options_yaml() = default;
 
 void proc_MxD021km::Options_yaml::check_node(const YAML::Node& node)
 {
-	vector<string> node_names = { "HDFListFile", "TmpPath" ,"MinLon", "MaxLon", "MinLat", "MaxLat","Band",
+	std::vector<std::string> node_names = { "HDFListFile", "TmpPath" ,"MinLon", "MaxLon", "MinLat", "MaxLat","Band",
 		"MRTKernelType","MRTProjectionType","MRTProjectionArgs","MRTPixelSize","OutputImageFile" };
 	for (const auto& node_name : node_names)
 		if (!node[node_name]) // Node²»´æÔÚ
-			throw runtime_error(boost::str(boost::format("node %1% not found!") % node_name));
+			throw std::runtime_error(boost::str(boost::format("node %1% not found!") % node_name));
 }
 

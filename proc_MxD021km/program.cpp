@@ -15,14 +15,13 @@
 #include "../modis_api/Logger_setting.h"
 #include "Input_file.h"
 
-using namespace std;
 using namespace arma;
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 
-const string VERSION = "1.0";
-const string PROGRAM = "proc_MxD021km";
+const std::string VERSION = "1.0";
+const std::string PROGRAM = "proc_MxD021km";
 
 bool global_is_debug;
 
@@ -56,7 +55,7 @@ int main(int argc, char* argv[])
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		cerr << e.what();
 		return EXIT_FAILURE;
@@ -87,7 +86,7 @@ int main(int argc, char* argv[])
 				global_is_debug = true;
 			}
 		}
-		catch (exception& ex)
+		catch (std::exception& ex)
 		{
 			BOOST_LOG_TRIVIAL(error) << "½âÎöYmlÎÄ¼þ" << yml_path << "Ê§°Ü£º";
 			BOOST_LOG_TRIVIAL(error) << ex.what();

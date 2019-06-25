@@ -42,7 +42,7 @@ std::vector<std::string> modis_api::File_operation::get_file_names(
 std::vector<std::string> modis_api::File_operation::get_all_files_by_extension(
 	const std::string& dir, const std::string& extension)
 {
-	vector<string> ret;
+	std::vector<std::string> ret;
 	auto it = boost::filesystem::recursive_directory_iterator(dir);
 	for (; it != boost::filesystem::recursive_directory_iterator(); ++it)
 	{
@@ -82,19 +82,19 @@ void modis_api::File_operation::clear_directory(const std::string& directory)
 
 std::vector<std::string> modis_api::File_operation::read_file_all_lines(const std::string& file_path)
 {
-	if (!fs::exists(file_path)) throw runtime_error(str(boost::format("file %1% not found!") % file_path));
-	vector<string> svec;
-	ifstream ifs(file_path);
-	copy(istream_iterator<string>(ifs), istream_iterator<string>(), back_inserter(svec));
+	if (!fs::exists(file_path)) throw std::runtime_error(str(boost::format("file %1% not found!") % file_path));
+	std::vector<std::string> svec;
+	std::ifstream ifs(file_path);
+	copy(std::istream_iterator<std::string>(ifs), std::istream_iterator<std::string>(), back_inserter(svec));
 	return svec;
 }
 
 std::vector<std::string> modis_api::File_operation::read_file_all_lines_2(const std::string& file_path)
 {
-	if (!fs::exists(file_path)) throw runtime_error(str(boost::format("file %1% not found!") % file_path));
-	vector<string> svec;
-	ifstream ifs(file_path);
-	string str;
+	if (!fs::exists(file_path)) throw std::runtime_error(str(boost::format("file %1% not found!") % file_path));
+	std::vector<std::string> svec;
+	std::ifstream ifs(file_path);
+	std::string str;
 	while (getline(ifs, str))
 		svec.push_back(str);
 	return svec;

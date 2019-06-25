@@ -4,22 +4,22 @@
 #include <boost/log/trivial.hpp>
 
 
-proc_MxD021km::Input_file::Input_file(const string& bt_hdf_file, const string& sza_hdf_file, const string& cm_hdf_file)
+proc_MxD021km::Input_file::Input_file(const std::string& bt_hdf_file, const std::string& sza_hdf_file, const std::string& cm_hdf_file)
 	: _bt_hdf_file(bt_hdf_file), _sza_hdf_file(sza_hdf_file), _cm_hdf_file(cm_hdf_file)
 {
 }
 
 proc_MxD021km::Input_file::~Input_file() = default;
 
-vector<proc_MxD021km::Input_file> proc_MxD021km::Input_file::load(const string& file_path)
+std::vector<proc_MxD021km::Input_file> proc_MxD021km::Input_file::load(const std::string& file_path)
 {
-	vector<Input_file> ivec;
-	vector<string> svec;
+	std::vector<Input_file> ivec;
+	std::vector<std::string> svec;
 	try
 	{
 		svec = modis_api::File_operation::read_file_all_lines(file_path);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		BOOST_LOG_TRIVIAL(error) << e.what();
 	}

@@ -8,13 +8,11 @@
 
 namespace proc_MxD021km
 {
-	using namespace  std;
-
 	class Options_yaml
 	{
 	private:
-		string _input_hdf_file;
-		string _temp_dir;
+		std::string _input_hdf_file;
+		std::string _temp_dir;
 		double _min_lon;
 		double _max_lon;
 		double _min_lat;
@@ -35,12 +33,12 @@ namespace proc_MxD021km
 		 * \brief 输入的HDF列表文件
 		 * \return
 		 */
-		string input_hdf_file() const
+		std::string input_hdf_file() const
 		{
 			return _input_hdf_file;
 		}
 
-		string temp_dir()const
+		std::string temp_dir()const
 		{
 			return _temp_dir;
 		}
@@ -105,6 +103,3 @@ namespace proc_MxD021km
 		static void check_node(const YAML::Node&);
 	};
 }
-
-
-

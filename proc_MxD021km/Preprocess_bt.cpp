@@ -15,13 +15,13 @@
 
 namespace fs = boost::filesystem;
 
-const string proc_MxD021km::Preprocess_bt::SUFFIX_PREPROCESSED_BT = "_preprocessed";
+const std::string proc_MxD021km::Preprocess_bt::SUFFIX_PREPROCESSED_BT = "_preprocessed";
 //const string proc_MxD021km::Preprocess_bt::SDS_BRIGHTNESS_TEMPERATURE = "EV_1KM_Emissive, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1";
-const string proc_MxD021km::Preprocess_bt::SDS_SOLAR_ZENITH_ANGLE = "SolarZenith";
-const string proc_MxD021km::Preprocess_bt::SDS_CLOUD_MASK = "Cloud_Mask, 1";
+const std::string proc_MxD021km::Preprocess_bt::SDS_SOLAR_ZENITH_ANGLE = "SolarZenith";
+const std::string proc_MxD021km::Preprocess_bt::SDS_CLOUD_MASK = "Cloud_Mask, 1";
 //const string proc_MxD021km::Preprocess_bt::SUFFIX_BT = "_EV_1KM_Emissive_b10";
-const string proc_MxD021km::Preprocess_bt::SUFFIX_SZA = "_SolarZenith";
-const string proc_MxD021km::Preprocess_bt::SUFFIX_CM = "_Cloud_Mask_b0";
+const std::string proc_MxD021km::Preprocess_bt::SUFFIX_SZA = "_SolarZenith";
+const std::string proc_MxD021km::Preprocess_bt::SUFFIX_CM = "_Cloud_Mask_b0";
 
 const int proc_MxD021km::Preprocess_bt::NO_DATA_VALUE_BT = 65535;
 const int proc_MxD021km::Preprocess_bt::NO_DATA_VALUE_SZA = -32767;
@@ -35,14 +35,14 @@ const float proc_MxD021km::Preprocess_bt::TOLERANCE = 1E-05f;
  */
 const int AVAILABLE_BANDS[16] = { 20,21,22,23,24,25,27,28,29,30,31,32,33,34,35,36 };
 
-const string proc_MxD021km::Preprocess_bt::MOD_LUT_TABLE_NAME = "data//Terra_MODIS_rad2BT_LUT.txt";
-const string proc_MxD021km::Preprocess_bt::MYD_LUT_TABLE_NAME = "data//Aqua_MODIS_rad2BT_LUT.txt";
+const std::string proc_MxD021km::Preprocess_bt::MOD_LUT_TABLE_NAME = "data//Terra_MODIS_rad2BT_LUT.txt";
+const std::string proc_MxD021km::Preprocess_bt::MYD_LUT_TABLE_NAME = "data//Aqua_MODIS_rad2BT_LUT.txt";
 
 
 
 void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 {
-	vector<Input_file> input_files = Input_file::load(options.input_hdf_file());
+	std::vector<Input_file> input_files = Input_file::load(options.input_hdf_file());
 	BOOST_LOG_TRIVIAL(info) << "找到" << input_files.size() << "个待处理文件";
 	if (input_files.empty()) return;
 
@@ -57,9 +57,9 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 
 	arma::uword ROW_COUNT = 0, COLUMN_COUNT = 0;
 	//lut表文件路径，目前以hdf列表的第一个hdf文件的文件类型作为加载lut表的标识
-	const string path_first_hdf = File_operation::read_file_all_lines(options.input_hdf_file()).at(1);
+	const std::string path_first_hdf = File_operation::read_file_all_lines(options.input_hdf_file()).at(1);
 	BOOST_LOG_TRIVIAL(debug) << "First hdf: " << path_first_hdf;
-	const string lut_table_path = get_lut_table(path_first_hdf);
+	const std::string lut_table_path = get_lut_table(path_first_hdf);
 	const arma::fmat lut_matrix = *Rad2bt::load_lut_table(lut_table_path);
 	//lut表BT列索引
 	int bt_col_index = Rad2bt::get_col_index(lut_table_path, Rad2bt::get_bt_col_name());
@@ -86,7 +86,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		bt_prm_setting.set_lrc_lng(options.max_lon());
 		bt_prm_setting.set_lrc_lat(options.min_lat());
 		//亮温hdf文件文件名（不带扩展名）
-		const string bt_file_without_extension = fs::path(input_file.bt_hdf_file()).stem().string();
+		const std::string bt_file_without_extension = fs::path(input_file.bt_hdf_file()).stem().string();
 		bt_prm_setting.set_output_gtiff_file(tmp_folder + bt_file_without_extension + ".tif");
 		Hdf_to_gtiff bt_convert(&bt_prm_setting, tmp_folder);
 		bt_convert.do_convert();
@@ -100,7 +100,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		sza_prm_setting.set_lrc_lng(options.max_lon());
 		sza_prm_setting.set_lrc_lat(options.min_lat());
 		//太阳天顶角hdf文件文件名（不带扩展名）
-		const string sza_file_without_extension = fs::path(input_file.sza_hdf_file()).stem().string();
+		const std::string sza_file_without_extension = fs::path(input_file.sza_hdf_file()).stem().string();
 		sza_prm_setting.set_output_gtiff_file(tmp_folder + sza_file_without_extension + ".tif");
 		Hdf_to_gtiff sza_convert(&sza_prm_setting, tmp_folder);
 		sza_convert.do_convert();
@@ -114,7 +114,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		cm_prm_setting.set_lrc_lng(options.max_lon());
 		cm_prm_setting.set_lrc_lat(options.min_lat());
 		//云掩膜hdf文件文件名（不带扩展名）
-		const string cm_file_without_extension = fs::path(input_file.sza_hdf_file()).stem().string();
+		const std::string cm_file_without_extension = fs::path(input_file.sza_hdf_file()).stem().string();
 		cm_prm_setting.set_output_gtiff_file(tmp_folder + cm_file_without_extension + ".tif");
 		Hdf_to_gtiff cm_convert(&cm_prm_setting, tmp_folder);
 		cm_convert.do_convert();
@@ -124,7 +124,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 #pragma region 检查tif文件是否存在
 
 		//使用MRT提取的亮温tif文件路径
-		const string bt_tif_file_path = boost::str(boost::format("%1%%2%%3%.tif") % tmp_folder % bt_file_without_extension % get_suffix_bt(stoi(options.band())));
+		const std::string bt_tif_file_path = boost::str(boost::format("%1%%2%%3%.tif") % tmp_folder % bt_file_without_extension % get_suffix_bt(stoi(options.band())));
 		if (fs::exists(bt_tif_file_path) && fs::is_regular_file(bt_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "亮温tif文件提取完成，提取的tif文件：" << bt_tif_file_path;
@@ -137,7 +137,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		}
 
 		//使用MRT提取的太阳天顶角tif文件路径
-		const string sza_tif_file_path = str(boost::format("%1%%2%%3%.tif") % tmp_folder % sza_file_without_extension % SUFFIX_SZA);
+		const std::string sza_tif_file_path = str(boost::format("%1%%2%%3%.tif") % tmp_folder % sza_file_without_extension % SUFFIX_SZA);
 		if (fs::exists(sza_tif_file_path) && fs::is_regular_file(sza_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "太阳天顶角tif文件提取完成，提取的tif文件：" << sza_tif_file_path;
@@ -150,7 +150,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		}
 
 		//使用MRT提取的云掩膜tif文件路径
-		const string cm_tif_file_path = str(boost::format("%1%%2%%3%.tif") % tmp_folder % cm_file_without_extension % SUFFIX_CM);
+		const std::string cm_tif_file_path = str(boost::format("%1%%2%%3%.tif") % tmp_folder % cm_file_without_extension % SUFFIX_CM);
 		if (fs::exists(cm_tif_file_path) && fs::is_regular_file(cm_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "云掩膜tif文件提取完成，提取的tif文件：" << cm_tif_file_path;
@@ -199,7 +199,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		// 如果是debug模式，则保存每一步的计算结果
 		if (global_is_debug)
 		{
-			const string bt_step1_tif_file_path = tmp_folder + bt_file_without_extension + "_bt_step1.tif";
+			const std::string bt_step1_tif_file_path = tmp_folder + bt_file_without_extension + "_bt_step1.tif";
 			Gdal_operation::translate_copy(bt_tif_file_path, bt_step1_tif_file_path, "-ot Float32");
 			Gdal_operation::write_fmat_to_tif(bt_step1_tif_file_path, bt_matrix);
 		}
@@ -207,7 +207,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		BOOST_LOG_TRIVIAL(debug) << "辐亮度转换后的亮温值：" << Mat_operation::mat_desc(bt_matrix);
 		if (global_is_debug)
 		{
-			const string bt_step2_tif_file_path = tmp_folder + bt_file_without_extension + "_bt_step2.tif";
+			const std::string bt_step2_tif_file_path = tmp_folder + bt_file_without_extension + "_bt_step2.tif";
 			Gdal_operation::translate_copy(bt_tif_file_path, bt_step2_tif_file_path, "-ot Float32");
 			Gdal_operation::write_fmat_to_tif(bt_step2_tif_file_path, bt_matrix);
 		}
@@ -220,7 +220,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		BOOST_LOG_TRIVIAL(debug) << "系数修正后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
 		if (global_is_debug)
 		{
-			const string sza_step1_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step1.tif";
+			const std::string sza_step1_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step1.tif";
 			Gdal_operation::translate_copy(sza_tif_file_path, sza_step1_tif_file_path, "-ot Float32");
 			Gdal_operation::write_fmat_to_tif(sza_step1_tif_file_path, sza_matrix);
 		}
@@ -229,7 +229,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		BOOST_LOG_TRIVIAL(debug) << ">85处理后太阳天顶角DN值：" << Mat_operation::mat_desc(sza_matrix);
 		if (global_is_debug)
 		{
-			const string sza_step2_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step2.tif";
+			const std::string sza_step2_tif_file_path = tmp_folder + sza_file_without_extension + "_sza_step2.tif";
 			Gdal_operation::translate_copy(sza_tif_file_path, sza_step2_tif_file_path, "-ot Float32");
 			Gdal_operation::write_fmat_to_tif(sza_step2_tif_file_path, sza_matrix);
 		}
@@ -242,7 +242,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		BOOST_LOG_TRIVIAL(debug) << "提取清空数据后，云掩膜DN值：" << Mat_operation::mat_desc(cm_matrix);
 		if (global_is_debug)
 		{
-			const string cm_step1_tif_file_path = tmp_folder + cm_file_without_extension + "_cm_step1.tif";
+			const std::string cm_step1_tif_file_path = tmp_folder + cm_file_without_extension + "_cm_step1.tif";
 			Gdal_operation::translate_copy(cm_tif_file_path, cm_step1_tif_file_path, "-ot Float32");
 			Gdal_operation::write_fmat_to_tif(cm_step1_tif_file_path, cm_matrix);
 		}
@@ -253,8 +253,8 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 
 		//调用GDAL将最终计算结果保存到GTiff
 		//预处理后的数据集名为原数据集名后+preprocessed
-		const string bt_preprocess_dataset_name = str(boost::format("%1%%2%.tif") % bt_file_without_extension %SUFFIX_PREPROCESSED_BT);
-		const string bt_preprocess_dataset_path = str(boost::format("%1%%2%") % tmp_folder % bt_preprocess_dataset_name);
+		const std::string bt_preprocess_dataset_name = str(boost::format("%1%%2%.tif") % bt_file_without_extension %SUFFIX_PREPROCESSED_BT);
+		const std::string bt_preprocess_dataset_path = str(boost::format("%1%%2%") % tmp_folder % bt_preprocess_dataset_name);
 		BOOST_LOG_TRIVIAL(debug) << "预处理后的数据集：" << bt_preprocess_dataset_path;
 
 		bool success = Gdal_operation::translate_copy(bt_tif_file_path, bt_preprocess_dataset_path, "-ot Float32");
@@ -284,11 +284,11 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 
 	BOOST_LOG_TRIVIAL(info) << "开始准备合成预处理后的" << preprocessed_bt_file_paths.size() << "个数据集...";
 
-	vector<arma::fmat> mats;
+	std::vector<arma::fmat> mats;
 	mats.resize(preprocessed_bt_file_paths.size());
 	// 在使用transform之前，必须初始化目标容器
 	transform(preprocessed_bt_file_paths.begin(), preprocessed_bt_file_paths.end(),
-		mats.begin(), [](const string p) { return *Gdal_operation::read_tif_to_fmat(p); });
+		mats.begin(), [](const std::string p) { return *Gdal_operation::read_tif_to_fmat(p); });
 
 	auto final_matrix = Mat_operation::mean_mat_by_each_pixel(mats, 0);
 	if (!final_matrix)
@@ -298,7 +298,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	}
 	BOOST_LOG_TRIVIAL(info) << "合成DN值：" << Mat_operation::mat_desc(*final_matrix);
 
-	const string source_dataset_path = preprocessed_bt_file_paths[0];
+	const std::string source_dataset_path = preprocessed_bt_file_paths[0];
 	BOOST_LOG_TRIVIAL(debug) << "template file: " << source_dataset_path;
 	BOOST_LOG_TRIVIAL(debug) << "output image file: " << options.output_image_file();
 
@@ -351,9 +351,9 @@ bool proc_MxD021km::Preprocess_bt::find_file(const std::string& folder, const st
  * \param band
  * \return
  */
-string proc_MxD021km::Preprocess_bt::get_sds_bt(int band)
+std::string proc_MxD021km::Preprocess_bt::get_sds_bt(int band)
 {
-	ostringstream oss;
+	std::ostringstream oss;
 	oss << "EV_1KM_Emissive, ";
 	const 	int band_index = get_param_index_by_band(band);
 	for (int i = 0; i < band_index; ++i)
@@ -368,31 +368,31 @@ string proc_MxD021km::Preprocess_bt::get_sds_bt(int band)
  * \param band 根据提取的波段值获取亮温数据集后缀
  * \return
  */
-string proc_MxD021km::Preprocess_bt::get_suffix_bt(int band)
+std::string proc_MxD021km::Preprocess_bt::get_suffix_bt(int band)
 {
-	string ans = str(boost::format("_EV_1KM_Emissive_b%1%") % get_param_index_by_band(band));
+	std::string ans = str(boost::format("_EV_1KM_Emissive_b%1%") % get_param_index_by_band(band));
 	BOOST_LOG_TRIVIAL(debug) << "Band:" << band << ", bt suffix: " << ans;
 	return ans;
 }
 
 int proc_MxD021km::Preprocess_bt::get_param_index_by_band(int band)
 {
-	const auto distance = std::find(begin(AVAILABLE_BANDS), end(AVAILABLE_BANDS), band) - AVAILABLE_BANDS;
+	const auto distance = std::find(std::begin(AVAILABLE_BANDS), std::end(AVAILABLE_BANDS), band) - AVAILABLE_BANDS;
 	BOOST_LOG_TRIVIAL(debug) << "band: " << band << ", index:" << distance;
-	if (distance == 16) throw runtime_error(str(boost::format("unsupported band %1%!") % band));
+	if (distance == 16) throw std::runtime_error(str(boost::format("unsupported band %1%!") % band));
 	return static_cast<int>(distance);
 }
 
-string proc_MxD021km::Preprocess_bt::get_lut_table(const string& path_hdf_file)
+std::string proc_MxD021km::Preprocess_bt::get_lut_table(const std::string& path_hdf_file)
 {
 	fs::path p(path_hdf_file);
-	string ans;
-	if (p.filename().string().find("MOD") != string::npos)
+	std::string ans;
+	if (p.filename().string().find("MOD") != std::string::npos)
 		ans = (fs::current_path() / MOD_LUT_TABLE_NAME).string();
-	else if (p.filename().string().find("MYD") != string::npos)
+	else if (p.filename().string().find("MYD") != std::string::npos)
 		ans = (fs::current_path() / MYD_LUT_TABLE_NAME).string();
 	else
-		throw runtime_error("can not load lut table!");
+		throw std::runtime_error("can not load lut table!");
 	BOOST_LOG_TRIVIAL(debug) << "加载lut表：" << ans;
 	return ans;
 }
