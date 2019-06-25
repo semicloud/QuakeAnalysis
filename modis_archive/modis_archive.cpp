@@ -13,12 +13,11 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
-const string PROGRAM = "modis_archive";
-const string VERSION = "1.0";
+const std::string PROGRAM = "modis_archive";
+const std::string VERSION = "1.0";
 const int PRINT_PATH_THRESHOLD = 20;
 
 inline void init_logger_setting()
@@ -27,14 +26,14 @@ inline void init_logger_setting()
 	modis_api::init_file_logger("logs\\", PROGRAM);
 	modis_api::set_logger_severity(boost::log::trivial::info);
 }
-void check_arg(string& workspace_dir, string& data_dir);
-void process_arg(int argc, char** argv, string& workspace_dir, string& data_dir, bool& is_copy, bool& is_debug);
-void archive(const string& workspace_dir, const string& data_dir, bool is_copy, bool is_debug);
+void check_arg(std::string& workspace_dir, std::string& data_dir);
+void process_arg(int argc, char** argv, std::string& workspace_dir, std::string& data_dir, bool& is_copy, bool& is_debug);
+void archive(const std::string& workspace_dir, const std::string& data_dir, bool is_copy, bool is_debug);
 
 int main(int argc, char** argv)
 {
 	init_logger_setting();
-	string workspace_dir, data_dir;
+	std::string workspace_dir, data_dir;
 	bool is_copy = false, is_debug = false;
 	process_arg(argc, argv, workspace_dir, data_dir, is_copy, is_debug);
 	BOOST_LOG_TRIVIAL(debug) << "解析命令参数：\n" <<
@@ -49,7 +48,7 @@ int main(int argc, char** argv)
 	archive(workspace_dir, data_dir, is_copy, is_debug);
 }
 
-void check_arg(string& workspace_dir, string& data_dir)
+void check_arg(std::string& workspace_dir, std::string& data_dir)
 {
 	if (workspace_dir.at(workspace_dir.size() - 1) != '\\')
 	{
@@ -59,7 +58,7 @@ void check_arg(string& workspace_dir, string& data_dir)
 
 	if (!fs::exists(workspace_dir))
 	{
-		cerr << "错误！找不到MODIS工作目录" << workspace_dir;
+		std::cerr << "错误！找不到MODIS工作目录" << workspace_dir;
 		exit(EXIT_FAILURE);
 	}
 
@@ -71,19 +70,19 @@ void check_arg(string& workspace_dir, string& data_dir)
 
 	if (!fs::exists(data_dir))
 	{
-		cerr << "错误！找不到MODIS数据目录" << data_dir;
-		exit(EXIT_FAILURE);
+		std::cerr << "错误！找不到MODIS数据目录" << data_dir;
+		std::exit(EXIT_FAILURE);
 	}
 }
 
-void process_arg(int argc, char** argv, string& workspace_dir, string& data_dir, bool& is_copy, bool& is_debug)
+void process_arg(int argc, char** argv, std::string& workspace_dir, std::string& data_dir, bool& is_copy, bool& is_debug)
 {
 	boost::program_options::options_description desc(PROGRAM + " " + VERSION + "\nUsage");
 	desc.add_options()
 		("help,h", "显示本程序帮助信息")
 		("version,v", "显示本程序版本信息")
-		("workspace-dir,w", po::value<string>(&workspace_dir)->required(), "MODIS工作空间目录")
-		("data-dir,a", po::value<string>(&data_dir)->required(), "MODIS数据目录")
+		("workspace-dir,w", po::value<std::string>(&workspace_dir)->required(), "MODIS工作空间目录")
+		("data-dir,a", po::value<std::string>(&data_dir)->required(), "MODIS数据目录")
 		("copy,c", "如使用该参数，程序将以复制模式进行归档")
 		("debug,d", "如使用该参数，程序将以Debug模式运行");
 	po::variables_map vm;
@@ -93,15 +92,15 @@ void process_arg(int argc, char** argv, string& workspace_dir, string& data_dir,
 		store(boost::program_options::command_line_parser(argc, argv).options(desc).run(), vm);
 		if (vm.count("version"))
 		{
-			cout << endl;
-			cout << PROGRAM << " " << VERSION << endl;
-			cout << endl;
+			std::cout << std::endl;
+			std::cout << PROGRAM << " " << VERSION << std::endl;
+			std::cout << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		if (vm.count("help"))
 		{
-			cout << endl;
-			cout << desc << endl;
+			std::cout << std::endl;
+			std::cout << desc << std::endl;
 			exit(EXIT_SUCCESS);
 		}
 		// notify函数会报出参数解析异常
@@ -109,20 +108,20 @@ void process_arg(int argc, char** argv, string& workspace_dir, string& data_dir,
 		is_copy = vm.count("copy");
 		is_debug = vm.count("debug");
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cerr << e.what();
+		std::cerr << e.what();
 		exit(EXIT_FAILURE);
 	}
 }
 
-void archive(const string& workspace_dir, const string& data_dir, bool is_copy, bool is_debug)
+void archive(const std::string& workspace_dir, const std::string& data_dir, bool is_copy, bool is_debug)
 {
 	if (is_debug) modis_api::set_logger_severity(boost::log::trivial::debug);
 	BOOST_LOG_TRIVIAL(info) << "开始准备归档..";
 	BOOST_LOG_TRIVIAL(debug) << "MODIS数据目录：" << data_dir;
 	BOOST_LOG_TRIVIAL(debug) << "MODIS工作目录：" << workspace_dir;
-	vector<string> hdf_paths;
+	std::vector<std::string> hdf_paths;
 	for (auto it = fs::recursive_directory_iterator(fs::path(data_dir)); it != fs::recursive_directory_iterator(); ++it)
 	{
 		if (it->path().filename().extension().string() == ".hdf") hdf_paths.push_back(it->path().string());
@@ -136,7 +135,7 @@ void archive(const string& workspace_dir, const string& data_dir, bool is_copy, 
 	for (auto it = hdf_paths.cbegin(); it != hdf_paths.cend(); ++it)
 	{
 		modis_api::Hdf_file hdf_file(*it);
-		const string source = *it, dest = hdf_file.get_archive_path(workspace_dir);
+		const std::string source = *it, dest = hdf_file.get_archive_path(workspace_dir);
 		if (fs::exists(dest)) fs::remove(dest);
 		fs::path dest_path(dest);
 		if (!fs::exists(dest_path.parent_path())) create_directories(dest_path.parent_path());
