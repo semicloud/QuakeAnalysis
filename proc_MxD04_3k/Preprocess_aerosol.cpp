@@ -12,10 +12,7 @@
 #include "../modis_api/Mat_operation.h"
 #include <boost/log/utility/setup/file.hpp>
 
-using namespace std;
-
 proc_MxD04_3k::Preprocess_aerosol::Preprocess_aerosol() = default;
-
 proc_MxD04_3k::Preprocess_aerosol::~Preprocess_aerosol() = default;
 
 /**
@@ -40,22 +37,22 @@ void proc_MxD04_3k::Preprocess_aerosol::check_node(const std::string& yml_path, 
  */
 std::string proc_MxD04_3k::Preprocess_aerosol::load_template_string(const std::string& file_path)
 {
-	ifstream ifs(file_path);
+	std::ifstream ifs(file_path);
 	if (ifs)
 	{
-		stringstream ss;
+		std::stringstream ss;
 		ss << ifs.rdbuf();
 		ifs.close();
 		return ss.str();
 	}
-	throw runtime_error("load file " + file_path + " failed!");
+	throw std::runtime_error("load file " + file_path + " failed!");
 }
 
-const string OBJECT_NAME = "mod04";
-const string ELLIPSOID_CODE = "WGS84";
-const string OUTPUT_TYPE = "GEO";
+const std::string OBJECT_NAME = "mod04";
+const std::string ELLIPSOID_CODE = "WGS84";
+const std::string OUTPUT_TYPE = "GEO";
 
-const string FIELD_NAME = "Optical_Depth_Land_And_Ocean|";
+const std::string FIELD_NAME = "Optical_Depth_Land_And_Ocean|";
 const int BAND_NUMBER = 1;
 const double OUTPUT_PIXEL_SIZE_X = 3000, OUTPUT_PIXEL_SIZE_Y = 3000;
 const float SCALE = 0.001f, OFFSET = 0.0f;
@@ -67,17 +64,17 @@ const float NO_DATA_VALUE = -9999; //经过GDAL裁剪后，NO_DATA_VALUE是否还是-9999
  * \param yml_path .yml文件路径
  * \param node YAML::Node
  */
-void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const YAML::Node& node, bool debug_mode)
+void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, const YAML::Node& node, bool debug_mode)
 {
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Aerosol预处理，使用的.yml文件为：" << yml_path;
-	vector<string> attr_names = { "HDFListFile", "MinLon", "MaxLon", "MinLat",
+	std::vector<std::string> attr_names = { "HDFListFile", "MinLon", "MaxLon", "MinLat",
 		"MaxLat", "ResamplingType","OutputProjectionType",
 		"OutputProjectionParameters","OutputImageFile", "TmpPath" };
-	for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const string& attr_name)
+	std::for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const std::string& attr_name)
 	{ check_node(yml_path, node, attr_name); });
 	//.hdf文件列表文件，该文件是一个.txt文件
-	const string hdf_file_list_file_path = node["HDFListFile"].as<string>();
+	const std::string hdf_file_list_file_path = node["HDFListFile"].as<std::string>();
 	if (!boost::filesystem::exists(hdf_file_list_file_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << ".hdf列表文件" << hdf_file_list_file_path << "不存在";
@@ -89,13 +86,13 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 	const double max_lon = node["MaxLon"].as<double>();
 	const double min_lat = node["MinLat"].as<double>();
 	const double max_lat = node["MaxLat"].as<double>();
-	const string resampling_type = node["ResamplingType"].as<string>();
+	const std::string resampling_type = node["ResamplingType"].as<std::string>();
 	//const string ellipsoid_code = node["EllipsoidCode"].as<string>();
-	const string output_projection_type = node["OutputProjectionType"].as<string>();
-	const string output_projection_parameters = node["OutputProjectionParameters"].as<string>();
+	const std::string output_projection_type = node["OutputProjectionType"].as<std::string>();
+	const std::string output_projection_parameters = node["OutputProjectionParameters"].as<std::string>();
 	//const string output_type = node["OutputType"].as<string>();
-	const string output_image_file = node["OutputImageFile"].as<string>(); //final output
-	string temp_dir = node["TmpPath"].as<string>();
+	const std::string output_image_file = node["OutputImageFile"].as<std::string>(); //final output
+	std::string temp_dir = node["TmpPath"].as<std::string>();
 	if (temp_dir.at(temp_dir.size() - 1) != '\\')
 	{
 		temp_dir.push_back('\\');
@@ -103,9 +100,9 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 	}
 	BOOST_LOG_TRIVIAL(info) << yml_path << "文件有效性检查完毕";
 
-	vector<string> hdf_files = modis_api::File_operation::read_file_all_lines(hdf_file_list_file_path);
+	std::vector<std::string> hdf_files = modis_api::File_operation::read_file_all_lines(hdf_file_list_file_path);
 	BOOST_LOG_TRIVIAL(info) << "共需处理" << hdf_files.size() << "个.hdf文件";
-	for (const string& p : hdf_files)
+	for (const std::string& p : hdf_files)
 		BOOST_LOG_TRIVIAL(debug) << "\t" << p;
 
 	if (!boost::filesystem::exists(temp_dir))
@@ -116,8 +113,8 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 	modis_api::File_operation::clear_directory(temp_dir);
 	BOOST_LOG_TRIVIAL(info) << "Temp目录：" << temp_dir << "准备完毕";
 
-	vector<string> preprocessed_file_paths;
-	for (const string& hdf_file_path : hdf_files)
+	std::vector<std::string> preprocessed_file_paths;
+	for (const std::string& hdf_file_path : hdf_files)
 	{
 		double ulx, uly, lrx, lry;
 		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, "\":mod04:Optical_Depth_Land_And_Ocean", ulx, uly, lrx, lry))
@@ -126,7 +123,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 			continue;
 		}
 		//Heg提取出的.tif文件路径
-		const string heg_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg.tif";
+		const std::string heg_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg.tif";
 		modis_api::Heg_utils::run_heg(hdf_file_path, OBJECT_NAME, FIELD_NAME, BAND_NUMBER,
 			OUTPUT_PIXEL_SIZE_X, OUTPUT_PIXEL_SIZE_Y, uly, lry, lrx, ulx,
 			resampling_type, output_projection_type, ELLIPSOID_CODE, output_projection_parameters,
@@ -155,8 +152,8 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 		BOOST_LOG_TRIVIAL(debug) << "调用Heg提取.tif文件成功，提取的文件为：" << heg_tif_path;
 
 		//经过GDAL处理的Heg提取的.tif文件路径
-		const string heg_gdal_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg_gdal.tif";
-		const string gdal_argument = str(boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"")
+		const std::string heg_gdal_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg_gdal.tif";
+		const std::string gdal_argument = str(boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"")
 			% min_lon % max_lat % max_lon % min_lat);
 		modis_api::Gdal_operation::translate_copy(heg_tif_path, heg_gdal_tif_path, gdal_argument);
 		if (!boost::filesystem::exists(heg_gdal_tif_path))
@@ -168,7 +165,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 		BOOST_LOG_TRIVIAL(debug) << "调用gdal_translate.exe处理" << heg_tif_path << "文件成功，结果为：" << heg_gdal_tif_path;
 
 		//经过GDAL处理的Scale后的Heg提取的.tif文件的路径
-		const string heg_gdal_scaled_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg_gdal_scaled.tif";
+		const std::string heg_gdal_scaled_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_heg_gdal_scaled.tif";
 		boost::filesystem::copy_file(heg_gdal_tif_path, heg_gdal_scaled_tif_path);
 		auto mat_optional = modis_api::Gdal_operation::read_tif_to_fmat(heg_gdal_scaled_tif_path);
 		if (!mat_optional)
@@ -196,11 +193,11 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const string& yml_path, const
 	}
 
 	BOOST_LOG_TRIVIAL(info) << "合成处理，共需合成" << preprocessed_file_paths.size() << "个.tif文件";
-	for (const string& p : preprocessed_file_paths)
+	for (const std::string& p : preprocessed_file_paths)
 		BOOST_LOG_TRIVIAL(debug) << "\t" << p;
-	vector<arma::fmat> mat_list;
-	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
-		[](const string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
+	std::vector<arma::fmat> mat_list;
+	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), std::back_inserter(mat_list),
+		[](const std::string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
 	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list,0);
 	if (!mean_mat_optional)
 	{

@@ -14,13 +14,11 @@
 #include "../modis_api/File_operation.h"
 #include "Preprocess_aerosol.h"
 
-using namespace std;
-
 namespace fs = boost::filesystem;
 namespace po = boost::program_options;
 
-const string PROGRAM = "proc_MxD04_3k";
-const string VERSION = "1.0";
+const std::string PROGRAM = "proc_MxD04_3k";
+const std::string VERSION = "1.0";
 
 inline void init_logger_setting()
 {
@@ -49,22 +47,22 @@ int main(int argc, char** argv)
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cerr << e.what();
+		std::cerr << e.what();
 		return EXIT_FAILURE;
 	}
 
 	if (vm.count("help"))
 	{
-		cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << endl;
-		cout << desc << endl;
+		std::cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << std::endl;
+		std::cout << desc << std::endl;
 		return EXIT_SUCCESS;
 	}
 
 	if (vm.count("version"))
 	{
-		cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << endl;
+		std::cout << "\nMODIS气溶胶(MxD04)预处理程序 v" << VERSION << "\n" << std::endl;
 		return EXIT_SUCCESS;
 	}
 
@@ -81,7 +79,7 @@ int main(int argc, char** argv)
 			BOOST_LOG_TRIVIAL(info) << "YAML PATH:" << yml_path;
 			node = YAML::LoadFile(yml_path);
 		}
-		catch (exception& ex)
+		catch (std::exception& ex)
 		{
 			BOOST_LOG_TRIVIAL(error) << "解析Yml文件" << yml_path << "失败：";
 			BOOST_LOG_TRIVIAL(error) << ex.what();
