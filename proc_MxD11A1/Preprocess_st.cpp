@@ -57,9 +57,12 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "开始进行Surface Temperature预处理，使用的.yml文件为：" << yml_path;
 
+	const std::string DATUM = "NoDatum";
+	const std::string SPATIAL_SUBSET_TYPE = "INPUT_LAT_LONG";
+
 	vector<string> attr_names = { "HDFListFile","TmpPath", "MinLon", "MaxLon", "MinLat",
 		"MaxLat", "OutputImageFile", "ResamplingType", "OutputProjectionType",
-		"OutputProjectionParameters","Datum","OutputPixelSize" };
+		"OutputProjectionParameters","OutputPixelSize" };
 	for_each(attr_names.cbegin(), attr_names.cend(), [&yml_path, &node](const string& attr_name)
 	{ check_node(yml_path, node, attr_name); });
 
@@ -78,12 +81,10 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 
 	string temp_dir = node["TmpPath"].as<string>();
 
-	const string spatial_subset_type = node["SpatialSubsetType"].as<string>();
 	const string resampling_type = node["ResamplingType"].as<string>();
 	const string output_projection_type = node["OutputProjectionType"].as<string>();
 	const string output_projection_parameters =
 		wrap_output_projection_parameters_str(node["OutputProjectionParameters"].as<string>());
-	const string datum = node["Datum"].as<string>();
 	const double output_pixel_size = node["OutputPixelSize"].as<double>();
 
 	if (temp_dir.at(temp_dir.size() - 1) != '\\')
@@ -111,8 +112,8 @@ void proc_MxD11A1::Preprocess_st::preprocess(const string& yml_path, const YAML:
 	{
 		const string mrt_tif_path = temp_dir + boost::filesystem::path(hdf_file_path).stem().string() + "_mrt.tif";
 		modis_api::Mrt_utils::run_mrt(hdf_file_path, min_lon, max_lon, min_lat, max_lat, mrt_tif_path, temp_dir,
-			spatial_subset_type, resampling_type, output_projection_type,
-			output_projection_parameters, datum, output_pixel_size);
+			SPATIAL_SUBSET_TYPE, resampling_type, output_projection_type,
+			output_projection_parameters, DATUM, output_pixel_size);
 
 		if (!boost::filesystem::exists(mrt_tif_path))
 		{
