@@ -2,8 +2,6 @@
 
 #include <string>
 
-using namespace std;
-
 namespace modis_api
 {
 	/**
@@ -12,29 +10,29 @@ namespace modis_api
 	class __declspec(dllexport) Mrt_swath_prm_setting
 	{
 	private:
-		string _input_hdf_file;
-		string _geo_loc_hdf_file;
-		string _sds_str;
+		std::string _input_hdf_file;
+		std::string _geo_loc_hdf_file;
+		std::string _sds_str;
 		double _ulc_lng;
 		double _ulc_lat;
 		double _lrc_lng;
 		double _lrc_lat;
-		string _output_gtiff_file;
+		std::string _output_gtiff_file;
 	public:
 		Mrt_swath_prm_setting();
 		~Mrt_swath_prm_setting();
 
-		string get_input_hdf_file() const
+		std::string get_input_hdf_file() const
 		{
 			return _input_hdf_file;
 		}
 
-		string get_geo_loc_hdf_file() const
+		std::string get_geo_loc_hdf_file() const
 		{
 			return _geo_loc_hdf_file;
 		}
 
-		string get_sds_str() const
+		std::string get_sds_str() const
 		{
 			return _sds_str;
 		}
@@ -59,23 +57,23 @@ namespace modis_api
 			return _lrc_lat;
 		}
 
-		string get_output_gtiff_file() const
+		std::string get_output_gtiff_file() const
 		{
 			return _output_gtiff_file;
 		}
 
 
-		void set_input_hdf_file(const string& cs)
+		void set_input_hdf_file(const std::string& cs)
 		{
 			_input_hdf_file = cs;
 		}
 
-		void set_geo_loc_hdf_file(const string& cs)
+		void set_geo_loc_hdf_file(const std::string& cs)
 		{
 			_geo_loc_hdf_file = cs;
 		}
 
-		void set_sds_str(const string& cs)
+		void set_sds_str(const std::string& cs)
 		{
 			_sds_str = cs;
 		}
@@ -100,7 +98,7 @@ namespace modis_api
 			_lrc_lat = lrc_lat;
 		}
 
-		void set_output_gtiff_file(const string& cs)
+		void set_output_gtiff_file(const std::string& cs)
 		{
 			_output_gtiff_file = cs;
 		}

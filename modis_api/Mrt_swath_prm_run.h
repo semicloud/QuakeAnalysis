@@ -2,7 +2,6 @@
 
 #include <string>
 
-using namespace std;
 namespace modis_api
 {
 	/**
@@ -11,15 +10,15 @@ namespace modis_api
 	class __declspec(dllexport) Mrt_swath_prm_run
 	{
 	private:
-		string _mrt_swath_path;
-		string _prm_file_path;
+		std::string _mrt_swath_path;
+		std::string _prm_file_path;
 	public:
 		/**
 		 * \brief
 		 * \param mrt_swath_path 本地安装的MRT路径，例如C:\DevLib\MRTSwath
 		 * \param prm_file_path prm文件路径
 		 */
-		Mrt_swath_prm_run(const string& mrt_swath_path, const string& prm_file_path);
+		Mrt_swath_prm_run(const std::string& mrt_swath_path, const std::string& prm_file_path);
 		~Mrt_swath_prm_run();
 
 
@@ -27,7 +26,7 @@ namespace modis_api
 		 * \brief 本地安装的MRT路径，例如C:\DevLib\MRTSwath
 		 * \return
 		 */
-		string get_mrt_swath_path() const
+		std::string get_mrt_swath_path() const
 		{
 			return _mrt_swath_path;
 		}
@@ -36,18 +35,18 @@ namespace modis_api
 		 * \brief prm文件路径
 		 * \return
 		 */
-		string get_prm_file_path() const
+		std::string get_prm_file_path() const
 		{
 			return _prm_file_path;
 		}
 
-		string get_prm_bat_content();
+		std::string get_prm_bat_content();
 
 		/**
 		 * \brief 将运行Prm文件的bat脚本保存到指定位置
 		 * \param dest
 		 */
-		void export_prm_bat_file(const string& dest);
+		void export_prm_bat_file(const std::string& dest);
 	};
 }
 

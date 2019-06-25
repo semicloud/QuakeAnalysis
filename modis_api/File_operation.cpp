@@ -9,7 +9,6 @@
 #include <fstream>
 
 namespace fs = boost::filesystem;
-using namespace std;
 
 modis_api::File_operation::File_operation() = default;
 modis_api::File_operation::~File_operation() = default;
@@ -81,7 +80,7 @@ void modis_api::File_operation::clear_directory(const std::string& directory)
 	BOOST_LOG_TRIVIAL(debug) << str(boost::format("ÒÑÇå¿ÕÄ¿Â¼%1%") % directory);
 }
 
-vector<string> modis_api::File_operation::read_file_all_lines(const string& file_path)
+std::vector<std::string> modis_api::File_operation::read_file_all_lines(const std::string& file_path)
 {
 	if (!fs::exists(file_path)) throw runtime_error(str(boost::format("file %1% not found!") % file_path));
 	vector<string> svec;
@@ -90,7 +89,7 @@ vector<string> modis_api::File_operation::read_file_all_lines(const string& file
 	return svec;
 }
 
-vector<string> modis_api::File_operation::read_file_all_lines_2(const string& file_path)
+std::vector<std::string> modis_api::File_operation::read_file_all_lines_2(const std::string& file_path)
 {
 	if (!fs::exists(file_path)) throw runtime_error(str(boost::format("file %1% not found!") % file_path));
 	vector<string> svec;

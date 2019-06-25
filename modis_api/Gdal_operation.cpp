@@ -194,7 +194,7 @@ bool modis_api::Gdal_operation::translate_copy(const std::string& source_path, c
 
 bool modis_api::Gdal_operation::set_no_data_value(const std::string& source_path, float no_data_value)
 {
-	const string cmd = str(boost::format("gdal_edit.py -a_nodata %1% %2%") % no_data_value % source_path);
+	const std::string cmd = str(boost::format("gdal_edit.py -a_nodata %1% %2%") % no_data_value % source_path);
 	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
 	return system(cmd.c_str()) == 0;
 }
@@ -248,7 +248,7 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_
 	BOOST_LOG_TRIVIAL(debug) << "scales: " << scales;
 	BOOST_LOG_TRIVIAL(debug) << "offsets: " << offsets;
 	// build matrix
-	stringstream ss;
+	std::stringstream ss;
 	ss << scales << ";" << offsets;
 
 	arma::fmat ans_mat(ss.str());

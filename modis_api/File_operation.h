@@ -25,8 +25,8 @@ namespace modis_api
 		 * \brief 读取文件中的所有行到vector<string>中
 		 * \return
 		 */
-		static vector<string> read_file_all_lines(const string&);
-		static vector<string> read_file_all_lines_2(const string& file_path);
+		static vector<string> read_file_all_lines(const std::string&);
+		static vector<string> read_file_all_lines_2(const std::string& file_path);
 
 		static void process_dir(std::string& d)
 		{

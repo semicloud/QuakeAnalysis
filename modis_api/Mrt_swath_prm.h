@@ -3,8 +3,6 @@
 #include <iostream>
 #include "Mrt_swath_prm_setting.h"
 
-using namespace std;
-
 namespace modis_api
 {
 	/**
@@ -24,8 +22,8 @@ namespace modis_api
 
 		~Mrt_swath_prm();
 
-		string get_prm_file_content();
-		void export_prm_file(const string& dest);
+		std::string get_prm_file_content();
+		void export_prm_file(const std::string& dest);
 	};
 }
 

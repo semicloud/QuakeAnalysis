@@ -4,11 +4,10 @@
 #include <sstream>
 namespace  modis_api
 {
-	using namespace std;
-	typedef  const string& cs;
+	typedef  const std::string& cs;
 	class __declspec(dllexport) Mrt_utils
 	{
-		static string load_template_string(const string& file_path);
+		static  std::string load_template_string(const  std::string& file_path);
 	public:
 		Mrt_utils();
 		~Mrt_utils();

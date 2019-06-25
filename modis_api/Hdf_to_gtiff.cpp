@@ -10,16 +10,16 @@ void Hdf_to_gtiff::do_convert()
 {
 	//TODO 运行前的环境清理
 	BOOST_LOG_TRIVIAL(debug) << "------------------------------------------------------";
-	const string hdf_file_name = fs::path(_prm_setting->get_input_hdf_file()).filename().string();
-	const string tif_file_name = fs::path(_prm_setting->get_output_gtiff_file()).filename().string();
+	const std::string hdf_file_name = fs::path(_prm_setting->get_input_hdf_file()).filename().string();
+	const std::string tif_file_name = fs::path(_prm_setting->get_output_gtiff_file()).filename().string();
 	BOOST_LOG_TRIVIAL(debug) << "MRT CONVERT:";
 	BOOST_LOG_TRIVIAL(debug) << "FROM: " << hdf_file_name;
 	BOOST_LOG_TRIVIAL(debug) << "TO: " << tif_file_name;
 
-	const string prm_file_path = _convert_at + "hdf2tiff.prm";
+	const std::string prm_file_path = _convert_at + "hdf2tiff.prm";
 	_prm_file->export_prm_file(prm_file_path);
 
-	const string prm_bat_file_path = _convert_at + "run.bat";
+	const std::string prm_bat_file_path = _convert_at + "run.bat";
 	Mrt_swath_prm_run prm_bat_file(fs::current_path().string() + "\\MRTSwath\\", prm_file_path);
 	prm_bat_file.export_prm_bat_file(prm_bat_file_path);
 

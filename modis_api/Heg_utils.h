@@ -4,12 +4,11 @@
 
 namespace modis_api
 {
-	using namespace std;
-	typedef const string& cs;
+	typedef const std::string& cs;
 	class __declspec(dllexport) Heg_utils
 	{
 	private:
-		static string load_template_string(const string& file_path);
+		static std::string load_template_string(const std::string& file_path);
 	public:
 		Heg_utils();
 		~Heg_utils();

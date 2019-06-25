@@ -8,8 +8,6 @@
 
 namespace modis_api
 {
-	using namespace std;
-
 	class __declspec(dllexport) Gdal_operation
 	{
 	public:
@@ -27,13 +25,13 @@ namespace modis_api
 		 * \param tif_path tif文件路径
 		 * \return
 		 */
-		static boost::optional<arma::fmat> read_tif_to_fmat(const string& tif_path);
+		static boost::optional<arma::fmat> read_tif_to_fmat(const std::string& tif_path);
 		/**
 		 * \brief 将矩阵值写入tif文件，写入成功返回true，失败返回false
 		 * \param tif_path tif文件路径
 		 * \param mat 矩阵对象
 		 */
-		static bool write_fmat_to_tif(const string& tif_path, arma::fmat& mat);
+		static bool write_fmat_to_tif(const std::string& tif_path, arma::fmat& mat);
 
 		/**
 		 * \brief 调用gdal_translate.exe转换tif文件
@@ -42,7 +40,7 @@ namespace modis_api
 		 * \param param 转换参数 如 -ot Float32
 		 * \return 转换成功返回true，失败返回false
 		 */
-		static bool translate_copy(const string& source_path, const string& dest_path, const string& param = "");
+		static bool translate_copy(const std::string& source_path, const std::string& dest_path, const std::string& param = "");
 
 
 		/**
@@ -59,7 +57,7 @@ namespace modis_api
 		 * \param source_path 目标tif文件路径
 		 * \return 目标tif文件的NO_DATA_VALUE属性
 		 */
-		static float get_no_data_value(const string& source_path);
+		static float get_no_data_value(const std::string& source_path);
 
 		/**
 		 * \brief 读取MXD02XXX.HDF文件中的radiance_scales和radiance_offsets
@@ -69,9 +67,9 @@ namespace modis_api
 		 * \parma logger 调用程序传过来的日志对象
 		 * \return
 		 */
-		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const string& hdf_path);
+		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const std::string& hdf_path);
 
-		static bool read_geo_bound(const string& hdf_path, const string& sds, double& ulx, double& uly, double& lrx, double &lry);
+		static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
 	};
 }
 
