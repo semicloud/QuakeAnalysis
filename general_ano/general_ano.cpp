@@ -13,13 +13,12 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 
-using namespace std;
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
 namespace m = modis_api;
 
-const string PROGRAM = "general_ano";
-const string VERSION = "1.0";
+const std::string PROGRAM = "general_ano";
+const std::string VERSION = "1.0";
 
 void init_logger()
 {
@@ -28,7 +27,7 @@ void init_logger()
 	modis_api::init_file_logger("logs//", PROGRAM);
 }
 
-void check_node(const YAML::Node& node, const string& attr)
+void check_node(const YAML::Node& node, const std::string& attr)
 {
 	if (!node[attr].IsDefined())
 	{
@@ -41,14 +40,14 @@ void handle_help_version(const po::variables_map& vm, const po::options_descript
 {
 	if (vm.count("help"))
 	{
-		cout << "\nMODIS距平处理程序 v" << VERSION << "\n" << endl;
-		cout << desc << endl;
+		std::cout << "\nMODIS距平处理程序 v" << VERSION << "\n" << std::endl;
+		std::cout << desc << std::endl;
 		exit(EXIT_SUCCESS);
 	}
 
 	if (vm.count("version"))
 	{
-		cout << "\nMODIS距平处理程序 v" << VERSION << "\n" << endl;
+		std::cout << "\nMODIS距平处理程序 v" << VERSION << "\n" << std::endl;
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -56,7 +55,7 @@ void handle_help_version(const po::variables_map& vm, const po::options_descript
 int main(int argc, char** argv)
 {
 	init_logger();
-	string path_yml;
+	std::string path_yml;
 	YAML::Node node;
 	po::variables_map vm;
 	po::options_description desc("Usage:");
@@ -70,9 +69,9 @@ int main(int argc, char** argv)
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cerr << e.what();
+		std::cerr << e.what();
 		return EXIT_FAILURE;
 	}
 
@@ -90,7 +89,7 @@ int main(int argc, char** argv)
 			BOOST_LOG_TRIVIAL(debug) << "YAML PATH:" << path_yml;
 			node = YAML::LoadFile(path_yml);
 		}
-		catch (exception& ex)
+		catch (std::exception& ex)
 		{
 			BOOST_LOG_TRIVIAL(error) << "解析Yml文件" << path_yml << "失败：";
 			BOOST_LOG_TRIVIAL(error) << ex.what();
@@ -109,13 +108,13 @@ int main(int argc, char** argv)
 	check_node(node, "TmpPath");
 
 	//最终输出图片路径
-	const fs::path path_output_image = node["OutputImageFile"].as<string>();
+	const fs::path path_output_image = node["OutputImageFile"].as<std::string>();
 	//Temp目录路径
-	const fs::path dir_temp = node["TmpPath"].as<string>();
+	const fs::path dir_temp = node["TmpPath"].as<std::string>();
 	//计算月平均的tif文件列表txt文件路径
-	const fs::path path_month_tif_file = node["MonthListFile"].as<string>();
+	const fs::path path_month_tif_file = node["MonthListFile"].as<std::string>();
 	//计算历史月平均的tif文件列表txt文件路径
-	const fs::path path_ref_tif_file = node["RefListFile"].as<string>();
+	const fs::path path_ref_tif_file = node["RefListFile"].as<std::string>();
 
 	if (!fs::exists(path_month_tif_file))
 	{
@@ -129,8 +128,8 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	vector<string> vec_month_tif_files = m::File_operation::read_file_all_lines(path_month_tif_file.string());
-	vector<string> vec_ref_tif_files = m::File_operation::read_file_all_lines(path_ref_tif_file.string());
+	std::vector<std::string> vec_month_tif_files = m::File_operation::read_file_all_lines(path_month_tif_file.string());
+	std::vector<std::string> vec_ref_tif_files = m::File_operation::read_file_all_lines(path_ref_tif_file.string());
 
 	if (vec_month_tif_files.empty())
 	{
@@ -146,10 +145,10 @@ int main(int argc, char** argv)
 		exit(EXIT_FAILURE);
 	}
 
-	vector<arma::fmat> mats_month;
-	vector<arma::fmat> mats_ref;
+	std::vector<arma::fmat> mats_month;
+	std::vector<arma::fmat> mats_ref;
 
-	auto read_tif = [](const string& p) -> arma::fmat { return *m::Gdal_operation::read_tif_to_fmat(p);  };
+	auto read_tif = [](const std::string& p) -> arma::fmat { return *m::Gdal_operation::read_tif_to_fmat(p);  };
 	transform(vec_month_tif_files.begin(), vec_month_tif_files.end(), back_inserter(mats_month), read_tif);
 	transform(vec_ref_tif_files.begin(), vec_ref_tif_files.end(), back_inserter(mats_ref), read_tif);
 
