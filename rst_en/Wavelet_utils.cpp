@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Wavelet_utils.h"
+#include <gsl/gsl_sort.h>
 #include <gsl/gsl_wavelet.h>
 #include <gsl/gsl_wavelet2d.h>
-#include <gsl/gsl_sort.h>
 #include <iostream>
 
 Wavelet_utils::Wavelet_utils() = default;

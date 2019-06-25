@@ -29,7 +29,6 @@
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
-using namespace std;
 namespace fs = boost::filesystem;
 namespace gr = boost::gregorian;
 namespace po = boost::program_options;
@@ -37,8 +36,8 @@ namespace po = boost::program_options;
 typedef modis_api::Date_utils du;
 typedef modis_api::File_operation fo;
 
-const string PROGRAM = "rst_en";
-const string VERSION = "1.0";
+const std::string PROGRAM = "rst_en";
+const std::string VERSION = "1.0";
 
 struct Map_key_compare {
 	bool operator()(const unsigned k1, const unsigned k2)const {
@@ -123,9 +122,9 @@ void handle_inputs(int argc, char** argv, std::string& out_data_dir,
 		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
 		vm.notify();
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		cerr << e.what();
+		std::cerr << e.what();
 		exit(EXIT_FAILURE);
 	}
 
@@ -173,7 +172,7 @@ void handle_inputs(int argc, char** argv, std::string& out_data_dir,
 			BOOST_LOG_TRIVIAL(debug) << "OutputDataDir:" << out_output_data_dir;
 			BOOST_LOG_TRIVIAL(debug) << "PrepSupport:" << out_k;
 		}
-		catch (exception& ex)
+		catch (std::exception& ex)
 		{
 			std::cerr << "解析.yml配置文件：" << yml_path
 				<< "失败！";

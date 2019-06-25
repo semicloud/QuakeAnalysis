@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Cube_utils.h"
-#include <armadillo>
-#include <boost/log/trivial.hpp>
-#include "../modis_api/Gdal_operation.h"
 #include "Wavelet_utils.h"
 #include "../eddy_field/Eddy_field.h"
+#include "../modis_api/Gdal_operation.h"
+#include <armadillo>
+#include <boost/log/trivial.hpp>
 
 void Cube_utils::test_sd_cubes()
 {

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Rst.h"
-#include "Wavelet_utils.h"
 #include "Cube_utils.h"
+#include "Wavelet_utils.h"
 #include <boost/log/trivial.hpp>
 #include <iostream>
 
