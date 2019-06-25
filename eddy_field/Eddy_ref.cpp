@@ -12,17 +12,15 @@
 
 namespace fs = boost::filesystem;
 
-using namespace std;
-
 /**
  * \brief 获取用于生成背景场的Tif文件路径列表，该函数后期可移动到adasm.exe中
  * \brief 目前，通过Eddy_field_options_yaml类的get_ref_tif_file_list成员
  * \brief 获取计算背景场的tif文件列表
  * \return
  */
-vector<std::string> Eddy_ref::get_tif_file_list_for_ref(const Eddy_field_options_yaml& options, const std::string& type)
+std::vector<std::string> Eddy_ref::get_tif_file_list_for_ref(const Eddy_field_options_yaml& options, const std::string& type)
 {
-	throw exception("should not call this function..");
+	throw std::exception("should not call this function..");
 
 	//const auto data_folder = options.get_tif_directory(type);
 	//BOOST_LOG_TRIVIAL(debug) << "数据文件检索路径：" << data_folder;
@@ -92,7 +90,7 @@ void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 		BOOST_LOG_TRIVIAL(info) << "";
 		return;
 	}
-	auto mat_list = vector<arma::fmat>();
+	auto mat_list = std::vector<arma::fmat>();
 	for (const auto& file_path : file_path_list)
 	{
 		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path);
@@ -112,8 +110,8 @@ void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 	}
 
 	// 写回tif文件
-	const string source_data_set = file_path_list.front();
-	const string dest_data_set = options.ref_image_file();
+	const std::string source_data_set = file_path_list.front();
+	const std::string dest_data_set = options.ref_image_file();
 	BOOST_LOG_TRIVIAL(debug) << "目标数据文件：" << dest_data_set;
 
 	/*
@@ -151,7 +149,7 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 		BOOST_LOG_TRIVIAL(info) << "";
 		return;
 	}
-	auto mat_list = vector<arma::fmat>();
+	auto mat_list = std::vector<arma::fmat>();
 	for (auto file_path : file_path_list)
 	{
 		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path);
@@ -162,7 +160,7 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 	}
 
 	// 涡度矩阵列表
-	vector<arma::fmat> ef_mat_list;
+	std::vector<arma::fmat> ef_mat_list;
 	for (arma::Mat<float>& f_mat : mat_list)
 	{
 		auto ef_mat = Eddy_field::get_eddy_field_4(f_mat, 0);
@@ -186,8 +184,8 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "涡度矩阵的平均值计算完毕..";
 
 	// 写回tif文件
-	const string source_data_set = file_path_list.front();
-	const string dest_data_set = options.ref_image_file();
+	const std::string source_data_set = file_path_list.front();
+	const std::string dest_data_set = options.ref_image_file();
 	BOOST_LOG_TRIVIAL(debug) << "目标数据文件：" << dest_data_set;
 
 	if (fs::exists(dest_data_set))

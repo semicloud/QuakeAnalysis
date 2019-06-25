@@ -3,7 +3,6 @@
 #include <boost/log/trivial.hpp>
 #include <string>
 
-using namespace std;
 namespace fs = boost::filesystem;
 
 /**
@@ -148,7 +147,7 @@ void Eddy_field::compute_eddy_field_m1(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "=============使用方法1计算涡度====================";
 
 	//const string tif_path = options.get_tif_path(type);
-	const string tif_path = options.input_image_file();
+	const std::string tif_path = options.input_image_file();
 	if (!fs::exists(tif_path) || !fs::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "目标tif文件" << tif_path << "不存在或不是常规文件，无法计算涡度！";
@@ -159,7 +158,7 @@ void Eddy_field::compute_eddy_field_m1(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "目标tif文件：" << tif_path;
 
 	//const string ref_tif_path = options.get_ref_tif_path(type);
-	const string ref_tif_path = options.ref_image_file();
+	const std::string ref_tif_path = options.ref_image_file();
 	if (!fs::exists(ref_tif_path) || !fs::is_regular_file(ref_tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "背景场文件" << ref_tif_path << "不存在或不是常规文件，无法计算涡度！";
@@ -200,7 +199,7 @@ void Eddy_field::compute_eddy_field_m1(Eddy_field_options_yaml& options)
 
 	// 涡度tif路径
 	//const string ef_tif_path = options.get_ef_tif_path(type);
-	const string ef_tif_path = options.output_eddy_field_image_file();
+	const std::string ef_tif_path = options.output_eddy_field_image_file();
 
 	if (fs::exists(ef_tif_path))
 		fs::remove(ef_tif_path);
@@ -224,7 +223,7 @@ void Eddy_field::compute_eddy_field_m2(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "=============使用方法2计算涡度结束====================";
 
 	//const string tif_path = options.get_tif_path(type);
-	const string tif_path = options.input_image_file();
+	const std::string tif_path = options.input_image_file();
 	if (!fs::exists(tif_path) || !fs::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "目标tif文件" << tif_path << "不存在或不是常规文件，无法计算涡度！";
@@ -235,7 +234,7 @@ void Eddy_field::compute_eddy_field_m2(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "目标tif文件：" << tif_path;
 
 	//const string ref_tif_path = options.get_ref_tif_path(type);
-	const string ref_tif_path = options.ref_image_file();
+	const std::string ref_tif_path = options.ref_image_file();
 	if (!fs::exists(ref_tif_path) || !fs::is_regular_file(ref_tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "背景场文件" << ref_tif_path << "不存在或不是常规文件，无法计算涡度！";
@@ -260,7 +259,7 @@ void Eddy_field::compute_eddy_field_m2(Eddy_field_options_yaml& options)
 
 	// 涡度tif路径
 	//const string ef_tif_path = options.get_ef_tif_path(type);
-	const string ef_tif_path = options.output_eddy_field_image_file();
+	const std::string ef_tif_path = options.output_eddy_field_image_file();
 
 	if (fs::exists(ef_tif_path))
 		fs::remove(ef_tif_path);
