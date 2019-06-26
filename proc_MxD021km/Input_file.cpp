@@ -12,18 +12,19 @@ proc_MxD021km::Input_file::~Input_file() = default;
 
 std::vector<proc_MxD021km::Input_file> proc_MxD021km::Input_file::load(const std::string& file_path)
 {
-	std::vector<Input_file> ivec;
-	std::vector<std::string> svec;
+	using namespace std;
+	vector<Input_file> ivec;
+	vector<string> svec;
 	try
 	{
 		svec = modis_api::File_operation::read_file_all_lines(file_path);
 	}
-	catch (std::exception& e)
+	catch (exception& e)
 	{
 		BOOST_LOG_TRIVIAL(error) << e.what();
 	}
 	if (svec.empty()) return ivec;
-	auto it = svec.begin();
+	vector<string>::iterator it = svec.begin();
 	while (it != svec.end())
 	{
 		if (*it == "#") ivec.emplace_back(*(it + 1), *(it + 2), *(it + 3));

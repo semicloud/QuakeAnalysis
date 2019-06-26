@@ -27,24 +27,19 @@ bool global_is_debug;
 
 int main(int argc, char* argv[])
 {
-	modis_api::init_console_logger();
-	modis_api::init_file_logger("logs\\", PROGRAM);
-	modis_api::set_logger_severity(boost::log::trivial::info);
+	using namespace std;
+	using namespace modis_api;
+	using namespace YAML;
+	using namespace boost::program_options;
 
-	// auto files = proc_MxD021km::Input_file::load("D:\\proc_MxD021km_tif_list.txt");
-	// cout << files.size() << endl;
-	// for (const auto& file : files)
-	// {
-	// 	cout << file.bt_hdf_file() << endl;
-	// 	cout << file.sza_hdf_file() << endl;
-	// 	cout << file.cm_hdf_file() << endl;
-	// 	cout << endl;
-	// }
+	init_console_logger();
+	init_file_logger("logs\\", PROGRAM);
+	set_logger_severity(boost::log::trivial::info);
 
-	std::string yml_path;
-	YAML::Node node;
-	po::variables_map vm;
-	po::options_description desc("Usage:");
+	string yml_path;
+	Node node;
+	variables_map vm;
+	options_description desc("Usage:");
 	desc.add_options()
 		("help,h", "显示帮助信息")
 		("version,v", "show version information")
@@ -99,8 +94,6 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	//proc_MxD021km::Preprocess_bt::get_sds_bt(31);
-	//proc_MxD021km::Preprocess_bt::get_suffix_bt(31);
 	proc_MxD021km::Options_yaml options(node);
 	if(stoi(options.band()) == 30)
 	{
@@ -108,32 +101,6 @@ int main(int argc, char* argv[])
 		exit(EXIT_SUCCESS);
 	}
 	proc_MxD021km::Preprocess_bt::preprocess(options);
-
-	// if (options.date().length() != 7 && options.date().length() != 8)
-	// {
-	// 	cout << "Error Date format in " << yml_path << endl;
-	// 	cout << "Date is a 7 or 8 string, such as 2018010 or 20180323" << endl;
-	// 	return EXIT_FAILURE;
-	// }
-	//
-	// if (!fs::exists(options.workspace_path()) || !fs::is_directory(options.workspace_path()))
-	// {
-	// 	cout << "错误! 工作空间目录: " << options.workspace_path()
-	// 		<< " 不存在或不是一个合法目录.." << endl;
-	// 	return EXIT_FAILURE;
-	// }
-	//
-	// // 如归档才检查数据目录
-	// if (options.need_archive())
-	// {
-	// 	if (!fs::exists(options.modis_data_path()) || !fs::is_directory(options.modis_data_path()))
-	// 	{
-	// 		cout << "错误! MODIS数据目录: " << options.modis_data_path()
-	// 			<< " 不存在或不是一个合法目录.." << endl;
-	// 		return -1;
-	// 	}
-	// }
-
 }
 
 

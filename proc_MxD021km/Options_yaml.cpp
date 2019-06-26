@@ -5,6 +5,7 @@
 
 proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 {
+	using namespace std;
 	try
 	{
 		check_node(node);
@@ -14,21 +15,21 @@ proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 		BOOST_LOG_TRIVIAL(error) << e.what();
 		exit(EXIT_FAILURE);
 	}
-	_input_hdf_file = node["HDFListFile"].as<std::string>();
-	_temp_dir = node["TmpPath"].as<std::string>();
+	_input_hdf_file = node["HDFListFile"].as<string>();
+	_temp_dir = node["TmpPath"].as<string>();
 	if (_temp_dir[_temp_dir.size() - 1] != '\\')
 		_temp_dir.push_back('\\');
 	_min_lon = node["MinLon"].as<double>();
 	_max_lon = node["MaxLon"].as<double>();
 	_min_lat = node["MinLat"].as<double>();
 	_max_lat = node["MaxLat"].as<double>();
-	_band = node["Band"].as<std::string>();
-	_mrt_kernel_type = node["MRTKernelType"].as<std::string>();
-	_mrt_projection_type = node["MRTProjectionType"].as<std::string>();
-	_mrt_projection_args = node["MRTProjectionArgs"].as<std::string>();
-	//_mrt_projection_sphere = node["MRTProjectionSphere"].as<std::string>();
-	_mrt_pixel_size = node["MRTPixelSize"].as<std::string>();
-	_output_image_file = node["OutputImageFile"].as<std::string>();
+	_band = node["Band"].as<string>();
+	_mrt_kernel_type = node["MRTKernelType"].as<string>();
+	_mrt_projection_type = node["MRTProjectionType"].as<string>();
+	_mrt_projection_args = node["MRTProjectionArgs"].as<string>();
+	//_mrt_projection_sphere = node["MRTProjectionSphere"].as<string>();
+	_mrt_pixel_size = node["MRTPixelSize"].as<string>();
+	_output_image_file = node["OutputImageFile"].as<string>();
 }
 
 

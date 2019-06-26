@@ -9,7 +9,10 @@
 #include "targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // 从 Windows 头文件中排除极少使用的内容
+
+#ifndef BOOST_ALL_DYN_LINK
 #define BOOST_ALL_DYN_LINK				// 指定BOOST库全部以动态链接形式装载
+#endif
 
 
 // Windows 头文件

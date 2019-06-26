@@ -29,7 +29,7 @@ namespace proc_MxD021km
 		/**
 		 * \brief 根据HDF文件名获取所使用的lut表路径
 		 * \param path_hdf_file hdf文件路径
-		 * \return 
+		 * \return
 		 */
 		static std::string get_lut_table(const std::string& path_hdf_file);
 
@@ -52,7 +52,7 @@ namespace proc_MxD021km
 		 */
 		static void preprocess(const Options_yaml&);
 
-	
+
 	};
 }
 
