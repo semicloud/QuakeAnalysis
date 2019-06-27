@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "../modis_api/Gdal_operation.h"
 
 namespace po = boost::program_options;
 namespace fs = boost::filesystem;
@@ -21,12 +22,15 @@ void init_logger()
 	modis_api::set_logger_severity(boost::log::trivial::info);
 	modis_api::init_console_logger();
 	modis_api::init_file_logger("logs//", PROGRAM);
-
 }
 
 int main(int argc, char** argv)
 {
 	init_logger();
+	// const std::string hdf_file("D:\\modis_workspace\\MOD05_L2\\2018\\001\\MOD05_L2.A2018001.0130.061.2018003202146.hdf");
+	// const std::string tmp_folder("D:\\modis_workspace\\tmp");
+	// double ulx=0, uly=0, lrx=0, lry=0;
+	// modis_api::Gdal_operation::read_geo_bound_py_h5(hdf_file, tmp_folder, ulx, uly, lrx, lry);
 
 	std::string yml_path;
 	YAML::Node node;

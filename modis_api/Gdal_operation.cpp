@@ -2,7 +2,7 @@
 
 #include "Gdal_operation.h"
 #include <armadillo>
-#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
@@ -10,6 +10,7 @@
 #include <boost/log/expressions.hpp>
 #include <boost/log/trivial.hpp>
 #include <gdal_priv.h>
+#include <filesystem>
 
 namespace fs = boost::filesystem;
 
@@ -302,5 +303,51 @@ bool modis_api::Gdal_operation::read_geo_bound(const std::string& hdf_path, cons
 	return true;
 }
 
+bool modis_api::Gdal_operation::read_geo_bound_py_h5(const std::string& hdf_path,
+	const std::string& tmp_folder,
+	double& ulx, double& uly, double& lrx, double& lry)
+{
+	using namespace boost;
+	using namespace std;
+	using namespace std::experimental::filesystem;
+	bool ans = false;
+	const path hdf_path_obj(hdf_path);
+	const path tmp_folder_obj(tmp_folder);
 
+	const string hdf_file_name = hdf_path_obj.filename().stem().string();
+	BOOST_LOG_TRIVIAL(debug) << "hdf file name: " << hdf_file_name;
 
+	const path h5_path_obj = tmp_folder_obj / str(format("%1%.%2%") % hdf_file_name % "h5");
+	BOOST_LOG_TRIVIAL(debug) << "h5 file path:" << h5_path_obj;
+
+	const string h4h5convert = str(format("h4toh5convert.exe %1% %2%")
+		% hdf_path % h5_path_obj.string());
+	BOOST_LOG_TRIVIAL(debug) << h4h5convert;
+	std::system(h4h5convert.c_str());
+	if (exists(h5_path_obj))
+	{
+		const std::string py_command = str(format("read_geo_bound.py %1% %2%") %
+			h5_path_obj.string() % to_lower_copy(hdf_file_name.substr(0, 5)));
+		BOOST_LOG_TRIVIAL(debug) << py_command;
+		std::system(py_command.c_str());
+		const path geo_txt_path_obj = tmp_folder_obj / str(format("%1%_geo.%2%") % hdf_file_name % "txt");
+		BOOST_LOG_TRIVIAL(debug) << "geo txt path:" << geo_txt_path_obj.string();
+		if (exists(geo_txt_path_obj))
+		{
+			std::string str;
+			getline(ifstream(geo_txt_path_obj.string()), str);
+			BOOST_LOG_TRIVIAL(debug) << "Geo bounds:" << str;
+			vector<string> geo_bounds;
+			split(geo_bounds, str, is_any_of(" "));
+			BOOST_LOG_TRIVIAL(debug) << "Load geo bounds: " << join(geo_bounds, ", ");
+			if (geo_bounds.size() != 4)
+				return false;
+			ulx = stod(geo_bounds[3]);
+			uly = stod(geo_bounds[0]);
+			lrx = stod(geo_bounds[2]);
+			lry = stod(geo_bounds[1]);
+			ans = true;
+		}
+	}
+	return ans;
+}

@@ -88,7 +88,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	for (const std::string& hdf_file_path : hdf_files)
 	{
 		double ulx, uly, lrx, lry;
-		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, "\":mod05:Water_Vapor_Infrared", ulx, uly, lrx, lry))
+		if (!modis_api::Gdal_operation::read_geo_bound_py_h5(hdf_file_path, temp_dir, ulx, uly, lrx, lry))
 		{
 			BOOST_LOG_TRIVIAL(error) << "提取GeoBound失败，跳过" << hdf_file_path << "文件的处理";
 			continue;

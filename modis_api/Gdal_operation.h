@@ -69,7 +69,28 @@ namespace modis_api
 		 */
 		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const std::string& hdf_path);
 
-		static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+
+		/**
+		 * \brief 读取HDF文件的GeoBound属性
+		 * \param hdf_path hdf文件路径
+		 * \param sds 子数据集名称
+		 * \param ulx upper left x，输出参数
+		 * \param uly upper left y，输出参数
+		 * \param lrx lower right x，输出参数
+		 * \param lry lower right y，输出参数
+		 * \return 提取成功返回ture，失败返回false
+		 * \remark 该函数通过读取子数据集的属性来获取空间范围（可能）是错误的，不应再使用
+		 * \remark 该函数，该函数只是为了记录有这种读取GeoBound的方法
+		 */
+		 static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+
+		/**
+		 * \brief 读取HDF文件的GeoBound属性
+		 * \param hdf_path hdf文件路径
+		 * \return 提取成功返回true，失败返回false
+		 */
+		static bool read_geo_bound_py_h5(const std::string& hdf_path, const std::string& tmp_folder,
+			double& ulx, double& uly, double& lrx, double& lry);
 	};
 }
 

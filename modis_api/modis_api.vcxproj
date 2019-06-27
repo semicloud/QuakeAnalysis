@@ -126,6 +126,7 @@ xcopy $(SolutionDir)ymlsamples\* $(TargetDir)ymlsamples /y /e /i
 xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
 
 copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
+copy $(SolutionDir)python\read_geo_bound.py $(TargetDir)read_geo_bound.py
 
 
 
@@ -209,6 +210,8 @@ xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
 copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
 copy $(SolutionDir)support\clear_temp_file.bat $(TargetDir)clear_temp_file.bat
 copy $(SolutionDir)\README.md $(TargetDir)README.md
+
+copy $(SolutionDir)python\read_geo_bound.py $(TargetDir)read_geo_bound.py
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

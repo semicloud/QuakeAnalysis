@@ -65,12 +65,12 @@ void modis_api::File_operation::clear_directory(const std::string& directory)
 	fs::directory_iterator it(directory);
 	for (; it != fs::directory_iterator(); ++it)
 	{
-		if (is_regular_file(it->path()))
+		if (fs::is_regular_file(it->path()))
 		{
 			fs::remove(it->path());
 			BOOST_LOG_TRIVIAL(debug) << str(boost::format("É¾³ýÎÄ¼þ%1%") % it->path().string());
 		}
-		else if (is_directory(it->path()))
+		else if (fs::is_directory(it->path()))
 		{
 			fs::remove_all(it->path());
 			BOOST_LOG_TRIVIAL(debug) << boost::str(boost::format("É¾³ýÄ¿Â¼%1%") % it->path().string());

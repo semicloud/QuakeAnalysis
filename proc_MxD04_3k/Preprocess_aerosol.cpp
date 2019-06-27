@@ -117,7 +117,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 	for (const std::string& hdf_file_path : hdf_files)
 	{
 		double ulx, uly, lrx, lry;
-		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, "\":mod04:Optical_Depth_Land_And_Ocean", ulx, uly, lrx, lry))
+		if (!modis_api::Gdal_operation::read_geo_bound_py_h5(hdf_file_path, temp_dir, ulx, uly, lrx, lry))
 		{
 			BOOST_LOG_TRIVIAL(error) << "提取GeoBound失败，跳过" << hdf_file_path << "文件的处理";
 			continue;
@@ -178,7 +178,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 
 		mat_optional->transform([](float dn) -> float
 		{
-			if (dn < 0 ) return 0;
+			if (dn < 0) return 0;
 			return (dn - OFFSET) * SCALE;
 		});
 
@@ -198,7 +198,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 	std::vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), std::back_inserter(mat_list),
 		[](const std::string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
-	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list,0);
+	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, 0);
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";
