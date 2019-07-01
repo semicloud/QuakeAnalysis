@@ -169,15 +169,17 @@ namespace QuakeAnalysis
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             FrmEddySetting frmEddySetting = new FrmEddySetting();
             frmEddySetting.ShowDialog();
+        }
+
+        private void btnPreprocess_Click_1(object sender, EventArgs e)
+        {
+            FrmModisPreprocess frmModisPreprocess = 
+                new FrmModisPreprocess(GetCheckedProducts());
+            frmModisPreprocess.ShowDialog();
         }
     }
 }

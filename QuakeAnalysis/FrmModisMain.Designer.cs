@@ -75,6 +75,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -86,8 +88,6 @@
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.ckBoxPreprocess = new System.Windows.Forms.CheckBox();
             this.ckBoxArchive = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -587,7 +587,25 @@
             this.groupBox4.Size = new System.Drawing.Size(285, 303);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "流程";
+            this.groupBox4.Text = "异常提取方法";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(189, 102);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 34;
+            this.button4.Text = "设置";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(189, 67);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 33;
+            this.button2.Text = "设置";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -653,6 +671,7 @@
             this.btnPreprocess.TabIndex = 29;
             this.btnPreprocess.Text = "设置";
             this.btnPreprocess.UseVisualStyleBackColor = true;
+            this.btnPreprocess.Click += new System.EventHandler(this.btnPreprocess_Click_1);
             // 
             // button3
             // 
@@ -662,7 +681,6 @@
             this.button3.TabIndex = 22;
             this.button3.Text = "设置";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnArchive
             // 
@@ -703,24 +721,6 @@
             this.ckBoxArchive.TabIndex = 14;
             this.ckBoxArchive.Text = "归档";
             this.ckBoxArchive.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(189, 67);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 33;
-            this.button2.Text = "设置";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(189, 102);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 34;
-            this.button4.Text = "设置";
-            this.button4.UseVisualStyleBackColor = true;
             // 
             // FrmModisMain
             // 

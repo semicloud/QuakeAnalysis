@@ -25,5 +25,25 @@ namespace QuakeAnalysis
             tabPage1.HorizontalScroll.Maximum = 0;
             tabPage1.AutoScroll = true;
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            gboxPlottingCommon.Enabled = checkBox1.Checked;
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            gboxContour.Enabled = checkBox5.Checked;
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            gboxPlottingEddyField.Enabled = checkBox3.Checked;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            gboxPlottingBackground.Enabled = checkBox2.Checked;
+        }
     }
 }
