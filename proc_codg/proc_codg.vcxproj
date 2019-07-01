@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="proc_codg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
