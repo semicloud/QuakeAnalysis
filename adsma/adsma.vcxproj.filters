@@ -18,12 +18,18 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="yml_intepreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="adsma.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="yml_intepreter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

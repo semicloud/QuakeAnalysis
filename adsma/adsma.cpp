@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <yaml-cpp/yaml.h>
+#include "yml_intepreter.h"
 
 namespace gr = boost::gregorian;
 namespace fs = boost::filesystem;
@@ -35,8 +36,10 @@ void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, c
 int main()
 {
 	init_logger();
-	generate_mxd11a1_ymls();
+	/*generate_mxd11a1_ymls();*/
 	//generate_txt_for_general_ano();
+	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
+	process(yml);
 }
 
 void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)

@@ -1,0 +1,58 @@
+Workspace: D:\modis_workspace
+TmpPath: D:\modis_workspace\tmp
+SelectedProducts: 
+  - MOD02
+  - MYD02
+  - MOD04
+  - MYD04
+  - MOD11
+StartDate: yyyyddd
+EndDate: yyyyddd
+PreprocessExtent: min_lon max_lon min_lat max_lat
+PlotExtent: min_lon max_lon min_lat max_lat
+PlotTitleSize: 16
+PlotBarTitleSize: 12
+ShpBoundary: xxxxx
+ShpFault: xxxxx
+ShpCity: xxxxxx
+QuakeRecord: xxxxx
+PlotDpi: xxxxx
+PlotSize: 12 8
+Archive: 
+  DataDir: xxxxx
+Preprocess:
+  BT:
+    Band: 31
+    MRTKernelType: NN
+    MRTProjectionType: EQRECT
+    MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    MRTPixelSize: 1000
+  AOD:
+    ResamplingType: NN
+    OutputProjectionType: CEA
+    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  WV:
+    ResamplingType: NN
+    OutputProjectionType: CEA
+    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  LST:
+    ResamplingType: NEAREST_NEIGHBOR
+    OutputProjectionType: ER
+    OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    OutputPixelSize: 1000
+EddyField:
+  CalcRef: true
+  CalcAno: true
+  AnoMethod: 1
+  PlotBackground:
+    Title: xxxxx
+    BarTitle: xxxxx
+  PlotEddyField:
+    Title: xxxxx
+    BarTitle: xxxxx
+GeneralAno:
+  PlotGeneralAno:
+    Title: xxxxx
+    BarTitle: xxxxx
+Rst-en:
+  PrepSupport: 2
