@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Date_utils.h"
+#include <boost/assert.hpp>
+#include <boost/format.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/date_time/local_time/dst_transition_day_rules.hpp>
@@ -111,33 +113,34 @@ get_doy_str_underline(const boost::gregorian::date& date)
 	return ans;
 }
 
+
 /**
- * \brief 将doy_str解析为date对象
+ * \brief 将DOY字符串转换为date对象
+ * \param date_str DOY字符串，为一个8位yyyymmdd或7位的字符串
  * \return
  */
 boost::gregorian::date modis_api::Date_utils::get_date_from_doy_str(const std::string& date_str)
 {
+	using namespace std;
+	using namespace boost;
+	using namespace gregorian;
 	//BOOST_LOG_TRIVIAL(debug) << "convert date_str " << date_str << " to date..";
-	if (date_str.length() != 7 && date_str.length() != 8)
-	{
-		BOOST_LOG_TRIVIAL(error) << "Unparsed date_str:" << date_str;
-		exit(EXIT_FAILURE);
-	}
-	const auto year = boost::lexical_cast<int>(date_str.substr(0, 4));
-	boost::gregorian::date ans;
+	BOOST_ASSERT_MSG(date_str.length() == 8 || date_str.length() == 7,
+		str(format("date str %1% is illegal!") % date_str).c_str());
+	const int year = lexical_cast<int>(date_str.substr(0, 4));
+	date ans;
 	if (date_str.length() == 7)
 	{
-		const auto doy = boost::lexical_cast<int>(trim_left_copy_if(date_str.substr(4, 3), boost::is_any_of("0")));
+		const int doy = boost::lexical_cast<int>(trim_left_copy_if(date_str.substr(4, 3), is_any_of("0")));
 		//BOOST_LOG_TRIVIAL(debug) << "doy: " << doy;
-		ans = boost::gregorian::date(year, 1, 1) + boost::gregorian::days(doy) + boost::gregorian::days(-1);
+		ans = date(year, 1, 1) + days(doy) + days(-1);
 	}
-
 	if (date_str.length() == 8)
 	{
-		const auto month = boost::lexical_cast<int>(trim_left_copy_if(date_str.substr(4, 2), boost::is_any_of("0")));
-		const auto day = boost::lexical_cast<int>(trim_left_copy_if(date_str.substr(6, 2), boost::is_any_of("0")));
+		const int month = lexical_cast<int>(trim_left_copy_if(date_str.substr(4, 2), is_any_of("0")));
+		const int day = lexical_cast<int>(trim_left_copy_if(date_str.substr(6, 2), is_any_of("0")));
 		//BOOST_LOG_TRIVIAL(debug) << "month: " << month << ", day: " << day;
-		ans = boost::gregorian::date(year, month, day);
+		ans = date(year, month, day);
 	}
 	BOOST_LOG_TRIVIAL(debug) << "date_str " << date_str << " to date object " << to_iso_string(ans);
 	return ans;

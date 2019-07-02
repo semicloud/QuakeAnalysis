@@ -302,6 +302,10 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	BOOST_LOG_TRIVIAL(debug) << "output image file: " << options.output_image_file();
 
 	if (exists(options.output_image_file())) remove(options.output_image_file());
+	path p(options.output_image_file());
+	BOOST_LOG_TRIVIAL(debug) << p.parent_path();
+	if (!exists(p.parent_path()))
+		create_directories(p.parent_path());
 	copy_file(source_dataset_path, options.output_image_file(), copy_options::overwrite_existing);
 
 	Gdal_operation::write_fmat_to_tif(options.output_image_file(), *final_matrix);

@@ -2,13 +2,12 @@ Workspace: D:\modis_workspace
 TmpPath: D:\modis_workspace\tmp
 SelectedProducts: 
   - MOD02
-  - MYD02
   - MOD04
   - MYD04
   - MOD11
-StartDate: yyyyddd
-EndDate: yyyyddd
-PreprocessExtent: min_lon max_lon min_lat max_lat
+StartDate: 20180101
+EndDate: 20180110
+PreprocessExtent: 100 140 20 50
 PlotExtent: min_lon max_lon min_lat max_lat
 PlotTitleSize: 16
 PlotBarTitleSize: 12

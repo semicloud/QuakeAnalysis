@@ -1,25 +1,15 @@
 #pragma once
 #include <yaml-cpp/yaml.h>
-#include <cassert>
-#include <iostream>
-#include <filesystem>
+#include <boost/date_time/gregorian/greg_date.hpp>
 #include <optional>
 #include <string>
+#include <filesystem>
 
-inline std::optional<YAML::Node> load_yml(const std::string& yml_path_str)
-{
-	using namespace std;
-	assert(std::filesystem::exists(yml_path_str));
-	try
-	{
-		YAML::Node node = YAML::LoadFile(yml_path_str);
-		return optional<YAML::Node>(node);
-	}
-	catch (std::exception& e)
-	{
-		cerr << "parse yml error! message: " << e.what() << endl;
-		std::exit(EXIT_FAILURE);
-	}
-}
+std::optional<YAML::Node> load_yml(const std::string& yml_path_str);
 
 int process(const std::string& yml_path_str);
+
+int generate_preprocess_bt_yml(const std::filesystem::path& workspace_path,
+	std::filesystem::path&& tmp_path, const std::string& product, 
+	const boost::gregorian::date& date_start,
+	const boost::gregorian::date& date_end, const YAML::Node& node);
