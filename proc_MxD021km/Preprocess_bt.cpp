@@ -39,7 +39,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	using namespace arma;
 	using namespace boost;
 	using namespace std;
-	using namespace std::experimental::filesystem;
+	using namespace std::filesystem;
 
 	vector<Input_file> input_files = Input_file::load(options.input_hdf_file());
 	BOOST_LOG_TRIVIAL(info) << "找到" << input_files.size() << "个待处理文件";
@@ -306,6 +306,8 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 	BOOST_LOG_TRIVIAL(debug) << p.parent_path();
 	if (!exists(p.parent_path()))
 		create_directories(p.parent_path());
+	if (exists(p))
+		remove(p);
 	copy_file(source_dataset_path, options.output_image_file(), copy_options::overwrite_existing);
 
 	Gdal_operation::write_fmat_to_tif(options.output_image_file(), *final_matrix);
