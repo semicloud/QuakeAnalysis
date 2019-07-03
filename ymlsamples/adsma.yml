@@ -1,5 +1,6 @@
 Workspace: D:\modis_workspace
 TmpPath: D:\modis_workspace\tmp
+YmlFolderPath: D:\modis_workspace\generated_ymls
 SelectedProducts: 
   - MOD02
   - MOD04
@@ -8,7 +9,7 @@ SelectedProducts:
 StartDate: 20180101
 EndDate: 20180110
 PreprocessExtent: 100 140 20 50
-PlotExtent: min_lon max_lon min_lat max_lat
+PlotExtent: 100 140 20 50
 PlotTitleSize: 16
 PlotBarTitleSize: 12
 ShpBoundary: xxxxx

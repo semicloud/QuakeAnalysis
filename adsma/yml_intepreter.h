@@ -7,6 +7,13 @@
 
 std::optional<YAML::Node> load_yml(const std::string& yml_path_str);
 
+/**
+ * \brief 从Node中解析出开始日期和结束日期
+ * \param node
+ * \return
+ */
+std::vector<boost::gregorian::date> parse_date(const YAML::Node& node);
+
 int process(const std::string& yml_path_str);
 
 /**
@@ -92,5 +99,5 @@ std::string generate_preprocess_bt_yml_str(
  * \param out_max_lat 最大纬度，输出
  * \return
  */
-int parse_lon_lat(const std::string& lon_lat_str, float& out_min_lon,
+int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon,
 	float& out_max_lon, float& out_min_lat, float& out_max_lat);

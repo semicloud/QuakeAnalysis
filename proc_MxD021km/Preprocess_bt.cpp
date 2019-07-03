@@ -123,7 +123,8 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 #pragma region 检查tif文件是否存在
 
 		//使用MRT提取的亮温tif文件路径
-		const std::string bt_tif_file_path = str(format("%1%%2%%3%.tif") % tmp_folder % bt_file_without_extension % get_suffix_bt(stoi(options.band())));
+		//const std::string bt_tif_file_path = str(format("%1%%2%%3%.tif") % tmp_folder % bt_file_without_extension % get_suffix_bt(stoi(options.band())));
+		const std::string bt_tif_file_path = (tmp_folder / str(format("%1%%2%.tif") % bt_file_without_extension % get_suffix_bt(stoi(options.band())))).string();
 		if (exists(bt_tif_file_path) && is_regular_file(bt_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "亮温tif文件提取完成，提取的tif文件：" << bt_tif_file_path;
@@ -136,7 +137,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		}
 
 		//使用MRT提取的太阳天顶角tif文件路径
-		const std::string sza_tif_file_path = str(format("%1%%2%%3%.tif") % tmp_folder % sza_file_without_extension % SUFFIX_SZA);
+		const std::string sza_tif_file_path = (tmp_folder / str(format("%1%%2%.tif") % sza_file_without_extension % SUFFIX_SZA)).string();
 		if (exists(sza_tif_file_path) && is_regular_file(sza_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "太阳天顶角tif文件提取完成，提取的tif文件：" << sza_tif_file_path;
@@ -149,7 +150,7 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 		}
 
 		//使用MRT提取的云掩膜tif文件路径
-		const std::string cm_tif_file_path = str(format("%1%%2%%3%.tif") % tmp_folder % cm_file_without_extension % SUFFIX_CM);
+		const std::string cm_tif_file_path = (tmp_folder / str(format("%1%%2%.tif") % cm_file_without_extension % SUFFIX_CM)).string();
 		if (exists(cm_tif_file_path) && is_regular_file(cm_tif_file_path))
 		{
 			BOOST_LOG_TRIVIAL(info) << "云掩膜tif文件提取完成，提取的tif文件：" << cm_tif_file_path;
@@ -252,8 +253,8 @@ void proc_MxD021km::Preprocess_bt::preprocess(const Options_yaml& options)
 
 		//调用GDAL将最终计算结果保存到GTiff
 		//预处理后的数据集名为原数据集名后+preprocessed
-		const std::string bt_preprocess_dataset_name = str(boost::format("%1%%2%.tif") % bt_file_without_extension %SUFFIX_PREPROCESSED_BT);
-		const std::string bt_preprocess_dataset_path = str(boost::format("%1%%2%") % tmp_folder % bt_preprocess_dataset_name);
+		const std::string bt_preprocess_dataset_name = str(format("%1%%2%.tif") % bt_file_without_extension %SUFFIX_PREPROCESSED_BT);
+		const std::string bt_preprocess_dataset_path = (tmp_folder / bt_preprocess_dataset_name).string();
 		BOOST_LOG_TRIVIAL(debug) << "预处理后的数据集：" << bt_preprocess_dataset_path;
 
 		bool success = Gdal_operation::translate_copy(bt_tif_file_path, bt_preprocess_dataset_path, "-ot Float32");

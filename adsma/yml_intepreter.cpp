@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "yml_intepreter.h"
 #include "../modis_api/Date_utils.h"
+#include "../modis_api/File_operation.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/assert.hpp>
 #include <boost/date_time/gregorian/greg_date.hpp>
@@ -11,22 +12,37 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include "../modis_api/File_operation.h"
 
 std::optional<YAML::Node> load_yml(const std::string& yml_path_str)
 {
 	using namespace std;
-	assert(std::filesystem::exists(yml_path_str));
+	using namespace std::filesystem;
+	using namespace YAML;
+
+	BOOST_ASSERT(exists(yml_path_str));
 	try
 	{
-		YAML::Node node = YAML::LoadFile(yml_path_str);
-		return optional<YAML::Node>(node);
+		Node node = LoadFile(yml_path_str);
+		return optional<Node>(node);
 	}
 	catch (std::exception& e)
 	{
 		cerr << "parse yml error! message: " << e.what() << endl;
-		std::exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
+}
+
+std::vector<boost::gregorian::date> parse_date(const YAML::Node& node)
+{
+	using namespace std;
+	using namespace boost::gregorian;
+	using namespace modis_api;
+	const string date_start_str = node["StartDate"].as<string>();
+	const string date_end_str = node["EndDate"].as<string>();
+	const date d1 = Date_utils::get_date_from_doy_str(date_start_str);
+	const date d2 = Date_utils::get_date_from_doy_str(date_end_str);
+	BOOST_ASSERT(d1 <= d2);
+	return vector<date>{d1, d2};
 }
 
 int process(const std::string& yml_path_str)
@@ -42,12 +58,13 @@ int process(const std::string& yml_path_str)
 
 	if (std::optional<Node> node_optional = load_yml(yml_path.string()))
 	{
-
 		const Node node = node_optional.value();
-		const path workspace_path = node["Workspace"].as<string>();
+		const path workspace_path(node["Workspace"].as<string>());
 		BOOST_ASSERT_MSG(exists(workspace_path) && is_directory(workspace_path), "workspace path is illegal!");
-		const path tmp_path = node["TmpPath"].as<string>();
+		const path tmp_path(node["TmpPath"].as<string>());
 		BOOST_ASSERT_MSG(exists(tmp_path) && is_directory(tmp_path), "tmp path is illegal!");
+		const path yml_folder_path(node["YmlFolderPath"].as<string>());
+		if (!exists(yml_folder_path)) create_directories(yml_folder_path);
 
 		const vector<string> products = node["SelectedProducts"].as<vector<string>>();
 		BOOST_ASSERT_MSG(!products.empty(), "No selected products found!");
@@ -55,19 +72,15 @@ int process(const std::string& yml_path_str)
 		BOOST_LOG_TRIVIAL(debug) << "load " << products.size() << " products";
 		BOOST_LOG_TRIVIAL(debug) << join(products, ",");
 
-		const string date_start_str = node["StartDate"].as<string>();
-		const string date_end_str = node["EndDate"].as<string>();
-		date date_start = Date_utils::get_date_from_doy_str(date_start_str);
-		date date_end = Date_utils::get_date_from_doy_str(date_end_str);
+		vector<date> dates = parse_date(node);
+		date date_start = dates[0], date_end = dates[1];
+		BOOST_LOG_TRIVIAL(debug) << "Start date: " << date_start;
+		BOOST_LOG_TRIVIAL(debug) << "End date: " << date_end;
 
-		const string preprocess_extent = node["PreprocessExtent"].as<string>();
-		float preprocess_min_lon = 0, preprocess_max_lon = 0,
-			preprocess_min_lat = 0, preprocess_max_lat = 0;
-		int ret = parse_lon_lat(preprocess_extent, preprocess_min_lon,
-			preprocess_max_lon, preprocess_min_lat, preprocess_max_lat);
+		const string pp_extent = node["PreprocessExtent"].as<string>();
+		float pp_min_lon = 0, pp_max_lon = 0, pp_min_lat = 0, pp_max_lat = 0;
+		int ret = split_lonlat_str(pp_extent, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat);
 		BOOST_ASSERT(ret == EXIT_SUCCESS);
-
-		const path yml_folder_path("D:\\modis_workspace\\generated_ymls");
 
 		for (const string& product : products)
 		{
@@ -82,12 +95,22 @@ int process(const std::string& yml_path_str)
 					const string mrt_projection_args = subNode["MRTProjectionArgs"].as<string>();
 					const float mrt_pixel_size = subNode["MRTPixelSize"].as<float>();
 					prepare_bt(workspace_path, tmp_path, date_start, date_end,
-						product.substr(0, 3), preprocess_min_lon, preprocess_max_lon,
-						preprocess_min_lat, preprocess_max_lat, band, mrt_kernel_type,
+						product.substr(0, 3), pp_min_lon, pp_max_lon,
+						pp_min_lat, pp_max_lat, band, mrt_kernel_type,
 						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
 				}
 			}
 		}
+
+		vector<string> generated_ymls = File_operation::get_all_files_by_extension(yml_folder_path.string(), ".yml");
+		for (vector<string>::value_type generated_yml : generated_ymls)
+		{
+			cout << str(format("proc_MxD021km.exe -y %1% -d") % generated_yml) << endl;
+			system(str(format("proc_MxD021km.exe -y %1% -d") % generated_yml).c_str());
+
+			Sleep(10 * 1000);
+		}
+		BOOST_LOG_TRIVIAL(debug) << "Done!";
 	}
 
 	return EXIT_SUCCESS;
@@ -126,7 +149,7 @@ int prepare_bt(const std::filesystem::path& workspace_path,
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
 
 		// generate yml
-		const path yml_path = yml_folder_path / str(format("%1%_bt_%2%.yml") % product_type % year_and_day);
+		const path yml_path = yml_folder_path / str(format("pp_bt_%1%_%2%.yml") % product_type % year_and_day);
 		const path output_file_path = workspace_path / "Standard" / "BT" / product_type / (year_and_day + ".tif");
 		const string yml_str = generate_preprocess_bt_yml_str(hdf_list_path, tmp_path, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat,
 			band, mrt_kernel_type, mrt_projection_type, mrt_projection_args, mrt_pixel_size, output_file_path);
@@ -238,7 +261,7 @@ std::string generate_preprocess_bt_yml_str(
 	return emt.c_str();
 }
 
-int parse_lon_lat(const std::string& lon_lat_str, float& out_min_lon, float& out_max_lon, float& out_min_lat,
+int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon, float& out_max_lon, float& out_min_lat,
 	float& out_max_lat)
 {
 	using namespace std;
