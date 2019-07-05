@@ -82,6 +82,8 @@ int process(const std::string& yml_path_str)
 		int ret = split_lonlat_str(pp_extent, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat);
 		BOOST_ASSERT(ret == EXIT_SUCCESS);
 
+		const string PREPROCESS = "Preprocess";
+
 		for (const string& product : products)
 		{
 			if (product.find("02") != string::npos)
@@ -100,20 +102,101 @@ int process(const std::string& yml_path_str)
 						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
 				}
 			}
+			else if (product.find("04") != string::npos)
+			{
+				if (node["Preprocess"].IsDefined() && node["Preprocess"]["AOD"].IsDefined())
+				{
+					const Node subNode = node[PREPROCESS]["AOD"];
+					const string resampling_type = subNode["ResamplingType"].as<string>();
+					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
+					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
+					prepare_aod_or_wv(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
+						yml_folder_path);
+				}
+			}
+			else if (product.find("05") != string::npos)
+			{
+				if (node["Preprocess"].IsDefined() && node["Preprocess"]["WV"].IsDefined())
+				{
+					const Node subNode = node[PREPROCESS]["WV"];
+					const string resampling_type = subNode["ResamplingType"].as<string>();
+					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
+					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
+					prepare_aod_or_wv(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
+						yml_folder_path);
+				}
+			}
 		}
 
-		vector<string> generated_ymls = File_operation::get_all_files_by_extension(yml_folder_path.string(), ".yml");
+		/*vector<string> generated_ymls = File_operation::get_all_files_by_extension(yml_folder_path.string(), ".yml");
 		for (vector<string>::value_type generated_yml : generated_ymls)
 		{
 			cout << str(format("proc_MxD021km.exe -y %1% -d") % generated_yml) << endl;
 			system(str(format("proc_MxD021km.exe -y %1% -d") % generated_yml).c_str());
 
 			Sleep(10 * 1000);
-		}
+		}*/
 		BOOST_LOG_TRIVIAL(debug) << "Done!";
 	}
 
 	return EXIT_SUCCESS;
+}
+
+int prepare_aod_or_wv(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	const boost::gregorian::date& date_start,
+	const boost::gregorian::date& date_end,
+	const std::string& m_product,
+	float pp_min_lon, float pp_max_lon, float pp_min_lat, float pp_max_lat,
+	const std::string& resampling_type,
+	const std::string& output_projection_type,
+	const std::string& output_projection_parameters,
+	const std::filesystem::path& yml_folder_path)
+{
+	using namespace std;
+	using namespace filesystem;
+	using namespace boost;
+	using namespace gregorian;
+	using namespace YAML;
+	using namespace modis_api;
+
+	const string product_type = m_product.substr(0, 3);
+	const string product_code = m_product.substr(3, 2);
+	BOOST_ASSERT_MSG(product_code == "04" || product_code=="05", "wrong product code!");
+	string product;
+	if (product_code == "04")
+		product = "AOD";
+	else if (product_code == "05")
+		product = "WV";
+	BOOST_LOG_TRIVIAL(debug) << "product: " << product << ", product type: " << product_type;
+
+	const path new_tmp_path = tmp_path / product;
+	if (!exists(new_tmp_path)) create_directories(new_tmp_path);
+	if (!exists(yml_folder_path)) create_directories(yml_folder_path);
+
+	for (day_iterator it = day_iterator(date_start); it <= date_end; ++it)
+	{
+		const string year_and_day = Date_utils::get_doy_str(*it);
+		// generate hdf list file
+		const path hdf_list_path = yml_folder_path / str(format("%1%_%2%_hdf_list_%3%.txt") % product_type % to_lower_copy(product) % year_and_day);
+		const string hdf_list_str = generate_preprocess_aod_wv_list_str(workspace_path, product_code, product_type, *it);
+		int ret = File_operation::write_to_file(hdf_list_path.string(), hdf_list_str);
+		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
+
+		// generate yml
+		const path yml_path = yml_folder_path / str(format("pp_%1%_%2%_%3%.yml") % to_lower_copy(product) % product_type % year_and_day);
+		const path output_file_path = workspace_path / "Standard" / product / product_type / (year_and_day + ".tif");
+		const string yml_str = generate_preprocess_aod_wv_yml_str(hdf_list_path, tmp_path,
+			pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
+			output_projection_type, output_projection_parameters, output_file_path);
+		ret = File_operation::write_to_file(yml_path.string(), yml_str);
+		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate yml failed!");
+	}
+	return EXIT_SUCCESS;
+
 }
 
 int prepare_bt(const std::filesystem::path& workspace_path,
@@ -157,6 +240,65 @@ int prepare_bt(const std::filesystem::path& workspace_path,
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
 	}
 	return EXIT_SUCCESS;
+}
+
+std::string generate_preprocess_aod_wv_list_str(const std::filesystem::path& workspace_path,
+	const std::string& product_code, const std::string& product_type,
+	const boost::gregorian::date& date)
+{
+	using namespace std;
+	using namespace filesystem;
+	using namespace boost;
+	using namespace gregorian;
+	using namespace modis_api;
+	BOOST_ASSERT_MSG(product_code == "04" || product_code == "05", "wrong prodcut code!");
+	BOOST_ASSERT_MSG(product_type == "MOD" || product_type == "MYD", "wrong product type!");
+
+	ostringstream oss;
+	const string year_and_day = Date_utils::get_doy_str(date);
+	const string year = Date_utils::get_doy_year(year_and_day);
+	const string day_of_year = Date_utils::get_doy_day(year_and_day);
+	path product_path;
+	if (product_code == "04")
+		product_path = workspace_path / (product_type + "04_3K") / year / day_of_year;
+	else if (product_code == "05")
+		product_path = workspace_path / (product_type + "05_L2") / year / day_of_year;
+	BOOST_LOG_TRIVIAL(debug) << "Product path: " << product_path.string();
+	BOOST_ASSERT_MSG(exists(product_path), "wrong product path!");
+
+	vector<string> files = File_operation::get_all_files_by_extension(product_path.string(), ".hdf");
+	BOOST_ASSERT_MSG(!files.empty(), "no file found!");
+
+	for_each(files.cbegin(), files.cend(), [&oss](const string& path) { oss << path << "\n"; });
+
+	return oss.str();
+}
+
+std::string generate_preprocess_aod_wv_yml_str(
+	const std::filesystem::path& hdf_list_file_path,
+	const std::filesystem::path& tmp_path,
+	float min_lon, float max_lon, float min_lat, float max_lat,
+	const std::string& resampling_type,
+	const std::string& output_projection_type,
+	const std::string& output_projection_parameters,
+	const std::filesystem::path& output_image_path)
+{
+	using namespace std;
+	using namespace boost;
+	auto s = [](const char* cc) {return string(cc); };
+	unordered_map<string, string> umap;
+	umap.insert({ string("HDFListFile"),  hdf_list_file_path.string() });
+	umap.insert({ string("MinLon"),  lexical_cast<string>(min_lon) });
+	umap.insert({ string("MaxLon"),  lexical_cast<string>(max_lon) });
+	umap.insert({ string("MinLat"),  lexical_cast<string>(min_lat) });
+	umap.insert({ string("MaxLat"),  lexical_cast<string>(max_lat) });
+	umap.insert({ string("ResamplingType"),  resampling_type });
+	umap.insert({ string("OutputProjectionType"),  output_projection_type });
+	umap.insert({ string("OutputProjectionParameters"),  output_projection_parameters });
+	umap.insert({ string("OutputImageFile"),  output_image_path.string() });
+	umap.insert({ string("TmpPath"),  tmp_path.string() });
+	string yml_str = get_yml_str(umap);
+	return yml_str;
 }
 
 std::string generate_preprocess_bt_hdf_list_str(const std::filesystem::path& workspace_path,
@@ -275,4 +417,20 @@ int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon, float& 
 	BOOST_LOG_TRIVIAL(debug) << str(boost::format("Parse lon lat from %1%: %2%, %3%, %4%, %5%")
 		% lon_lat_str % out_min_lon % out_max_lon % out_min_lat % out_max_lat);
 	return EXIT_SUCCESS;
+}
+
+std::string get_yml_str(const std::unordered_map<std::string, std::string>& umap)
+{
+	using namespace std;
+	using namespace YAML;
+	BOOST_ASSERT_MSG(!umap.empty(), "empty map!");
+	Emitter emt;
+	emt << BeginMap;
+	for (unordered_map<string, string>::const_iterator it = umap.cbegin();
+		it != umap.cend(); ++it)
+	{
+		emt << Key << it->first << Value << it->second;
+	}
+	emt << EndMap;
+	return emt.c_str();
 }

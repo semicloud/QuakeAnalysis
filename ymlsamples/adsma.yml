@@ -4,7 +4,7 @@ YmlFolderPath: D:\modis_workspace\generated_ymls
 SelectedProducts: 
   - MOD02
   - MOD04
-  - MYD04
+  - MOD05
   - MOD11
 StartDate: 20180101
 EndDate: 20180110
