@@ -15,42 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CodgItem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="codg_parser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="collections.h">
+    <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="strings.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="files.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="collections.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="proc_codg.cpp">
+    <ClCompile Include="commons.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CodgItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="codg_parser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="collections.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="strings.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test_strings.cpp">
+    <ClCompile Include="files.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="collections.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

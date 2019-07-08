@@ -2,15 +2,23 @@
 //
 
 #include "pch.h"
-#include <boost/filesystem.hpp>
+#include "CodgItem.h"
+#include <vector>
 #include <iostream>
 
-int main()
+int main(int argc, char** argv)
 {
-    std::cout << "Hello World!\n";
-	std::cout << boost::filesystem::exists("C:\\demo.txt") << std::endl;
+	using namespace std;
+	std::cout << "Hello World!\n";
+	vector<CodgItem> codg_items = CodgItem::load_items("CODG1950.17I");
+	for (CodgItem& item : codg_items)
+	{
+		cout << item.year() << ", " << item.month() << ", " << item.day() << ", " << item.hour() << endl;
+	}
 	return 0;
 }
+
+
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单
