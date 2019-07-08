@@ -3,7 +3,6 @@
 
 #include "pch.h"
 #include "CodgItem.h"
-#include <filesystem>
 #include <vector>
 #include <iostream>
 
@@ -11,7 +10,6 @@ int main(int argc, char** argv)
 {
 	using namespace std;
 	std::cout << "Hello World!\n";
-	std::cout << std::filesystem::exists("C:\\demo.txt") << std::endl;
 	vector<CodgItem> codg_items = CodgItem::load_items("CODG1950.17I");
 	for (CodgItem& item : codg_items)
 	{

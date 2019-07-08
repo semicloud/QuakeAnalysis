@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "codg_parser.h"
+#include "strings.h"
 #include "collections.h"
+#include <boost/log/trivial.hpp>
 #include <boost/algorithm/string.hpp>
 
 std::optional<arma::fmat> parse_fmat(const std::vector<std::string>& dataSec)
@@ -25,4 +27,31 @@ std::optional<arma::fmat> parse_fmat(const std::vector<std::string>& dataSec)
 	}
 	const arma::fmat mat(mat_str);
 	return optional<arma::fmat>(mat);
+}
+
+int parse_epoch(const std::vector<std::string>& dataSec, int& year, int& month, int& day, int& hour)
+{
+	using namespace std;
+	BOOST_ASSERT(!dataSec.empty());
+	vector<string>::const_iterator it = find_if(dataSec.cbegin(), dataSec.cend(),
+		[](const string& str) {
+		return str.find("EPOCH OF CURRENT MAP") != string::npos;
+	});
+	if (it == dataSec.cend())
+	{
+		BOOST_LOG_TRIVIAL(error) << "No EPOCH OF CURRENT MAP found!";
+		cerr << "ERROR! No EPOCH OF CURRENT MAP found!" << endl;
+	}
+	vector<string> epochs;
+	string epoch = boost::trim_copy(it->substr(0, 40));
+	BOOST_LOG_TRIVIAL(debug) << "Epoch: " << epoch;
+	string trimmed_epoch = trim_inner_copy(epoch);
+
+	split(epochs, trimmed_epoch, boost::is_any_of(" "));
+	BOOST_ASSERT(epochs.size() == 6);
+	year = stoi(epochs[0]);
+	month = stoi(epochs[1]);
+	day = stoi(epochs[2]);
+	hour = stoi(epochs[3]);
+	return EXIT_SUCCESS;
 }
