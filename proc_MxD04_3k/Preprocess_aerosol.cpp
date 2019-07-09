@@ -159,10 +159,10 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 
 		//经过GDAL处理的Heg提取的.tif文件路径
 		const string heg_gdal_tif_path = (temp_dir / str(format("%1%_heg_gdal.tif") % path(hdf_file_path).stem().string())).string();
-		const string gdal_argument = str(boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"")
+		const string gdal_argument = str(format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"")
 			% min_lon % max_lat % max_lon % min_lat);
 		modis_api::Gdal_operation::translate_copy(heg_tif_path, heg_gdal_tif_path, gdal_argument);
-		if (!boost::filesystem::exists(heg_gdal_tif_path))
+		if (!filesystem::exists(heg_gdal_tif_path))
 		{
 			BOOST_LOG_TRIVIAL(error) << "调用gdal_translate.exe处理" << heg_tif_path << "文件失败，跳过" << hdf_file_path << "文件的处理";
 			BOOST_LOG_TRIVIAL(error) << "gdal_argument: " << gdal_argument;

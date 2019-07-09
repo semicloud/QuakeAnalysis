@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "Heg_utils.h"
 #include "Program_operation.h"
-#include <boost/filesystem.hpp>
 #include <boost/format/free_funcs.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 #include <sstream>
 #include <Windows.h>
 
@@ -34,17 +34,22 @@ void modis_api::Heg_utils::run_heg(cs input_file_name, cs object_name, cs field_
 	double max_lat, cs resampling_type, cs output_projection_type, cs ellipsoid_code, cs output_projection_parameters,
 	cs output_filename, cs output_type, cs temp_dir)
 {
+	using namespace std;
+	using namespace filesystem;
+	path tmp_folder_path(temp_dir);
+
 	BOOST_LOG_TRIVIAL(debug) << "调用Heg提取.tif文件，输入文件：" << input_file_name;
-	BOOST_LOG_TRIVIAL(debug) << "提取操作将在" << temp_dir << "目录下完成";
-	if (!boost::filesystem::exists(temp_dir))
+	BOOST_LOG_TRIVIAL(debug) << "提取操作将在" << tmp_folder_path.string() << "目录下完成";
+
+	if (!exists(tmp_folder_path))
 	{
-		boost::filesystem::create_directories(temp_dir);
-		BOOST_LOG_TRIVIAL(debug) << "已创建目录" << temp_dir;
+		create_directories(tmp_folder_path);
+		BOOST_LOG_TRIVIAL(debug) << "已创建目录" << tmp_folder_path;
 	}
 
 	try
 	{
-		std::string current_path = boost::filesystem::current_path().string();
+		std::string current_path = filesystem::current_path().string();
 		// 找到程序目录下的Heg_prm.tt文件，该文件是HEG使用的PRM文件的一个模板
 		std::string heg_prm = load_template_string(current_path + "\\templates\\HEG.tt");
 		// 向模板里面填入参数
@@ -53,7 +58,7 @@ void modis_api::Heg_utils::run_heg(cs input_file_name, cs object_name, cs field_
 			% output_projection_type % ellipsoid_code % output_projection_parameters % output_filename % output_type);
 		//BOOST_LOG_TRIVIAL(info) << prm_str;
 		//保存prm文件
-		const std::string prm_path = temp_dir + boost::filesystem::path(input_file_name).stem().string() + ".prm";
+		const std::string prm_path = (tmp_folder_path / (path(input_file_name).stem().string() + ".prm")).string();
 		BOOST_LOG_TRIVIAL(debug) << "Prm文件内容：\n" << prm_str;
 		std::ofstream ofs(prm_path);
 		if (ofs)
@@ -75,7 +80,7 @@ void modis_api::Heg_utils::run_heg(cs input_file_name, cs object_name, cs field_
 		const std::string bat_str = str(boost::format(heg_bat) % heg_home % prm_path);
 		BOOST_LOG_TRIVIAL(debug) << "Bat文件内容：\n" << bat_str;
 
-		const std::string bat_path = temp_dir + boost::filesystem::path(input_file_name).stem().string() + ".bat";
+		const std::string bat_path = (tmp_folder_path / (path(input_file_name).stem().string() + ".bat")).string();
 		ofs.open(bat_path);
 		if (ofs)
 		{

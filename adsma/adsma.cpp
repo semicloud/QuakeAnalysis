@@ -33,13 +33,70 @@ void generate_mxd11a1_ymls();
 void generate_txt_for_general_ano();
 void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref);
 
+int run_programs(const std::string& ymls_folder);
+
+int run_programs(const std::string& ymls_folder)
+{
+	using namespace std;
+	using namespace filesystem;
+	path ymls_folder_path(ymls_folder);
+	vector<string> yml_files = modis_api::File_operation::get_all_files_by_extension(ymls_folder_path.string(), ".yml");
+	for (const string& yml_file : yml_files)
+	{
+		path yml_file_path(yml_file);
+		string file_name = yml_file_path.filename().string();
+		BOOST_LOG_TRIVIAL(debug) << "Yml file name: " << file_name;
+		vector<string> file_name_components;
+		split(file_name_components, file_name, boost::is_any_of("_"));
+		const string operation = file_name_components[0];
+		const string product = file_name_components[1];
+		const string product_type = file_name_components[2];
+		if (operation == "pp")
+		{
+			if (product == "bt")
+			{
+				const string cmd = str(boost::format("%1% -y %2% -d") % "proc_MxD021km.exe" % yml_file_path.string());
+				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
+				int i = system(cmd.c_str());
+				assert(i == 0);
+			}
+			else if (product == "aod")
+			{
+				const string cmd = str(boost::format("%1% -y %2% -d") % "proc_MxD04_3k.exe" % yml_file_path.string());
+				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
+				int i = system(cmd.c_str());
+				assert(i == 0);
+			}
+			else if (product == "wv")
+			{
+				const string cmd = str(boost::format("%1% -y %2% -d") % "proc_MxD05_L2.exe" % yml_file_path.string());
+				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
+				int i = system(cmd.c_str());
+				assert(i == 0);
+
+			}
+			else if (product == "lst")
+			{
+				const string cmd = str(boost::format("%1% -y %2% -d") % "proc_MxD11A1.exe" % yml_file_path.string());
+				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
+				int i = system(cmd.c_str());
+				assert(i == 0);
+			}
+		}
+	}
+	return EXIT_SUCCESS;
+}
+
+
 int main()
 {
 	init_logger();
 	/*generate_mxd11a1_ymls();*/
 	//generate_txt_for_general_ano();
 	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
-	process(yml);
+	//process(yml);
+	run_programs("D:\\modis_workspace\\generated_ymls");
+
 }
 
 void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)
