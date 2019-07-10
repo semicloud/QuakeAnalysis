@@ -1,7 +1,6 @@
 #pragma once
 #include <yaml-cpp/yaml.h>
 #include <boost/date_time/gregorian/greg_date.hpp>
-#include <map>
 #include <optional>
 #include <string>
 #include <filesystem>
@@ -249,3 +248,13 @@ int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon,
  * \return 
  */
 std::string get_yml_str(const std::unordered_map<std::string, std::string>& umap);
+
+/**
+ * \brief 相关待预处理数据是否已存在
+ * \param workspace 工作空间目录
+ * \param product 产品，要求使用产品全称，如MOD11A1
+ * \param year_and_day 年份及天数字符串
+ * \return 数据存在返回true，不存在返回false
+ */
+bool is_data_exist(const std::filesystem::path& workspace, 
+	const std::string& product, const std::string& year_and_day);

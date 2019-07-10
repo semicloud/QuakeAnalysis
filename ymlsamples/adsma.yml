@@ -3,8 +3,8 @@ TmpPath: D:\modis_workspace\tmp
 YmlFolderPath: D:\modis_workspace\generated_ymls
 SelectedProducts: 
   - MOD11
-StartDate: 20180101
-EndDate: 20181231
+StartDate: 20150101
+EndDate: 20151231
 PreprocessExtent: 115 120 40 45
 PlotExtent: 100 140 20 50
 PlotTitleSize: 16

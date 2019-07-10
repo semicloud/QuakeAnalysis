@@ -10,7 +10,6 @@
 #include <vector>
 #include <optional>
 #include <iostream>
-#include <fstream>
 #include <filesystem>
 
 std::optional<YAML::Node> load_yml(const std::string& yml_path_str)
@@ -137,7 +136,7 @@ int process(const std::string& yml_path_str)
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
 					const float output_pixel_size = subNode["OutputPixelSize"].as<float>();
-					prepare_lst(workspace_path, tmp_path, date_start, date_end, product.substr(0,3), pp_min_lon,
+					prepare_lst(workspace_path, tmp_path, date_start, date_end, product.substr(0, 3), pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 						output_projection_type, output_projection_parameters, output_pixel_size,
 						yml_folder_path);
@@ -184,6 +183,8 @@ int prepare_lst(const std::filesystem::path& workspace_path,
 	for (day_iterator it = day_iterator(date_start); it <= date_end; ++it)
 	{
 		const string year_and_day = Date_utils::get_doy_str(*it);
+		if (!is_data_exist(workspace_path, str(format("%1%11A1") % product_type), year_and_day))
+			continue;
 		// generate hdf list file
 		const path hdf_list_path = yml_folder_path / str(format("%1%_lst_hdf_list_%2%.txt") % product_type % year_and_day);
 		const string hdf_list_str = generate_preprocess_lst_hdf_list_str(workspace_path, product_type, *it);
@@ -546,4 +547,26 @@ std::string get_yml_str(const std::unordered_map<std::string, std::string>& umap
 	}
 	emt << EndMap;
 	return emt.c_str();
+}
+
+bool is_data_exist(const std::filesystem::path& workspace, const std::string& product, const std::string& year_and_day)
+{
+	using namespace std;
+	using namespace std::filesystem;
+	using namespace boost;
+	const string year = year_and_day.substr(0, 4);
+	const string day = year_and_day.substr(4, 3);
+	path data_folder = workspace / product / year / day;
+
+	if (!exists(data_folder))
+	{
+		BOOST_LOG_TRIVIAL(error) << "不存在的目录：" << data_folder << "，无法进行预处理";
+		return false;
+	}
+	if (filesystem::is_empty(data_folder))
+	{
+		BOOST_LOG_TRIVIAL(error) << "目录为空：" << data_folder << "，无法进行预处理";
+		return false;
+	}
+	return true;
 }

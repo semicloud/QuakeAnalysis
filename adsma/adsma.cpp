@@ -24,6 +24,7 @@ namespace y = YAML;
 
 inline void init_logger() {
 	m::init_console_logger();
+	m::init_file_logger("//logs", "adsma");
 	m::set_logger_severity(boost::log::trivial::debug);
 }
 std::string get_doy_date(const gr::date& date);
@@ -91,10 +92,11 @@ int run_programs(const std::string& ymls_folder)
 int main()
 {
 	init_logger();
+
 	/*generate_mxd11a1_ymls();*/
 	//generate_txt_for_general_ano();
 	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
-	//process(yml);
+	process(yml);
 	run_programs("D:\\modis_workspace\\generated_ymls");
 
 }
