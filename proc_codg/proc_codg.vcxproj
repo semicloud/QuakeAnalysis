@@ -161,14 +161,11 @@
   <ItemGroup>
     <ClInclude Include="CodgItem.h" />
     <ClInclude Include="codg_parser.h" />
-    <ClInclude Include="collections.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="strings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CodgItem.cpp" />
     <ClCompile Include="codg_parser.cpp" />
-    <ClCompile Include="collections.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -176,8 +173,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="proc_codg.cpp" />
-    <ClCompile Include="strings.cpp" />
-    <ClCompile Include="test_strings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\commons\commons.vcxproj">
+      <Project>{ab2b8d32-d370-4417-8210-7dbda4d0dfb6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

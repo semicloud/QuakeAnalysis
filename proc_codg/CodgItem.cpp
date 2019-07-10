@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "CodgItem.h"
 #include "codg_parser.h"
-#include "collections.h"
-#include "strings.h"
+#include "../commons/collections.h"
 #include <boost/assert.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/log/trivial.hpp>
@@ -60,7 +59,7 @@ std::vector<CodgItem> CodgItem::load_items(const std::string& file_path_str)
 	assert(indexes_start.size() == indexes_end.size());
 	for (size_t i = 0; i != indexes_start.size(); ++i)
 	{
-		vector<string> data_section = slice(lines, indexes_start[i], indexes_end[i]);
+		vector<string> data_section = commons::collections::slice(lines, indexes_start[i], indexes_end[i]);
 		items.emplace_back(data_section);
 	}
 	return items;

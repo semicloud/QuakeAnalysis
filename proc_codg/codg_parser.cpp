@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "codg_parser.h"
-#include "strings.h"
-#include "collections.h"
+#include "../commons/collections.h"
+#include "../commons/strings.h"
 #include <boost/log/trivial.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -16,7 +16,7 @@ std::optional<arma::fmat> parse_fmat(const std::vector<std::string>& dataSec)
 		{
 			const size_t index = distance(dataSec.cbegin(), it);
 			const size_t start_index = index + 1, end_index = index + 5;
-			vector<string> data_lines = slice(dataSec, start_index, end_index);
+			vector<string> data_lines = commons::collections::slice(dataSec, start_index, end_index);
 			for_each(data_lines.begin(), data_lines.end(), [](string& data_line)
 			{boost::trim(data_line); });
 			string data_line = boost::join(data_lines, "   ");
@@ -45,7 +45,7 @@ int parse_epoch(const std::vector<std::string>& dataSec, int& year, int& month, 
 	vector<string> epochs;
 	string epoch = boost::trim_copy(it->substr(0, 40));
 	BOOST_LOG_TRIVIAL(debug) << "Epoch: " << epoch;
-	string trimmed_epoch = trim_inner_copy(epoch);
+	string trimmed_epoch = commons::strings::trim_but_one_inner_copy(epoch);
 
 	split(epochs, trimmed_epoch, boost::is_any_of(" "));
 	BOOST_ASSERT(epochs.size() == 6);
