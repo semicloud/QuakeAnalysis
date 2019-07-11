@@ -67,13 +67,13 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	const int ans = process_codg(yml_path, is_debug);
+	const int ans = proc_codg::process_codg(yml_path, is_debug);
 
 	assert(ans == EXIT_SUCCESS);
 	return 0;
 }
 
-int process_codg(const std::string& yml_path_str, bool is_debug)
+int proc_codg::process_codg(const std::string& yml_path_str, bool is_debug)
 {
 	using namespace std;
 	using namespace filesystem;
@@ -113,7 +113,7 @@ int process_codg(const std::string& yml_path_str, bool is_debug)
 	return EXIT_SUCCESS;
 }
 
-std::optional<YAML::Node> load_variables(const std::string& yml_path)
+std::optional<YAML::Node> proc_codg::load_variables(const std::string& yml_path)
 {
 	using namespace std;
 	using namespace YAML;
@@ -129,7 +129,7 @@ std::optional<YAML::Node> load_variables(const std::string& yml_path)
 	return optional_node;
 }
 
-bool check_variables(const YAML::Node& node)
+bool proc_codg::check_variables(const YAML::Node& node)
 {
 	using namespace std;
 	vector<string> names{ "CodgFile", "TmpPath","OutputPath" };
