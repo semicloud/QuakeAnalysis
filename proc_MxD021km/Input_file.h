@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace proc_MxD021km
+namespace adsma
 {
 	class Input_file
 	{

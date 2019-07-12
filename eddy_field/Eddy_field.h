@@ -2,15 +2,14 @@
 
 #include "Eddy_field_options_yaml.h"
 #include <armadillo>
-#include <boost/optional.hpp>
-
+#include <optional>
 /**
  * \brief 涡度计算类
  */
 class Eddy_field
 {
 private:
-	static boost::optional<arma::fmat> get_eddy_field_8(arma::fmat& f_mat, float default_value);
+	static std::optional<arma::fmat> get_eddy_field_8(arma::fmat& f_mat, float default_value);
 
 public:
 	Eddy_field();
@@ -21,9 +20,9 @@ public:
 	 * \param default_value 默认值
 	 * \return 
 	 */
-	static boost::optional<arma::fmat> get_eddy_field_4(arma::fmat& f_mat, float default_value);
+	static std::optional<arma::fmat> get_eddy_field_4(arma::fmat& f_mat, float default_value);
 
-	static boost::optional<arma::fmat> get_eddy_field_4(arma::fmat& f_mat, float default_value, arma::fmat& spec_mat);
+	static std::optional<arma::fmat> get_eddy_field_4(arma::fmat& f_mat, float default_value, arma::fmat& spec_mat);
 
 	/**
 	 * \brief 计算涡度背景场 - 方法1

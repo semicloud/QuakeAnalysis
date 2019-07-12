@@ -11,7 +11,7 @@ namespace fs = boost::filesystem;
  * \param default_value
  * \return
  */
-boost::optional<arma::fmat> Eddy_field::get_eddy_field_8(arma::fmat& f_mat, float default_value)
+std::optional<arma::fmat> Eddy_field::get_eddy_field_8(arma::fmat& f_mat, float default_value)
 {
 	const arma::uword row_count = f_mat.n_rows, col_count = f_mat.n_cols;
 	arma::fmat ans(row_count, col_count, arma::fill::zeros);
@@ -42,7 +42,7 @@ boost::optional<arma::fmat> Eddy_field::get_eddy_field_8(arma::fmat& f_mat, floa
 		}
 	}
 
-	return boost::optional<arma::fmat>(ans);
+	return std::optional<arma::fmat>(ans);
 }
 
 Eddy_field::Eddy_field()
@@ -60,7 +60,7 @@ Eddy_field::~Eddy_field()
  * \param default_value default_value
  * \return
  */
-boost::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, float default_value)
+std::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, float default_value)
 {
 	const arma::uword row_count = f_mat.n_rows, col_count = f_mat.n_cols;
 	arma::fmat ans(row_count, col_count, arma::fill::zeros);
@@ -87,7 +87,7 @@ boost::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, floa
 		}
 	}
 	//BOOST_LOG_TRIVIAL(info) << "涡度计算完成..";
-	return boost::optional<arma::fmat>(ans);
+	return std::optional<arma::fmat>(ans);
 }
 
 /**
@@ -97,7 +97,7 @@ boost::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, floa
  * \param spec_mat 
  * \return 
  */
-boost::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, float default_value, arma::fmat& spec_mat)
+std::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, float default_value, arma::fmat& spec_mat)
 {
 	const arma::uword row_count = f_mat.n_rows, col_count = f_mat.n_cols;
 	arma::fmat ans(row_count, col_count, arma::fill::zeros);
@@ -129,7 +129,7 @@ boost::optional<arma::fmat> Eddy_field::get_eddy_field_4(arma::fmat& f_mat, floa
 		}
 	}
 	//BOOST_LOG_TRIVIAL(info) << "涡度计算完成..";
-	return boost::optional<arma::fmat>(ans);
+	return std::optional<arma::fmat>(ans);
 }
 
 /**

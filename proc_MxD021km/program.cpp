@@ -3,8 +3,8 @@
 #include "../modis_api/Logger_setting.h"
 #include "globals.h"
 #include "Input_file.h"
-#include "Options_yaml.h"
-#include "Preprocess_bt.h"
+#include "yamlArgs.h"
+#include "mxd021km_conversion.h"
 #include <armadillo>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
@@ -94,13 +94,13 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	proc_MxD021km::Options_yaml options(node);
-	if(stoi(options.band()) == 30)
+	adsma::yamlArgs options(node);
+	if(options.band() == 30)
 	{
 		cout << "本程序不支持30波段数据的预处理.." << endl;
 		exit(EXIT_SUCCESS);
 	}
-	proc_MxD021km::Preprocess_bt::preprocess(options);
+	adsma::mxd021km_conversion::preprocess(options);
 }
 
 

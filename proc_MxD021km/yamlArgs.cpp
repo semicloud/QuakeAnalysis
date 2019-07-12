@@ -1,9 +1,9 @@
-#include "Options_yaml.h"
+#include "yamlArgs.h"
 #include <yaml-cpp/yaml.h>
 #include <boost/log/expressions/attr.hpp>
 #include <boost/format/free_funcs.hpp>
 
-proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
+adsma::yamlArgs::yamlArgs(const YAML::Node& node)
 {
 	using namespace std;
 	try
@@ -23,7 +23,7 @@ proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 	_max_lon = node["MaxLon"].as<double>();
 	_min_lat = node["MinLat"].as<double>();
 	_max_lat = node["MaxLat"].as<double>();
-	_band = node["Band"].as<string>();
+	_band = node["Band"].as<int>();
 	_mrt_kernel_type = node["MRTKernelType"].as<string>();
 	_mrt_projection_type = node["MRTProjectionType"].as<string>();
 	_mrt_projection_args = node["MRTProjectionArgs"].as<string>();
@@ -33,9 +33,9 @@ proc_MxD021km::Options_yaml::Options_yaml(const YAML::Node& node)
 }
 
 
-proc_MxD021km::Options_yaml::~Options_yaml() = default;
+adsma::yamlArgs::~yamlArgs() = default;
 
-void proc_MxD021km::Options_yaml::check_node(const YAML::Node& node)
+void adsma::yamlArgs::check_node(const YAML::Node& node)
 {
 	std::vector<std::string> node_names = { "HDFListFile", "TmpPath" ,"MinLon", "MaxLon", "MinLat", "MaxLat","Band",
 		"MRTKernelType","MRTProjectionType","MRTProjectionArgs","MRTPixelSize","OutputImageFile" };

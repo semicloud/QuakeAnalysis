@@ -50,13 +50,13 @@ bool modis_api::Mat_operation::same_size(const std::vector<arma::fmat>& mat_list
 	return row_all_equal && col_all_equal;
 }
 
-boost::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(
+std::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(
 	std::vector<arma::fmat>& mat_list, int default_value)
 {
 	if (!same_size(mat_list))
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵大小不等，无法进行平均值计算！";
-		return boost::optional<arma::fmat>();
+		return std::optional<arma::fmat>();
 	}
 	const arma::uword n_rows = mat_list.front().n_rows;
 	const arma::uword n_cols = mat_list.front().n_cols;
@@ -100,7 +100,7 @@ boost::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(
 
 	BOOST_LOG_TRIVIAL(debug) << mat_list.size() << "个矩阵的逐像元平均值计算完毕";
 
-	return boost::optional<arma::fmat>(ans);
+	return std::optional<arma::fmat>(ans);
 }
 
 std::string modis_api::Mat_operation::mat_desc(arma::fmat& mat)

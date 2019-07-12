@@ -3,14 +3,14 @@
 #include <boost/log/trivial.hpp>
 #include <fstream>
 
-proc_MxD021km::Input_file::Input_file(const std::string& bt_hdf_file, const std::string& sza_hdf_file, const std::string& cm_hdf_file)
+adsma::Input_file::Input_file(const std::string& bt_hdf_file, const std::string& sza_hdf_file, const std::string& cm_hdf_file)
 	: _bt_hdf_file(bt_hdf_file), _sza_hdf_file(sza_hdf_file), _cm_hdf_file(cm_hdf_file)
 {
 }
 
-proc_MxD021km::Input_file::~Input_file() = default;
+adsma::Input_file::~Input_file() = default;
 
-std::vector<proc_MxD021km::Input_file> proc_MxD021km::Input_file::load(const std::string& file_path)
+std::vector<adsma::Input_file> adsma::Input_file::load(const std::string& file_path)
 {
 	using namespace std;
 	vector<Input_file> ivec;

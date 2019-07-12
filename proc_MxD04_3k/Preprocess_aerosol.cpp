@@ -6,7 +6,6 @@
 #include "../modis_api/Mat_operation.h"
 #include <algorithm>
 #include <armadillo>
-#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
 #include <string>
@@ -162,7 +161,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 		const string gdal_argument = str(format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"")
 			% min_lon % max_lat % max_lon % min_lat);
 		modis_api::Gdal_operation::translate_copy(heg_tif_path, heg_gdal_tif_path, gdal_argument);
-		if (!filesystem::exists(heg_gdal_tif_path))
+		if (!std::filesystem::exists(heg_gdal_tif_path))
 		{
 			BOOST_LOG_TRIVIAL(error) << "调用gdal_translate.exe处理" << heg_tif_path << "文件失败，跳过" << hdf_file_path << "文件的处理";
 			BOOST_LOG_TRIVIAL(error) << "gdal_argument: " << gdal_argument;

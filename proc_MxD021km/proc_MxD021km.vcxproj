@@ -167,8 +167,8 @@ copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Input_file.cpp" />
-    <ClCompile Include="Options_yaml.cpp" />
-    <ClCompile Include="Preprocess_bt.cpp" />
+    <ClCompile Include="yamlArgs.cpp" />
+    <ClCompile Include="mxd021km_conversion.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="Rad2bt.cpp" />
   </ItemGroup>
@@ -179,8 +179,8 @@ copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS
   <ItemGroup>
     <ClInclude Include="globals.h" />
     <ClInclude Include="Input_file.h" />
-    <ClInclude Include="Options_yaml.h" />
-    <ClInclude Include="Preprocess_bt.h" />
+    <ClInclude Include="yamlArgs.h" />
+    <ClInclude Include="mxd021km_conversion.h" />
     <ClInclude Include="Rad2bt.h" />
   </ItemGroup>
   <ItemGroup>

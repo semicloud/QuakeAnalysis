@@ -6,6 +6,7 @@
 #include "../modis_api/Mat_operation.h"
 #include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
+#include <optional>
 #include <string>
 
 
@@ -182,7 +183,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	std::vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
 		[](const std::string& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  });
-	auto mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, -1);
+	std::optional<arma::fmat> mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, -1);
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";

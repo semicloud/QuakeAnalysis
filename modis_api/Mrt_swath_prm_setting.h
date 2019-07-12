@@ -4,6 +4,8 @@
 
 namespace modis_api
 {
+	typedef const std::string& cstr;
+
 	/**
 	 * \brief SWATH2GRID.EXE Prm文件参数设置
 	 */
@@ -20,6 +22,11 @@ namespace modis_api
 		std::string _output_gtiff_file;
 	public:
 		Mrt_swath_prm_setting();
+		Mrt_swath_prm_setting(cstr hdf_file, cstr loc_hdf_file, cstr sds_str,
+			double ulc_lng, double ulc_lat, double lrc_lng, double lrc_lat,
+			cstr out_file) : _input_hdf_file(hdf_file), _geo_loc_hdf_file(loc_hdf_file), _sds_str(sds_str),
+			_ulc_lng(ulc_lng), _ulc_lat(ulc_lat), _lrc_lng(lrc_lng), _lrc_lat(lrc_lat),
+			_output_gtiff_file(out_file) {}
 		~Mrt_swath_prm_setting();
 
 		std::string get_input_hdf_file() const

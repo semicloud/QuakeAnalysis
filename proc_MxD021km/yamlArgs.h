@@ -6,9 +6,9 @@
 #include <boost/date_time/local_time/dst_transition_day_rules.hpp>
 #include <boost/log/trivial.hpp>
 
-namespace proc_MxD021km
+namespace adsma
 {
-	class Options_yaml
+	class yamlArgs
 	{
 	private:
 		std::string _input_hdf_file;
@@ -17,7 +17,7 @@ namespace proc_MxD021km
 		double _max_lon;
 		double _min_lat;
 		double _max_lat;
-		std::string _band;
+		int _band;
 		std::string _mrt_kernel_type;
 		std::string _mrt_projection_type;
 		std::string _mrt_projection_args;
@@ -78,7 +78,7 @@ namespace proc_MxD021km
 			return _mrt_projection_args;
 		}
 
-		std::string band() const
+		int band() const
 		{
 			return _band;
 		}
@@ -98,8 +98,8 @@ namespace proc_MxD021km
 			return _output_image_file;
 		}
 
-		Options_yaml(const YAML::Node&);
-		~Options_yaml();
+		yamlArgs(const YAML::Node&);
+		~yamlArgs();
 		static void check_node(const YAML::Node&);
 	};
 }

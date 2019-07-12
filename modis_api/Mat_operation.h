@@ -3,7 +3,7 @@
 #include <armadillo>
 #include <string>
 #include <vector>
-#include <boost/optional.hpp>
+#include <optional>
 #include <boost/format.hpp>
 
 namespace modis_api
@@ -47,12 +47,12 @@ namespace modis_api
 		 * \param default_value 矩阵的默认值，遇到此默认值则跳过
 		 * \return
 		 */
-		static boost::optional<arma::fmat> mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list, int default_value);
+		static std::optional<arma::fmat> mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list, int default_value);
 
 		/**
 		 * \brief 矩阵描述
-		 * \param mat 
-		 * \return 
+		 * \param mat
+		 * \return
 		 */
 		static std::string mat_desc(arma::fmat& mat);
 	};

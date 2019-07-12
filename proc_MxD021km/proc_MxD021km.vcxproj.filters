@@ -21,13 +21,13 @@
     <ClCompile Include="Rad2bt.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Preprocess_bt.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Options_yaml.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Input_file.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mxd021km_conversion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="yamlArgs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,16 +39,16 @@
     <ClInclude Include="Rad2bt.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Preprocess_bt.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Options_yaml.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="globals.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Input_file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mxd021km_conversion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="yamlArgs.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
