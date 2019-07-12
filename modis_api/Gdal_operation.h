@@ -1,10 +1,8 @@
 #pragma once
 
-#include <string>
-#include <boost/optional.hpp>
 #include <armadillo>
 #include <boost/format.hpp>
-#include <boost/filesystem.hpp>
+#include <string>
 
 namespace modis_api
 {
@@ -40,7 +38,7 @@ namespace modis_api
 		 * \param param 转换参数 如 -ot Float32
 		 * \return 转换成功返回true，失败返回false
 		 */
-		static bool translate_copy(const std::string& source_path, const std::string& dest_path, const std::string& param = "");
+		static bool translate_copy(const std::filesystem::path& source_path, const std::filesystem::path& dest_path, const std::string& param = "");
 
 
 		/**
@@ -63,11 +61,11 @@ namespace modis_api
 		 * \brief 读取MXD02XXX.HDF文件中的radiance_scales和radiance_offsets
 		 * 返回值是2*16矩阵，该矩阵的第一行是radiance_scales的值，第二行是radiance_offsets的值
 		 * 目前是只针对亮温数据，以后可以扩展到其他数据
-		 * \parma hdf_path hdf文件路径
+		 * \parma path hdf文件路径
 		 * \parma logger 调用程序传过来的日志对象
 		 * \return
 		 */
-		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const std::string& hdf_path);
+		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const std::filesystem::path& path);
 
 
 		/**
@@ -82,7 +80,7 @@ namespace modis_api
 		 * \remark 该函数通过读取子数据集的属性来获取空间范围（可能）是错误的，不应再使用
 		 * \remark 该函数，该函数只是为了记录有这种读取GeoBound的方法
 		 */
-		 static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+		static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
 
 		/**
 		 * \brief 读取HDF文件的GeoBound属性

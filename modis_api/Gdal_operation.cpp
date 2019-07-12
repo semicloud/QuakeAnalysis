@@ -3,7 +3,6 @@
 #include "Gdal_operation.h"
 #include <armadillo>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/log/core.hpp>
@@ -11,9 +10,6 @@
 #include <boost/log/trivial.hpp>
 #include <gdal_priv.h>
 #include <filesystem>
-
-namespace fs = boost::filesystem;
-
 
 modis_api::Gdal_operation::Gdal_operation()
 {
@@ -95,7 +91,7 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const st
 {
 #pragma region 防御代码
 
-	if (!boost::filesystem::exists(tif_path) || !fs::is_regular_file(tif_path))
+	if (!std::filesystem::exists(tif_path) || !std::filesystem::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << boost::str(boost::format("非法的tif文件：%1%，读取失败！") % tif_path);
 		return boost::optional<arma::fmat>();
@@ -156,7 +152,7 @@ bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, a
 
 #pragma region 防御代码
 
-	if (!fs::exists(tif_path) || !fs::is_regular_file(tif_path))
+	if (!std::filesystem::exists(tif_path) || !std::filesystem::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "目标tif文件" << tif_path << "不存在，或格式错误！";
 		return false;
@@ -185,12 +181,13 @@ bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, a
 	return true;
 }
 
-bool modis_api::Gdal_operation::translate_copy(const std::string& source_path, const std::string& dest_path, const std::string& param)
+bool modis_api::Gdal_operation::translate_copy(const std::filesystem::path& source_path,
+	const std::filesystem::path& dest_path, const std::string& param)
 {
-	const std::string cmd = boost::filesystem::current_path().string()
-		+ str(boost::format("\\gdal_translate.exe %1% %2% %3%") % param % source_path % dest_path);
+	const std::string cmd = std::filesystem::current_path().string()
+		+ str(boost::format("\\gdal_translate.exe %1% %2% %3%") % param % source_path.string() % dest_path.string());
 	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
-	return (system(cmd.c_str()) == 0);
+	return system(cmd.c_str()) == 0;
 }
 
 bool modis_api::Gdal_operation::set_no_data_value(const std::string& source_path, float no_data_value)
@@ -202,7 +199,7 @@ bool modis_api::Gdal_operation::set_no_data_value(const std::string& source_path
 
 float modis_api::Gdal_operation::get_no_data_value(const std::string& source_path)
 {
-	if (!fs::exists(source_path) || !fs::is_regular_file(source_path))
+	if (!std::filesystem::exists(source_path) || !std::filesystem::is_regular_file(source_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "目标tif文件" << source_path << "不存在，或格式错误！";
 		return false;
@@ -224,10 +221,10 @@ float modis_api::Gdal_operation::get_no_data_value(const std::string& source_pat
 }
 
 
-boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_offsets(const std::string& hdf_path)
+boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_offsets(const std::filesystem::path& hdf_path)
 {
 	BOOST_LOG_TRIVIAL(info) << "从" << hdf_path << "文件读取字段值，字段名为radiance_scales和radiance_offsets";
-	if (!boost::filesystem::exists(hdf_path) || !boost::filesystem::is_regular_file(hdf_path))
+	if (!std::filesystem::exists(hdf_path) || !std::filesystem::is_regular_file(hdf_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "HDF文件" << hdf_path << "不存在或不是规范文件，无法读取相关字段值";
 		return boost::optional<arma::fmat>();
@@ -235,7 +232,7 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_
 
 	GDALAllRegister();
 
-	std::string sds_path = "HDF4_EOS:EOS_SWATH:\"" + hdf_path + "\":MODIS_SWATH_Type_L1B:EV_1KM_Emissive";
+	std::string sds_path = "HDF4_EOS:EOS_SWATH:\"" + hdf_path.string() + "\":MODIS_SWATH_Type_L1B:EV_1KM_Emissive";
 	BOOST_LOG_TRIVIAL(debug) << "sds_path: " << sds_path;
 
 	GDALDataset* dataset = static_cast<GDALDataset*>(GDALOpen(sds_path.data(), GA_ReadOnly));
@@ -264,7 +261,7 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_
 bool modis_api::Gdal_operation::read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx,
 	double& lry)
 {
-	if (!boost::filesystem::exists(hdf_path) || !boost::filesystem::is_regular_file(hdf_path))
+	if (!std::filesystem::exists(hdf_path) || !std::filesystem::is_regular_file(hdf_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "HDF文件" << hdf_path << "不存在或不是规范文件，无法读取相关字段值";
 		return false;
@@ -309,7 +306,7 @@ bool modis_api::Gdal_operation::read_geo_bound_py_h5(const std::string& hdf_path
 {
 	using namespace boost;
 	using namespace std;
-	using namespace std::experimental::filesystem;
+	using namespace std::filesystem;
 	bool ans = false;
 	const path hdf_path_obj(hdf_path);
 	const path tmp_folder_obj(tmp_folder);

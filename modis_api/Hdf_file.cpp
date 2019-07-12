@@ -2,15 +2,16 @@
 
 #include "Hdf_file.h"
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format/free_funcs.hpp>
 #include <boost/log/trivial.hpp>
+#include <filesystem>
+#include <boost/filesystem.hpp>
 
 
 modis_api::Hdf_file::Hdf_file(const std::string &file_path)
 {
 	_file_path = file_path;
-	_real_file_name = boost::filesystem::path(file_path).filename().string();
+	_real_file_name = std::filesystem::path(file_path).filename().string();
 	BOOST_LOG_TRIVIAL(debug) << "real_file_name: " << _real_file_name;
 
 	const std::string file_name_without_extension

@@ -15,21 +15,21 @@ adsma::yamlArgs::yamlArgs(const YAML::Node& node)
 		BOOST_LOG_TRIVIAL(error) << e.what();
 		exit(EXIT_FAILURE);
 	}
-	_input_hdf_file = node["HDFListFile"].as<string>();
-	_temp_dir = node["TmpPath"].as<string>();
-	if (_temp_dir[_temp_dir.size() - 1] != '\\')
-		_temp_dir.push_back('\\');
-	_min_lon = node["MinLon"].as<double>();
-	_max_lon = node["MaxLon"].as<double>();
-	_min_lat = node["MinLat"].as<double>();
-	_max_lat = node["MaxLat"].as<double>();
-	_band = node["Band"].as<int>();
-	_mrt_kernel_type = node["MRTKernelType"].as<string>();
-	_mrt_projection_type = node["MRTProjectionType"].as<string>();
-	_mrt_projection_args = node["MRTProjectionArgs"].as<string>();
+	m_hdflist_file = node["HDFListFile"].as<string>();
+	m_tmp_path = node["TmpPath"].as<string>();
+	if (m_tmp_path[m_tmp_path.size() - 1] != '\\')
+		m_tmp_path.push_back('\\');
+	m_min_lon = node["MinLon"].as<double>();
+	m_max_lon = node["MaxLon"].as<double>();
+	m_min_lat = node["MinLat"].as<double>();
+	m_max_lat = node["MaxLat"].as<double>();
+	m_band = node["Band"].as<int>();
+	m_mrt_kernel_type = node["MRTKernelType"].as<string>();
+	m_mrt_projection_type = node["MRTProjectionType"].as<string>();
+	m_mrt_projection_args = node["MRTProjectionArgs"].as<string>();
 	//_mrt_projection_sphere = node["MRTProjectionSphere"].as<string>();
-	_mrt_pixel_size = node["MRTPixelSize"].as<string>();
-	_output_image_file = node["OutputImageFile"].as<string>();
+	m_mrt_pixel_size = node["MRTPixelSize"].as<string>();
+	m_output_image_file = node["OutputImageFile"].as<string>();
 }
 
 

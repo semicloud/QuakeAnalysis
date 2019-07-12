@@ -1,10 +1,9 @@
 #include "Input_file.h"
 #include "../modis_api/File_operation.h"
 #include <boost/log/trivial.hpp>
-#include <fstream>
 
-adsma::Input_file::Input_file(const std::string& bt_hdf_file, const std::string& sza_hdf_file, const std::string& cm_hdf_file)
-	: _bt_hdf_file(bt_hdf_file), _sza_hdf_file(sza_hdf_file), _cm_hdf_file(cm_hdf_file)
+adsma::Input_file::Input_file(const std::string& mxd02_file, const std::string& mxd03_file, const std::string& mxd35_file)
+	: m_mxd02_file(mxd02_file), m_mxd03_file(mxd03_file), m_mxd35_file(mxd35_file)
 {
 }
 

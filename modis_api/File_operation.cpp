@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "File_operation.h"
 #include <algorithm>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/log/core.hpp>
 #include <boost/log/expressions.hpp>

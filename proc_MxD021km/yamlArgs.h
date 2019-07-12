@@ -11,91 +11,86 @@ namespace adsma
 	class yamlArgs
 	{
 	private:
-		std::string _input_hdf_file;
-		std::string _temp_dir;
-		double _min_lon;
-		double _max_lon;
-		double _min_lat;
-		double _max_lat;
-		int _band;
-		std::string _mrt_kernel_type;
-		std::string _mrt_projection_type;
-		std::string _mrt_projection_args;
+		std::string m_hdflist_file;
+		std::string m_tmp_path;
+		double m_min_lon;
+		double m_max_lon;
+		double m_min_lat;
+		double m_max_lat;
+		int m_band;
+		std::string m_mrt_kernel_type;
+		std::string m_mrt_projection_type;
+		std::string m_mrt_projection_args;
 		//std::string _mrt_projection_sphere;
-		std::string _mrt_pixel_size;
+		std::string m_mrt_pixel_size;
 		/**
 		 * \brief 最终结果数据集路径
 		 */
-		std::string _output_image_file;
+		std::string m_output_image_file;
 
 	public:
 		/**
 		 * \brief 输入的HDF列表文件
 		 * \return
 		 */
-		std::string input_hdf_file() const
+		std::string hdflist_file() const
 		{
-			return _input_hdf_file;
+			return m_hdflist_file;
 		}
 
-		std::string temp_dir()const
+		std::string tmp_path()const
 		{
-			return _temp_dir;
+			return m_tmp_path;
 		}
 
 		double min_lon() const
 		{
-			return _min_lon;
+			return m_min_lon;
 		}
 
 		double max_lon() const
 		{
-			return _max_lon;
+			return m_max_lon;
 		}
 
 		double min_lat() const
 		{
-			return _min_lat;
+			return m_min_lat;
 		}
 
 		double max_lat() const
 		{
-			return _max_lat;
+			return m_max_lat;
 		}
 
 		std::string mrt_kernel_type() const
 		{
-			return _mrt_kernel_type;
+			return m_mrt_kernel_type;
 		}
 
 		std::string mrt_projection_type() const
 		{
-			return _mrt_projection_type;
+			return m_mrt_projection_type;
 		}
 
 		std::string mrt_projection_args() const
 		{
-			return _mrt_projection_args;
+			return m_mrt_projection_args;
 		}
 
 		int band() const
 		{
-			return _band;
+			return m_band;
 		}
-
-		// std::string mrt_projection_sphere() const
-		// {
-		// 	return _mrt_projection_sphere;
-		// }
 
 		std::string mrt_pixel_size() const
 		{
-			return _mrt_pixel_size;
+			return m_mrt_pixel_size;
 		}
 
 		std::string output_image_file() const
 		{
-			return _output_image_file;
+			return m_output_image_file;
 		}
 
 		yamlArgs(const YAML::Node&);

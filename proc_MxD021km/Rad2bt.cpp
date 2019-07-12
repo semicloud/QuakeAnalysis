@@ -2,15 +2,15 @@
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string>
 
 std::optional<arma::fmat> Rad2bt::load_lut_table(const std::string& lut_path)
 {
-	if (!boost::filesystem::is_regular_file(lut_path))
+	if (!std::filesystem::is_regular_file(lut_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << "LUT表文件" << lut_path << "不是一个合法文件";
 		return std::optional<arma::fmat>();
@@ -60,7 +60,7 @@ int Rad2bt::get_col_index(const std::string& lut_path, const std::string& col_na
 	return static_cast<int>(std::distance(col_names.begin(), it));
 }
 
-float Rad2bt::calc_band_bt(const arma::fvec& bt_lut, 
+float Rad2bt::calc_band_bt(const arma::fvec& bt_lut,
 	const arma::fvec& rad_lut, const arma::uword line_num, float rad)
 {
 	int idx_min = -1;
