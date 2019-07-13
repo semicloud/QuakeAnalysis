@@ -31,9 +31,6 @@ const float adsma::mxd021km_conversion::TOLERANCE = 1E-05f;
  */
 const int AVAILABLE_BANDS[16] = { 20,21,22,23,24,25,27,28,29,30,31,32,33,34,35,36 };
 
-const std::string adsma::mxd021km_conversion::MOD_LUT_TABLE_NAME = "data//Terra_MODIS_rad2BT_LUT.txt";
-const std::string adsma::mxd021km_conversion::MYD_LUT_TABLE_NAME = "data//Aqua_MODIS_rad2BT_LUT.txt";
-
 void adsma::mxd021km_conversion::preprocess(const yamlArgs& options)
 {
 	using namespace arma;
@@ -45,7 +42,6 @@ void adsma::mxd021km_conversion::preprocess(const yamlArgs& options)
 	BOOST_LOG_TRIVIAL(info) << "找到" << input_files.size() << "个待处理文件";
 	if (input_files.empty()) return;
 
-	//const std::string tmp_path = options.temp_dir();
 	const path tmp_path(options.tmp_path());
 	if (!exists(tmp_path))
 		create_directory(tmp_path);
@@ -53,14 +49,13 @@ void adsma::mxd021km_conversion::preprocess(const yamlArgs& options)
 	File_operation::clear_directory(tmp_path.string());
 
 	//预处理后的亮温tif文件列表
-	vector<string> preprocessed_bt_file_paths;
+	vector<path> preprocessed_bt_file_paths;
 
 	uword ROW_COUNT = 0, COLUMN_COUNT = 0;
 	//lut表文件路径，目前以hdf列表的第一个hdf文件的文件类型作为加载lut表的标识
-	const std::string path_first_hdf = File_operation::read_file_all_lines(options.hdflist_file()).at(1);
-	BOOST_LOG_TRIVIAL(debug) << "First hdf: " << path_first_hdf;
-
-	const std::string lut_table_path = get_lut_table_path(path_first_hdf);
+	const std::string first_hdf_path = input_files.front().mxd02_file();
+	BOOST_LOG_TRIVIAL(debug) << "First hdf: " << first_hdf_path;
+	const path lut_table_path = Rad2bt::get_lut_table_path(first_hdf_path);
 	std::optional<fmat> lut_cols_matrix = Rad2bt::load_lut_cols(lut_table_path, options.band());
 	const fvec bt_lut = lut_cols_matrix->col(0);
 	const fvec rad_lut = lut_cols_matrix->col(1);
@@ -173,7 +168,7 @@ void adsma::mxd021km_conversion::preprocess(const yamlArgs& options)
 
 		//预处理后的数据集名为原数据集名后+preprocessed
 		const std::string bt_preprocess_dataset_name = str(format("%1%%2%.tif") % bt_file_without_extension %SUFFIX_PREPROCESSED_BT);
-		const std::string bt_preprocess_dataset_path = (tmp_path / bt_preprocess_dataset_name).string();
+		const path bt_preprocess_dataset_path = (tmp_path / bt_preprocess_dataset_name);
 		bt_sza_cm_product_save(bt_matrix, sza_matrix, cm_matrix, tmp_path, bt_file_without_extension, bt_tif_file_path, bt_preprocess_dataset_path);
 
 		BOOST_LOG_TRIVIAL(info) << input_file.mxd02_file() << "预处理完毕，结果数据集是：" << bt_preprocess_dataset_path;
@@ -189,43 +184,31 @@ void adsma::mxd021km_conversion::preprocess(const yamlArgs& options)
 	}
 }
 
-/**
- * \brief 在指定的文件夹下根据pattern找到对应的文件路径
- * \param folder 文件夹
- * \param pattern
- * \param file_path 找到的文件路径，写入到该变量中
- * \return 找到文件则返回true，否则返回false
- */
-bool adsma::mxd021km_conversion::find_file(const std::string& folder, const std::string& pattern, std::string& file_path)
+bool adsma::mxd021km_conversion::find_file(const std::filesystem::path& folder_path,
+	const std::string& pattern, std::filesystem::path& file_path)
 {
 	using namespace std;
-	using namespace std::experimental::filesystem;
+	using namespace std::filesystem;
 
-	BOOST_LOG_TRIVIAL(debug) << "查询目标文件" << pattern << "目标目录：" << folder;
-	if (!exists(folder))
+	BOOST_LOG_TRIVIAL(debug) << "查询目标文件" << pattern << "目标目录：" << folder_path;
+	if (!exists(folder_path))
 	{
-		BOOST_LOG_TRIVIAL(error) << "未匹配到文件，不存在的目录：" << folder;
+		BOOST_LOG_TRIVIAL(error) << "未匹配到文件，不存在的目录：" << folder_path;
 		file_path = std::string("");
 		return false;
 	}
 
-	for (auto it = directory_iterator(folder); it != directory_iterator(); ++it)
+	for (auto it = directory_iterator(folder_path); it != directory_iterator(); ++it)
 	{
 		if (is_regular_file(it->path()) && it->path().extension() == ".hdf" && it->path().string().find(pattern) != std::string::npos)
 		{
-			file_path = it->path().string();
+			file_path = it->path();
 			return true;
 		}
 	}
-	file_path = std::string("");
 	return false;
 }
 
-/**
- * \brief 根据提取的波段值获取亮温SDS
- * \param band
- * \return
- */
 std::string adsma::mxd021km_conversion::get_sds_bt(int band)
 {
 	std::ostringstream oss;
@@ -238,11 +221,6 @@ std::string adsma::mxd021km_conversion::get_sds_bt(int band)
 	return oss.str();
 }
 
-/**
- * \brief
- * \param band 根据提取的波段值获取亮温数据集后缀
- * \return
- */
 std::string adsma::mxd021km_conversion::get_suffix_bt(int band)
 {
 	std::string ans = str(boost::format("_EV_1KM_Emissive_b%1%") % get_param_index_by_band(band));
@@ -379,7 +357,7 @@ void adsma::mxd021km_conversion::bt_sza_cm_product_save(const arma::fmat& bt_mat
 	}
 }
 
-void adsma::mxd021km_conversion::combine_save(const std::vector<std::string>& files,
+void adsma::mxd021km_conversion::combine_save(const std::vector<std::filesystem::path>& files,
 	const std::filesystem::path& tmp_path, const std::filesystem::path& final_output_file)
 {
 	using namespace std;
@@ -390,7 +368,7 @@ void adsma::mxd021km_conversion::combine_save(const std::vector<std::string>& fi
 	mats.resize(files.size());
 	// 在使用transform之前，必须初始化目标容器
 	transform(files.begin(), files.end(),
-		mats.begin(), [](const std::string& p) { return *Gdal_operation::read_tif_to_fmat(p); });
+		mats.begin(), [](const path& p) { return *Gdal_operation::read_tif_to_fmat(p.string()); });
 
 	optional<arma::fmat> final_matrix = Mat_operation::mean_mat_by_each_pixel(mats, 0);
 	if (!final_matrix)
@@ -400,42 +378,21 @@ void adsma::mxd021km_conversion::combine_save(const std::vector<std::string>& fi
 	}
 	BOOST_LOG_TRIVIAL(debug) << "合成DN值：" << Mat_operation::mat_desc(*final_matrix);
 
-	const std::string source_dataset_path = files[0];
+	const path& source_dataset_path = files.front();
 	BOOST_LOG_TRIVIAL(debug) << "template file: " << source_dataset_path;
 	BOOST_LOG_TRIVIAL(debug) << "output image file: " << final_output_file;
 
-	path final_output_file_path(final_output_file);
+	if (exists(final_output_file)) remove(final_output_file);
+	BOOST_LOG_TRIVIAL(debug) << final_output_file.parent_path();
+	if (!exists(final_output_file.parent_path()))
+		create_directories(final_output_file.parent_path());
+	copy_file(source_dataset_path, final_output_file);
 
-	if (exists(final_output_file_path)) remove(final_output_file_path);
-	BOOST_LOG_TRIVIAL(debug) << final_output_file_path.parent_path();
-	if (!exists(final_output_file_path.parent_path()))
-		create_directories(final_output_file_path.parent_path());
-	copy_file(source_dataset_path, final_output_file_path);
+	Gdal_operation::write_fmat_to_tif(final_output_file.string(), *final_matrix);
+	BOOST_LOG_TRIVIAL(info) << "合成的DN值已写入tif文件：" << final_output_file.string();
 
-	Gdal_operation::write_fmat_to_tif(final_output_file_path.string(), *final_matrix);
-	BOOST_LOG_TRIVIAL(info) << "合成的DN值已写入tif文件：" << final_output_file_path.string();
-
-	BOOST_LOG_TRIVIAL(info) << "结果文件路径：" << final_output_file_path.string();
+	BOOST_LOG_TRIVIAL(info) << "结果文件路径：" << final_output_file.string();
 }
-
-
-std::string adsma::mxd021km_conversion::get_lut_table_path(const std::filesystem::path& path_hdf_file)
-{
-	using namespace std;
-	using namespace std::filesystem;
-
-	std::string ans;
-	if (path_hdf_file.filename().string().substr(0, 2) == "MO")
-		ans = (current_path() / MOD_LUT_TABLE_NAME).string();
-	else if (path_hdf_file.filename().string().substr(0, 2) == "MY")
-		ans = (current_path() / MYD_LUT_TABLE_NAME).string();
-	else
-		throw std::runtime_error("can not load lut table!");
-	BOOST_LOG_TRIVIAL(debug) << "加载lut表：" << ans;
-	return ans;
-}
-
-
 
 adsma::mxd021km_conversion::mxd021km_conversion() = default;
 

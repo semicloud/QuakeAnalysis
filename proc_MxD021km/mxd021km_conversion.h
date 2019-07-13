@@ -8,7 +8,6 @@ namespace adsma
 	class mxd021km_conversion
 	{
 	private:
-		static bool find_file(const std::string&, const std::string&, std::string&);
 		static const  std::string SUFFIX_PREPROCESSED_BT;
 		//static const  string SDS_BRIGHTNESS_TEMPERATURE;
 		static const  std::string SDS_SOLAR_ZENITH_ANGLE;
@@ -24,24 +23,33 @@ namespace adsma
 		static const int THRESHOLD_CM;
 		static const float TOLERANCE;
 
-		static const std::string MOD_LUT_TABLE_NAME;
-		static const std::string MYD_LUT_TABLE_NAME;
+		/**
+		* \brief 在指定的文件夹下根据pattern找到对应的文件路径
+		* \param folder_path 文件夹路径
+		* \param pattern
+		* \param file_path 找到的文件路径，写入到该变量中
+		* \return 找到文件则返回true，否则返回false
+		*/
+		static bool find_file(const std::filesystem::path& folder_path, const std::string& pattern, std::filesystem::path& file_path);
 
 		/**
-		 * \brief 根据HDF文件名获取所使用的lut表路径
-		 * \param path_hdf_file hdf文件路径
+		 * \brief 根据提取的波段值获取亮温SDS
+		 * \param band 待提取的波段值
 		 * \return
 		 */
-		static std::string get_lut_table_path(const std::filesystem::path& path_hdf_file);
-
 		static std::string get_sds_bt(int band);
 
+		/**
+		 * \brief 根据待提取的波段值生成亮温tif文件的后缀，以找到该文件
+		 * \param band 波段值
+		 * \return
+		 */
 		static std::string get_suffix_bt(int band);
 
 		/**
 		 * \brief 根据波段数，获取系数矩阵中系数的索引
 		 * \param band int
-		 * \return
+		 * \return 该波段在系数矩阵中的索引值
 		 */
 		static int get_param_index_by_band(int band);
 
@@ -124,10 +132,10 @@ namespace adsma
 		 */
 		static void bt_sza_cm_product_save(
 			const arma::fmat& bt_matrix,
-			const arma::fmat& sza_matrix, 
+			const arma::fmat& sza_matrix,
 			const arma::fmat& cm_matrix,
 			const std::filesystem::path& tmp_path,
-			const std::string& bt_file_without_extension, 
+			const std::string& bt_file_without_extension,
 			const std::filesystem::path& bt_tif_file_path,
 			const std::filesystem::path& output_file_path);
 
@@ -138,19 +146,18 @@ namespace adsma
 		 * \param final_output_file 最终输出文件路径
 		 */
 		static void combine_save(
-			const std::vector<std::string>& files,
-			const std::filesystem::path& tmp_path, 
+			const std::vector<std::filesystem::path>& files,
+			const std::filesystem::path& tmp_path,
 			const std::filesystem::path& final_output_file);
 
 	public:
 		mxd021km_conversion();
 		~mxd021km_conversion();
+
 		/**
 		 * \brief 执行预处理
 		 */
 		static void preprocess(const yamlArgs&);
-
-
 	};
 }
 

@@ -4,21 +4,16 @@
 #include "globals.h"
 #include "Input_file.h"
 #include "yamlArgs.h"
-#include "mxd021km_conversion.h"
 #include <armadillo>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/program_options.hpp>
 #include <gdal_priv.h>
-#include <iostream>
 #include <yaml-cpp/yaml.h>
-
-using namespace arma;
-
-namespace po = boost::program_options;
-namespace fs = boost::filesystem;
+#include <iostream>
+#include <filesystem>
+#include "mxd021km_conversion.h"
 
 const std::string VERSION = "1.0";
 const std::string PROGRAM = "proc_MxD021km";
@@ -28,9 +23,9 @@ bool global_is_debug;
 int main(int argc, char* argv[])
 {
 	using namespace std;
+	using namespace filesystem;
 	using namespace modis_api;
 	using namespace YAML;
-	using namespace boost::program_options;
 
 	init_console_logger();
 	init_file_logger("logs\\", PROGRAM);
@@ -38,16 +33,16 @@ int main(int argc, char* argv[])
 
 	string yml_path;
 	Node node;
-	variables_map vm;
-	options_description desc("Usage:");
+	boost::program_options::variables_map vm;
+	boost::program_options::options_description desc("Usage:");
 	desc.add_options()
 		("help,h", "œ‘ æ∞Ô÷˙–≈œ¢")
 		("version,v", "show version information")
-		("yml,y", po::value(&yml_path), "the path of .yml configuration file")
+		("yml,y", boost::program_options::value(&yml_path), "the path of .yml configuration file")
 		("debug,d", "run this program in debug mode");
 	try
 	{
-		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
+		store(boost::program_options::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
 	catch (std::exception& e)
@@ -69,7 +64,7 @@ int main(int argc, char* argv[])
 		return EXIT_SUCCESS;
 	}
 
-	if (fs::exists(yml_path))
+	if (exists(yml_path))
 	{
 		try
 		{
@@ -77,7 +72,7 @@ int main(int argc, char* argv[])
 			node = YAML::LoadFile(yml_path);
 			if (vm.count("debug"))
 			{
-				modis_api::set_logger_severity(boost::log::trivial::debug);
+				set_logger_severity(boost::log::trivial::debug);
 				global_is_debug = true;
 			}
 		}

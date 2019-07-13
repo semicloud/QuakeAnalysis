@@ -3,23 +3,40 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/log/trivial.hpp>
-#include <filesystem>
 #include <fstream>
 #include <sstream>
-#include <string>
 
-std::optional<arma::fmat> Rad2bt::load_lut_table(const std::string& lut_path)
+const std::string Rad2bt::MOD_LUT_TABLE_NAME = "data//Terra_MODIS_rad2BT_LUT.txt";
+const std::string Rad2bt::MYD_LUT_TABLE_NAME = "data//Aqua_MODIS_rad2BT_LUT.txt";
+
+std::filesystem::path Rad2bt::get_lut_table_path(const std::filesystem::path& path_hdf_file)
 {
-	if (!std::filesystem::is_regular_file(lut_path))
+	using namespace std;
+	using namespace std::filesystem;
+
+	path lut_table_path;
+	if (path_hdf_file.filename().string().substr(0, 2) == "MO")
+		lut_table_path = (current_path() / MOD_LUT_TABLE_NAME).string();
+	else if (path_hdf_file.filename().string().substr(0, 2) == "MY")
+		lut_table_path = (current_path() / MYD_LUT_TABLE_NAME).string();
+	else
+		throw std::runtime_error("can not load lut table!");
+	BOOST_LOG_TRIVIAL(debug) << "加载lut表：" << lut_table_path;
+	return lut_table_path;
+}
+
+std::optional<arma::fmat> Rad2bt::load_lut_table(const std::filesystem::path& lut_table_path)
+{
+	if (!std::filesystem::is_regular_file(lut_table_path))
 	{
-		BOOST_LOG_TRIVIAL(error) << "LUT表文件" << lut_path << "不是一个合法文件";
+		BOOST_LOG_TRIVIAL(error) << "LUT表文件" << lut_table_path << "不是一个合法文件";
 		return std::optional<arma::fmat>();
 	}
 	std::string line;
-	std::ifstream ifs(lut_path);
+	std::ifstream ifs(lut_table_path);
 	if (!ifs)
 	{
-		BOOST_LOG_TRIVIAL(error) << "无法打开LUT表文件" << lut_path;
+		BOOST_LOG_TRIVIAL(error) << "无法打开LUT表文件" << lut_table_path;
 		return std::optional<arma::fmat>();
 	}
 	std::stringstream ss;
@@ -34,18 +51,18 @@ std::optional<arma::fmat> Rad2bt::load_lut_table(const std::string& lut_path)
 	}
 	const arma::fmat lut_mat(ss.str());
 	//cout << lut_mat;
-	BOOST_LOG_TRIVIAL(info) << "已加载LUT表，共" << lut_mat.size() << "条记录，LUT表路径：" << lut_path;
+	BOOST_LOG_TRIVIAL(info) << "已加载LUT表，共" << lut_mat.size() << "条记录，LUT表路径：" << lut_table_path;
 	return std::optional<arma::fmat>(lut_mat);
 }
 
-int Rad2bt::get_col_index(const std::string& lut_path, const std::string& col_name)
+int Rad2bt::get_col_index(const std::filesystem::path& lut_table_path, const std::string& col_name)
 {
-	std::ifstream ifs(lut_path);
+	std::ifstream ifs(lut_table_path);
 	std::string line;
 	std::getline(ifs, line);
 	if (line.find("BT") == std::string::npos)
 	{
-		BOOST_LOG_TRIVIAL(error) << "LUT表" << lut_path << "，表头无效，找不到BT列";
+		BOOST_LOG_TRIVIAL(error) << "LUT表" << lut_table_path << "，表头无效，找不到BT列";
 		return -1;
 	}
 	boost::trim(line);
@@ -54,7 +71,7 @@ int Rad2bt::get_col_index(const std::string& lut_path, const std::string& col_na
 	const std::vector<std::string>::iterator it = std::find(col_names.begin(), col_names.end(), col_name);
 	if (it == col_names.end())
 	{
-		BOOST_LOG_TRIVIAL(error) << "LUT表" << lut_path << "，不含数据列" << col_name;
+		BOOST_LOG_TRIVIAL(error) << "LUT表" << lut_table_path << "，不含数据列" << col_name;
 		return -1;
 	}
 	return static_cast<int>(std::distance(col_names.begin(), it));
@@ -113,13 +130,13 @@ Rad2bt::~Rad2bt()
 {
 }
 
-std::optional<arma::fmat> Rad2bt::load_lut_cols(const std::string& lut_path, const int band)
+std::optional<arma::fmat> Rad2bt::load_lut_cols(const std::filesystem::path& lut_table_path, const int band)
 {
 	using namespace std;
 	using namespace arma;
-	const optional<fmat> lut_mat = load_lut_table(lut_path);
-	const uword bt_index = get_col_index(lut_path, get_bt_col_name());
-	const uword band_index = get_col_index(lut_path, get_rad_col_name(to_string(band)));
+	const optional<fmat> lut_mat = load_lut_table(lut_table_path);
+	const uword bt_index = get_col_index(lut_table_path, get_bt_col_name());
+	const uword band_index = get_col_index(lut_table_path, get_rad_col_name(to_string(band)));
 	const vector<uword> col_indexes{ bt_index, band_index };
 	BOOST_LOG_TRIVIAL(debug) << "bt_index: " << bt_index << ", band_index: " << band_index;
 	const fvec bt_col = lut_mat->col(bt_index);
