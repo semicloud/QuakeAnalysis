@@ -5,6 +5,40 @@
 #include <string>
 #include <filesystem>
 
+#pragma region Yaml字段名常量
+
+const std::string BT_NAME = "BT";
+const std::string AOD_NAME = "AOD";
+const std::string WV_NAME = "WV";
+const std::string LST_NAME = "LST";
+const std::string BT_CODE = "02";
+const std::string AOD_CODE = "04";
+const std::string WV_CODE = "05";
+const std::string LST_CODE = "11";
+
+const std::string PREPROCESS = "Preprocess";
+const std::string BAND = "Band";
+
+const std::string EDDY_FIELD = "EddyField";
+const std::string CALC_REF = "CalcRef";
+const std::string CALC_ANO = "CalcAno";
+const std::string ANO_METHOD = "AnoMethod";
+const std::string PLOT_BACKGROUND = "PlotBackground";
+const std::string PLOT_EDDYFIELD = "PlotEddyField";
+const std::string TITLE = "Title";
+const std::string BAR_TITLE = "BarTitle";
+
+const std::string START_DATE = "StartDate";
+const std::string END_DATE = "EndDate";
+const std::string WORKSPACE = "Workspace";
+const std::string TMP_PATH = "TmpPath";
+const std::string YML_FOLDER_PATH = "YmlFolderPath";
+const std::string SELECTED_PRODUCTS = "SelectedProducts";
+const std::string PREPROCESS_EXTENT = "PreprocessExtent";
+
+#pragma endregion Yaml字段名常量
+
+
 std::optional<YAML::Node> load_yml(const std::string& yml_path_str);
 
 /**
@@ -15,6 +49,8 @@ std::optional<YAML::Node> load_yml(const std::string& yml_path_str);
 std::vector<boost::gregorian::date> parse_date(const YAML::Node& node);
 
 int process(const std::string& yml_path_str);
+
+#pragma region 预处理相关
 
 /**
  * \brief 准备地表温度的预处理，生成yml文件和hdflist文件
@@ -34,7 +70,7 @@ int process(const std::string& yml_path_str);
  * \param yml_folder_path 
  * \return 
  */
-int prepare_lst(
+int generate_pp_lst_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -58,14 +94,14 @@ int prepare_lst(
  * \param pp_min_lon
  * \param pp_max_lon
  * \param pp_min_lat
- * \param pp_max_lat
+prepare_aod_or_wv * \param pp_max_lat
  * \param resampling_type
  * \param output_projection_type
  * \param output_projection_parameters
  * \param yml_folder_path
  * \return
  */
-int prepare_aod_or_wv(
+int generate_pp_aod_or_wv_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -97,7 +133,7 @@ int prepare_aod_or_wv(
  * \param yml_folder_path
  * \return
  */
-int prepare_bt(
+int generate_pp_bt_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -120,7 +156,7 @@ int prepare_bt(
  * \param date
  * \return
  */
-std::string generate_preprocess_aod_wv_hdf_list_str(
+std::string get_preprocess_aod_wv_hdf_list_str(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_code,
 	const std::string& product_type,
@@ -140,7 +176,7 @@ std::string generate_preprocess_aod_wv_hdf_list_str(
  * \param output_image_path
  * \return
  */
-std::string generate_preprocess_aod_wv_yml_str(
+std::string get_preprocess_aod_wv_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon,
@@ -158,7 +194,7 @@ std::string generate_preprocess_aod_wv_yml_str(
  * \param date 
  * \return 
  */
-std::string generate_preprocess_lst_hdf_list_str(
+std::string get_preprocess_lst_hdf_list_str(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_type, const boost::gregorian::date& date
 );
@@ -178,7 +214,7 @@ std::string generate_preprocess_lst_hdf_list_str(
  * \param output_image_path 
  * \return 
  */
-std::string generate_preprocess_lst_yml_str(
+std::string get_preprocess_lst_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon,
@@ -197,7 +233,7 @@ std::string generate_preprocess_lst_yml_str(
  * \param date 日期
  * \return 亮温预处理HDF文件列表字符串
  */
-std::string generate_preprocess_bt_hdf_list_str(
+std::string get_preprocess_bt_hdf_list_str(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_type, const boost::gregorian::date& date);
 
@@ -217,7 +253,7 @@ std::string generate_preprocess_bt_hdf_list_str(
  * \param output_image_path
  * \return
  */
-std::string generate_preprocess_bt_yml_str(
+std::string get_preprocess_bt_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon,
@@ -229,6 +265,59 @@ std::string generate_preprocess_bt_yml_str(
 	float mrt_pixel_size,
 	const std::filesystem::path& output_image_path
 );
+
+#pragma endregion 预处理相关
+
+
+#pragma region 涡度相关
+
+/**
+ * \brief 生成涡度Yml文件以及背景场计算需要的HdfList文件
+ * \param workspace_path 
+ * \param tmp_path
+ * \param product
+ * \param product_type 
+ * \param start_date 
+ * \param end_date 
+ * \param calc_ref 
+ * \param calc_ano 
+ * \param ano_method 
+ * \return 
+ */
+int generate_eddyfield_yml_hdflist_files(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	const std::string& product,
+	const std::string& product_type,
+	const boost::gregorian::date& start_date,
+	const boost::gregorian::date& end_date,
+	bool calc_ref, bool calc_ano, int ano_method
+);
+
+/**
+ * \brief 生成涡度Yml字符串
+ * \param workspace_path MODIS工作空间目录
+ * \param tmp_path 
+ * \param calc_ref 是否计算背景场
+ * \param calc_ano 是否计算涡度
+ * \param ano_method 方法类别，1或者2
+ * \param input_image_file_path 输入Tif文件，即要进行涡度计算的Tif文件
+ * \param ref_list_file_path 用于生成背景场的Tif列表文件
+ * \param ref_image_file_path 背景场文件路径，如果生成背景场，则将生成的背景场保存到这个文件，如果不生成背景场，则用该文件作为背景场
+ * \param output_ano_file_path 生成的涡度文件路径
+ * \return 
+ */
+std::string get_eddyfield_yml_str(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	bool calc_ref, bool calc_ano, int ano_method,
+	const std::filesystem::path& input_image_file_path,
+	const std::filesystem::path& ref_list_file_path,
+	const std::filesystem::path& ref_image_file_path,
+	const std::filesystem::path& output_ano_file_path
+);
+
+#pragma endregion 涡度相关
 
 /**
  * \brief 解析最小、最大经纬度

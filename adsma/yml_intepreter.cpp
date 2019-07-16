@@ -36,8 +36,8 @@ std::vector<boost::gregorian::date> parse_date(const YAML::Node& node)
 	using namespace std;
 	using namespace boost::gregorian;
 	using namespace modis_api;
-	const string date_start_str = node["StartDate"].as<string>();
-	const string date_end_str = node["EndDate"].as<string>();
+	const string date_start_str = node[START_DATE].as<string>();
+	const string date_end_str = node[END_DATE].as<string>();
 	const date d1 = Date_utils::get_date_from_doy_str(date_start_str);
 	const date d2 = Date_utils::get_date_from_doy_str(date_end_str);
 	BOOST_ASSERT(d1 <= d2);
@@ -58,14 +58,14 @@ int process(const std::string& yml_path_str)
 	if (std::optional<Node> node_optional = load_yml(yml_path.string()))
 	{
 		const Node node = node_optional.value();
-		const path workspace_path(node["Workspace"].as<string>());
+		const path workspace_path(node[WORKSPACE].as<string>());
 		BOOST_ASSERT_MSG(exists(workspace_path) && is_directory(workspace_path), "workspace path is illegal!");
-		const path tmp_path(node["TmpPath"].as<string>());
+		const path tmp_path(node[TMP_PATH].as<string>());
 		BOOST_ASSERT_MSG(exists(tmp_path) && is_directory(tmp_path), "tmp path is illegal!");
-		const path yml_folder_path(node["YmlFolderPath"].as<string>());
+		const path yml_folder_path(node[YML_FOLDER_PATH].as<string>());
 		if (!exists(yml_folder_path)) create_directories(yml_folder_path);
 
-		const vector<string> products = node["SelectedProducts"].as<vector<string>>();
+		const vector<string> products = node[SELECTED_PRODUCTS].as<vector<string>>();
 		BOOST_ASSERT_MSG(!products.empty(), "No selected products found!");
 
 		BOOST_LOG_TRIVIAL(debug) << "load " << products.size() << " products";
@@ -76,67 +76,82 @@ int process(const std::string& yml_path_str)
 		BOOST_LOG_TRIVIAL(debug) << "Start date: " << date_start;
 		BOOST_LOG_TRIVIAL(debug) << "End date: " << date_end;
 
-		const string pp_extent = node["PreprocessExtent"].as<string>();
+		const string pp_extent = node[PREPROCESS_EXTENT].as<string>();
+		// pp means PreProcess
 		float pp_min_lon = 0, pp_max_lon = 0, pp_min_lat = 0, pp_max_lat = 0;
 		int ret = split_lonlat_str(pp_extent, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat);
 		BOOST_ASSERT(ret == EXIT_SUCCESS);
 
-		const string PREPROCESS = "Preprocess";
-
 		for (const string& product : products)
 		{
-			if (product.find("02") != string::npos)
+			if (product.find(BT_CODE) != string::npos)
 			{
-				if (node["Preprocess"].IsDefined() && node["Preprocess"]["BT"].IsDefined())
+				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][BT_NAME].IsDefined())
 				{
-					const Node subNode = node["Preprocess"]["BT"];
-					const int band = subNode["Band"].as<int>();
+					const Node subNode = node[PREPROCESS][BT_NAME];
+					const int band = subNode[BAND].as<int>();
 					const string mrt_kernel_type = subNode["MRTProjectionType"].as<string>();
 					const string mrt_projection_type = subNode["MRTProjectionType"].as<string>();
 					const string mrt_projection_args = subNode["MRTProjectionArgs"].as<string>();
 					const float mrt_pixel_size = subNode["MRTPixelSize"].as<float>();
-					prepare_bt(workspace_path, tmp_path, date_start, date_end,
+					generate_pp_bt_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end,
 						product.substr(0, 3), pp_min_lon, pp_max_lon,
 						pp_min_lat, pp_max_lat, band, mrt_kernel_type,
 						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
 				}
-			}
-			else if (product.find("04") != string::npos)
-			{
-				if (node["Preprocess"].IsDefined() && node["Preprocess"]["AOD"].IsDefined())
+
+				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][BT_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS]["AOD"];
+					// 这就要开始算涡度了！
+					const Node subNode = node[EDDY_FIELD][BT_NAME];
+					const bool calc_ref = subNode[CALC_REF].as<bool>();
+					const bool calc_ano = subNode[CALC_ANO].as<bool>();
+					const int ano_method = subNode[ANO_METHOD].as<int>();
+					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
+					const string plot_bg_title = plot_bg_node[TITLE].as<string>();
+					const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
+					const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
+					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
+					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
+
+				}
+			}
+			else if (product.find(AOD_CODE) != string::npos)
+			{
+				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][AOD_NAME].IsDefined())
+				{
+					const Node subNode = node[PREPROCESS][AOD_NAME];
 					const string resampling_type = subNode["ResamplingType"].as<string>();
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					prepare_aod_or_wv(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+					generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
 						yml_folder_path);
 				}
 			}
-			else if (product.find("05") != string::npos)
+			else if (product.find(WV_CODE) != string::npos)
 			{
-				if (node["Preprocess"].IsDefined() && node["Preprocess"]["WV"].IsDefined())
+				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][WV_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS]["WV"];
+					const Node subNode = node[PREPROCESS][WV_NAME];
 					const string resampling_type = subNode["ResamplingType"].as<string>();
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					prepare_aod_or_wv(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+					generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
 						yml_folder_path);
 				}
 			}
-			else if (product.find("11") != string::npos)
+			else if (product.find(LST_CODE) != string::npos)
 			{
-				if (node["Preprocess"].IsDefined() && node["Preprocess"]["LST"].IsDefined())
+				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][LST_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS]["LST"];
+					const Node subNode = node[PREPROCESS][LST_NAME];
 					const string resampling_type = subNode["ResamplingType"].as<string>();
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
 					const float output_pixel_size = subNode["OutputPixelSize"].as<float>();
-					prepare_lst(workspace_path, tmp_path, date_start, date_end, product.substr(0, 3), pp_min_lon,
+					generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product.substr(0, 3), pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 						output_projection_type, output_projection_parameters, output_pixel_size,
 						yml_folder_path);
@@ -144,21 +159,15 @@ int process(const std::string& yml_path_str)
 			}
 		}
 
-		/*vector<string> generated_ymls = File_operation::get_all_files_by_extension(yml_folder_path.string(), ".yml");
-		for (vector<string>::value_type generated_yml : generated_ymls)
-		{
-			cout << str(format("proc_MxD021km.exe -y %1% -d") % generated_yml) << endl;
-			system(str(format("proc_MxD021km.exe -y %1% -d") % generated_yml).c_str());
-
-			Sleep(10 * 1000);
-		}*/
 		BOOST_LOG_TRIVIAL(debug) << "Done!";
 	}
 
 	return EXIT_SUCCESS;
 }
 
-int prepare_lst(const std::filesystem::path& workspace_path,
+#pragma region 预处理相关
+
+int generate_pp_lst_yml_hdflist_files(const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
 	const boost::gregorian::date& date_end, const std::string& product_type,
@@ -187,14 +196,14 @@ int prepare_lst(const std::filesystem::path& workspace_path,
 			continue;
 		// generate hdf list file
 		const path hdf_list_path = yml_folder_path / str(format("%1%_lst_hdf_list_%2%.txt") % product_type % year_and_day);
-		const string hdf_list_str = generate_preprocess_lst_hdf_list_str(workspace_path, product_type, *it);
+		const string hdf_list_str = get_preprocess_lst_hdf_list_str(workspace_path, product_type, *it);
 		int ret = File_operation::write_to_file(hdf_list_path.string(), hdf_list_str);
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
 
 		// generate yml
 		const path yml_path = yml_folder_path / str(format("pp_lst_%1%_%2%.yml") % product_type % year_and_day);
 		const path output_file_path = workspace_path / "Standard" / "LST" / product_type / (year_and_day + ".tif");
-		const string yml_str = generate_preprocess_lst_yml_str(hdf_list_path, tmp_path, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
+		const string yml_str = get_preprocess_lst_yml_str(hdf_list_path, tmp_path, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 			output_projection_type, output_projection_parameters, output_pixel_size, output_file_path.string());
 		ret = File_operation::write_to_file(yml_path.string(), yml_str);
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
@@ -202,7 +211,7 @@ int prepare_lst(const std::filesystem::path& workspace_path,
 	return EXIT_SUCCESS;
 }
 
-int prepare_aod_or_wv(
+int generate_pp_aod_or_wv_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -240,14 +249,14 @@ int prepare_aod_or_wv(
 		const string year_and_day = Date_utils::get_doy_str(*it);
 		// generate hdf list file
 		const path hdf_list_path = yml_folder_path / str(format("%1%_%2%_hdf_list_%3%.txt") % product_type % to_lower_copy(product) % year_and_day);
-		const string hdf_list_str = generate_preprocess_aod_wv_hdf_list_str(workspace_path, product_code, product_type, *it);
+		const string hdf_list_str = get_preprocess_aod_wv_hdf_list_str(workspace_path, product_code, product_type, *it);
 		int ret = File_operation::write_to_file(hdf_list_path.string(), hdf_list_str);
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
 
 		// generate yml
 		const path yml_path = yml_folder_path / str(format("pp_%1%_%2%_%3%.yml") % to_lower_copy(product) % product_type % year_and_day);
 		const path output_file_path = workspace_path / "Standard" / product / product_type / (year_and_day + ".tif");
-		const string yml_str = generate_preprocess_aod_wv_yml_str(hdf_list_path, tmp_path,
+		const string yml_str = get_preprocess_aod_wv_yml_str(hdf_list_path, tmp_path,
 			pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 			output_projection_type, output_projection_parameters, output_file_path);
 		ret = File_operation::write_to_file(yml_path.string(), yml_str);
@@ -257,7 +266,7 @@ int prepare_aod_or_wv(
 
 }
 
-int prepare_bt(const std::filesystem::path& workspace_path,
+int generate_pp_bt_yml_hdflist_files(const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
 	const boost::gregorian::date& date_end,
@@ -272,7 +281,7 @@ int prepare_bt(const std::filesystem::path& workspace_path,
 	using namespace std;
 	using namespace filesystem;
 	using namespace boost;
-	using namespace gregorian;
+	using namespace boost::gregorian;
 	using namespace YAML;
 	using namespace modis_api;
 
@@ -285,14 +294,15 @@ int prepare_bt(const std::filesystem::path& workspace_path,
 		const string year_and_day = Date_utils::get_doy_str(*it);
 		// generate hdf list file
 		const path hdf_list_path = yml_folder_path / str(format("%1%_bt_hdf_list_%2%.txt") % product_type % year_and_day);
-		const string hdf_list_str = generate_preprocess_bt_hdf_list_str(workspace_path, product_type, *it);
+		const string hdf_list_str = get_preprocess_bt_hdf_list_str(workspace_path, product_type, *it);
 		int ret = File_operation::write_to_file(hdf_list_path.string(), hdf_list_str);
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
 
 		// generate yml
 		const path yml_path = yml_folder_path / str(format("pp_bt_%1%_%2%.yml") % product_type % year_and_day);
+		// TODO 需确定文件名命名规则
 		const path output_file_path = workspace_path / "Standard" / "BT" / product_type / (year_and_day + ".tif");
-		const string yml_str = generate_preprocess_bt_yml_str(hdf_list_path, tmp_path, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat,
+		const string yml_str = get_preprocess_bt_yml_str(hdf_list_path, tmp_path, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat,
 			band, mrt_kernel_type, mrt_projection_type, mrt_projection_args, mrt_pixel_size, output_file_path);
 		ret = File_operation::write_to_file(yml_path.string(), yml_str);
 		BOOST_ASSERT_MSG(ret == EXIT_SUCCESS, "generate hdf file list failed!");
@@ -300,7 +310,7 @@ int prepare_bt(const std::filesystem::path& workspace_path,
 	return EXIT_SUCCESS;
 }
 
-std::string generate_preprocess_aod_wv_hdf_list_str(const std::filesystem::path& workspace_path,
+std::string get_preprocess_aod_wv_hdf_list_str(const std::filesystem::path& workspace_path,
 	const std::string& product_code, const std::string& product_type,
 	const boost::gregorian::date& date)
 {
@@ -332,7 +342,7 @@ std::string generate_preprocess_aod_wv_hdf_list_str(const std::filesystem::path&
 	return oss.str();
 }
 
-std::string generate_preprocess_aod_wv_yml_str(
+std::string get_preprocess_aod_wv_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon, float min_lat, float max_lat,
@@ -359,7 +369,7 @@ std::string generate_preprocess_aod_wv_yml_str(
 	return yml_str;
 }
 
-std::string generate_preprocess_lst_hdf_list_str(
+std::string get_preprocess_lst_hdf_list_str(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_type,
 	const boost::gregorian::date& date)
@@ -386,7 +396,7 @@ std::string generate_preprocess_lst_hdf_list_str(
 	return oss.str();
 }
 
-std::string generate_preprocess_lst_yml_str(
+std::string get_preprocess_lst_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon, float min_lat, float max_lat,
@@ -415,7 +425,7 @@ std::string generate_preprocess_lst_yml_str(
 	return yml_str;
 }
 
-std::string generate_preprocess_bt_hdf_list_str(const std::filesystem::path& workspace_path,
+std::string get_preprocess_bt_hdf_list_str(const std::filesystem::path& workspace_path,
 	const std::string& product_type, const boost::gregorian::date& date)
 {
 	using namespace std;
@@ -487,7 +497,7 @@ std::string generate_preprocess_bt_hdf_list_str(const std::filesystem::path& wor
 	return oss.str();
 }
 
-std::string generate_preprocess_bt_yml_str(
+std::string get_preprocess_bt_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon, float min_lat, float max_lat,
@@ -516,6 +526,67 @@ std::string generate_preprocess_bt_yml_str(
 	emt << EndMap;
 	return emt.c_str();
 }
+
+#pragma endregion 预处理相关
+
+
+#pragma region 涡度相关
+
+std::string get_eddyfield_yml_str(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	bool calc_ref, bool calc_ano, int ano_method,
+	const std::filesystem::path& input_image_file_path,
+	const std::filesystem::path& ref_list_file_path,
+	const std::filesystem::path& ref_image_file_path,
+	const std::filesystem::path& output_ano_file_path)
+{
+	using namespace std;
+	using namespace std::filesystem;
+	using namespace YAML;
+	Emitter emt;
+	emt << BeginMap;
+	emt << Key << "Workspace" << Value << workspace_path.string();
+	emt << Key << "CalcRef" << Value << calc_ref;
+	emt << Key << "CalcAno" << Value << calc_ano;
+	emt << Key << "AnoMethod" << Value << ano_method;
+	emt << Key << "InputImageFile" << Value << input_image_file_path.string();
+	emt << Key << "RefListFile" << Value << ref_list_file_path.string();
+	emt << Key << "RefImageFile" << Value << ref_image_file_path.string();
+	emt << Key << "OutputAnoFile" << Value << output_ano_file_path.string();
+	emt << EndMap;
+	return emt.c_str();
+}
+
+int generate_eddyfield_yml_hdflist_files(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	const std::string& product,
+	const std::string& product_type,
+	const boost::gregorian::date& start_date,
+	const boost::gregorian::date& end_date,
+	bool calc_ref, bool calc_ano, int ano_method)
+{
+	using namespace std;
+	using namespace std::filesystem;
+	using namespace boost::gregorian;
+
+	for(day_iterator it(start_date) ; it <= end_date; ++it)
+	{
+		const string year_and_day = modis_api::Date_utils::get_doy_str(*it);
+		const string year = modis_api::Date_utils::get_doy_year(year_and_day);
+		const string day = modis_api::Date_utils::get_doy_day(year_and_day);
+		// TODO 需确定tif文件命名规则后再编写
+		const path input_image_path = workspace_path / "Standard" / boost::str(boost::format("%1%_%2%") % product_type % product) / year;
+	}
+
+	return 0;
+}
+
+
+
+#pragma endregion 涡度相关
+
 
 int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon, float& out_max_lon, float& out_min_lat,
 	float& out_max_lat)
