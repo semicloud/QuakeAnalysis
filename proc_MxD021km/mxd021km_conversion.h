@@ -51,93 +51,93 @@ namespace adsma
 		 * \param band int
 		 * \return 该波段在系数矩阵中的索引值
 		 */
-		static int get_param_index_by_band(int band);
+		static int get_index_by_band(int band);
 
 		/**
 		 * \brief 对亮温tif文件进行系数标定
-		 * \param bt_matrix 亮温矩阵
-		 * \param bt_hdf_file_path 亮温hdf文件，用于提取标定系数
+		 * \param bt_mat 亮温矩阵
+		 * \param bt_hdf_file 亮温hdf文件，用于提取标定系数
 		 * \param band 要提取的波段
 		 * \param tmp_path tmp目录
-		 * \param bt_file_without_extension 亮温hdf文件名（不含扩展名）
-		 * \param bt_tif_file_path 亮温tif文件路径
+		 * \param bt_file_no_ext 亮温hdf文件名（不含扩展名）
+		 * \param bt_tif_file 亮温tif文件路径
 		 */
-		static void bt_calibration(arma::fmat& bt_matrix,
-			const std::filesystem::path& bt_hdf_file_path, int band,
+		static void bt_calibration(arma::fmat& bt_mat,
+			const std::filesystem::path& bt_hdf_file, int band,
 			const std::filesystem::path& tmp_path,
-			const std::string& bt_file_without_extension,
-			const std::filesystem::path& bt_tif_file_path);
+			const std::string& bt_file_no_ext,
+			const std::filesystem::path& bt_tif_file);
 
 		/**
 		 * \brief 对亮温tif文件进行辐亮度转换
-		 * \param bt_matrix 亮温矩阵
+		 * \param bt_mat 亮温矩阵
 		 * \param bt_lut lut表bt列
 		 * \param rad_lut lut表band列
 		 * \param line_number lut表行数
 		 * \param tmp_path tmp目录
-		 * \param bt_file_without_extension 亮温hdf文件名（不含扩展名）
-		 * \param bt_tif_file_path 亮温tif文件路径
+		 * \param bt_file_no_ext 亮温hdf文件名（不含扩展名）
+		 * \param bt_file 亮温tif文件路径，用于Debug模式下保存中间结果
 		 */
-		static void bt_transform(arma::fmat& bt_matrix,
+		static void bt_transform(arma::fmat& bt_mat,
 			const arma::fvec& bt_lut, const arma::fvec& rad_lut, arma::uword line_number,
 			const std::filesystem::path& tmp_path,
-			const std::string& bt_file_without_extension,
-			const std::filesystem::path& bt_tif_file_path);
+			const std::string& bt_file_no_ext,
+			const std::filesystem::path& bt_file);
 
 		/**
 		 * \brief 对太阳天顶角tif文件进行数据标定
-		 * \param sza_matrix 太阳天顶角矩阵
+		 * \param sza_mat 太阳天顶角矩阵
 		 * \param tmp_path tmp目录
-		 * \param sza_file_without_extension 太阳天顶角hdf文件名（不含扩展名）
-		 * \param sza_tif_file_path 太阳天顶角tif文件路径
+		 * \param sza_file_no_ext 太阳天顶角hdf文件名（不含扩展名）
+		 * \param sza_file 太阳天顶角tif文件路径
 		 */
-		static void sza_calibration(arma::fmat& sza_matrix,
+		static void sza_calibration(arma::fmat& sza_mat,
 			const std::filesystem::path& tmp_path,
-			const std::string& sza_file_without_extension,
-			const std::filesystem::path& sza_tif_file_path);
+			const std::string& sza_file_no_ext,
+			const std::filesystem::path& sza_file);
 
 		/**
 		 * \brief 提取太阳天顶角矩阵中大于>85的像元
-		 * \param sza_matrix 太阳天顶角矩阵
+		 * \param sza_mat 太阳天顶角矩阵
 		 * \param tmp_path tmp目录
-		 * \param sza_file_without_extension 太阳天顶角hdf文件名（不含扩展名）
-		 * \param sza_tif_file_path 太阳天顶角tif文件路径
+		 * \param sza_file_no_ext 太阳天顶角hdf文件名（不含扩展名）
+		 * \param sza_file 太阳天顶角tif文件路径
 		 */
-		static void sza_filter(arma::fmat& sza_matrix,
+		static void sza_filter(arma::fmat& sza_mat,
 			const std::filesystem::path& tmp_path,
-			const std::string& sza_file_without_extension,
-			const std::filesystem::path& sza_tif_file_path);
+			const std::string& sza_file_no_ext,
+			const std::filesystem::path& sza_file);
 
 		/**
 		 * \brief 提取云掩膜矩阵中
-		 * \param cm_matrix 云掩膜矩阵
+		 * \param cm_mat 云掩膜矩阵
 		 * \param tmp_path tmp目录
-		 * \param cm_file_without_extension 云掩膜hdf文件名（不含扩展名）
-		 * \param cm_tif_file_path 云掩膜tif文件路径
+		 * \param cm_file_no_ext 云掩膜hdf文件名（不含扩展名）
+		 * \param cm_file 云掩膜tif文件路径
 		 */
-		static void cm_filter(arma::fmat& cm_matrix,
+		static void cm_filter(arma::fmat& cm_mat,
 			const std::filesystem::path& tmp_path,
-			const std::string& cm_file_without_extension,
-			const std::filesystem::path& cm_tif_file_path);
+			const std::string& cm_file_no_ext,
+			const std::filesystem::path& cm_file);
 
 		/**
 		 * \brief 亮温、太阳天顶角、云掩膜矩阵逐元素相乘，然后保存至tif文件
-		 * \param bt_matrix 亮温矩阵
-		 * \param sza_matrix 太阳天顶角矩阵
-		 * \param cm_matrix 云掩膜矩阵
+		 * \param bt_mat 亮温矩阵
+		 * \param sza_mat 太阳天顶角矩阵
+		 * \param cm_mat 云掩膜矩阵
 		 * \param tmp_path tmp目录
-		 * \param bt_file_without_extension 亮温hdf文件名（不含扩展名）
-		 * \param bt_tif_file_path
-		 * \param output_file_path 输出文件路径
+		 * \param bt_file_no_ext 亮温hdf文件名（不含扩展名）
+		 * \param bt_file
+		 * \param new_bt_file 输出文件路径
 		 */
 		static void bt_sza_cm_product_save(
-			const arma::fmat& bt_matrix,
-			const arma::fmat& sza_matrix,
-			const arma::fmat& cm_matrix,
+			const arma::fmat& bt_mat,
+			const arma::fmat& sza_mat,
+			const arma::fmat& cm_mat,
 			const std::filesystem::path& tmp_path,
-			const std::string& bt_file_without_extension,
-			const std::filesystem::path& bt_tif_file_path,
-			const std::filesystem::path& output_file_path);
+			const std::string& bt_file_no_ext,
+			const std::filesystem::path& bt_file,
+			const std::filesystem::path& new_bt_file);
 
 		/**
 		 * \brief 合成预处理的文件，并保存
@@ -157,7 +157,7 @@ namespace adsma
 		/**
 		 * \brief 执行预处理
 		 */
-		static void preprocess(const yamlArgs&);
+		static int preprocess(const yamlArgs&);
 	};
 }
 
