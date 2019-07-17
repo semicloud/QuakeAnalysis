@@ -1,24 +1,46 @@
+# 工作空间目录
 Workspace: D:\modis_workspace
+# Tmp目录
 TmpPath: D:\modis_workspace\tmp
+# 存放生成的yml文件的目录
 YmlFolderPath: D:\modis_workspace\generated_ymls
+# 选择的产品
 SelectedProducts: 
   - MOD11
+# 开始日期
 StartDate: 20150101
+# 结束日期
 EndDate: 20151231
+# 预处理地理范围
 PreprocessExtent: 115 120 40 45
+# 出图地理范围
 PlotExtent: 100 140 20 50
+# 图件标题字号
 PlotTitleSize: 16
+# 图件BarTitle字号
 PlotBarTitleSize: 12
+# 边界Shapefile路径
 ShpBoundary: xxxxx
+# 断层Shapefile路径
 ShpFault: xxxxx
+# 主要城市Shapefile路径
 ShpCity: xxxxxx
+# 地震目录文件路径
 QuakeRecord: xxxxx
-PlotDpi: xxxxx
+# 图件DPI，去除？
+# PlotDpi: xxxxx
+# 图件默认大小 单位：basemap默认值
 PlotSize: 12 8
+
+# 归档设置
 Archive: 
+  # 数据目录
   DataDir: xxxxx
+
+# 预处理设置
 Preprocess:
   BT:
+    # 目标波段值
     Band: 31
     MRTKernelType: NN
     MRTProjectionType: EQRECT
@@ -37,19 +59,61 @@ Preprocess:
     OutputProjectionType: ER
     OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
     OutputPixelSize: 1000
+
+# 涡度处理
 EddyField:
-  CalcRef: true
-  CalcAno: true
-  AnoMethod: 1
-  PlotBackground:
-    Title: xxxxx
-    BarTitle: xxxxx
-  PlotEddyField:
-    Title: xxxxx
-    BarTitle: xxxxx
+  BT:
+    # 是否计算背景场
+    CalcRef: true
+    # 是否计算异常
+    CalcAno: true
+    # 计算方法
+    AnoMethod: 1
+    # 背景场出图，无此项则背景场不出图
+    PlotBackground:
+      Title: 焦博，Title如何确定？
+      BarTitle: 同上
+    # 异常出图，无此项则异常不出图
+    PlotEddyField:
+      Title: xxxxx
+      BarTitle: xxxxx
+  AOD:
+    CalcRef: true
+    CalcAno: true
+    AnoMethod: 1
+    PlotBackground:
+      Title: xxxxx
+      BarTitle: xxxxx
+    PlotEddyField:
+      Title: xxxxx
+      BarTitle: xxxxx
+  WV:
+    CalcRef: true
+    CalcAno: true
+    AnoMethod: 1
+    PlotBackground:
+      Title: xxxxx
+      BarTitle: xxxxx
+    PlotEddyField:
+      Title: xxxxx
+      BarTitle: xxxxx
+  LST:
+    CalcRef: true
+    CalcAno: true
+    AnoMethod: 1
+    PlotBackground:
+      Title: xxxxx
+      BarTitle: xxxxx
+    PlotEddyField:
+      Title: xxxxx
+      BarTitle: xxxxx
+
+# 以下部分尚未涉及
 GeneralAno:
   PlotGeneralAno:
     Title: xxxxx
     BarTitle: xxxxx
+
+
 Rst-en:
   PrepSupport: 2
