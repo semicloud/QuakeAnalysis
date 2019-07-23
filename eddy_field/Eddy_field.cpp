@@ -204,7 +204,7 @@ void Eddy_field::compute_eddy_field_m1(Eddy_field_options_yaml& options)
 
 	if (exists(ef_tif_path))
 		remove(ef_tif_path);
-	if (exists(ef_tif_path.parent_path()))
+	if (!exists(ef_tif_path.parent_path()))
 		create_directories(ef_tif_path.parent_path());
 	// 复制过去一个tif文件
 	copy_file(tif_path, ef_tif_path);

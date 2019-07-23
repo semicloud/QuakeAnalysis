@@ -1,6 +1,7 @@
 #pragma once
 #include <yaml-cpp/yaml.h>
 #include <boost/date_time/gregorian/greg_date.hpp>
+#include <boost/format.hpp>
 #include <optional>
 #include <string>
 #include <filesystem>
@@ -36,8 +37,31 @@ const std::string YML_FOLDER_PATH = "YmlFolderPath";
 const std::string SELECTED_PRODUCTS = "SelectedProducts";
 const std::string PREPROCESS_EXTENT = "PreprocessExtent";
 
-#pragma endregion Yaml字段名常量
+#pragma endregion
 
+#pragma  region  程序用常量
+
+/**
+ * \brief 预处理Standard文件夹名称
+ */
+const std::string PP_STANDARD_FOLDER = "Standard";
+/**
+ * \brief 产品类型MOD
+ */
+const std::string PROD_TYPE_MOD = "MOD";
+/**
+ * \brief 产品类型MYD
+ */
+const std::string PROD_TYPE_MYD = "MYD";
+
+const std::string BT_FOLDER_SUFFIX = "021KM";
+const std::string SZA_FOLDER_SUFFIX = "03";
+const std::string CM_FOLDER_SUFFIX = "35_L2";
+const std::string AOD_FOLDER_SUFFIX = "04_3K";
+const std::string WV_FOLDER_SUFFIX = "05_L2";
+const std::string LST_FOLDER_SUFFIX = "11A1";
+
+#pragma  endregion
 
 std::optional<YAML::Node> load_yml(const std::string& yml_path_str);
 
@@ -54,21 +78,21 @@ int process(const std::string& yml_path_str);
 
 /**
  * \brief 准备地表温度的预处理，生成yml文件和hdflist文件
- * \param workspace_path 
- * \param tmp_path 
- * \param date_start 
- * \param date_end 
- * \param m_product 
- * \param pp_min_lon 
- * \param pp_max_lon 
- * \param pp_min_lat 
- * \param pp_max_lat 
- * \param resampling_type 
- * \param output_projection_type 
- * \param output_projection_parameters 
- * \param output_pixel_size 
- * \param yml_folder_path 
- * \return 
+ * \param workspace_path
+ * \param tmp_path
+ * \param date_start
+ * \param date_end
+ * \param m_product
+ * \param pp_min_lon
+ * \param pp_max_lon
+ * \param pp_min_lat
+ * \param pp_max_lat
+ * \param resampling_type
+ * \param output_projection_type
+ * \param output_projection_parameters
+ * \param output_pixel_size
+ * \param yml_folder_path
+ * \return
  */
 int generate_pp_lst_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
@@ -189,10 +213,10 @@ std::string get_preprocess_aod_wv_yml_str(
 
 /**
  * \brief 生成地表温度预处理HDF文件列表字符串
- * \param workspace_path 
- * \param product_type 
- * \param date 
- * \return 
+ * \param workspace_path
+ * \param product_type
+ * \param date
+ * \return
  */
 std::string get_preprocess_lst_hdf_list_str(
 	const std::filesystem::path& workspace_path,
@@ -201,18 +225,18 @@ std::string get_preprocess_lst_hdf_list_str(
 
 /**
  * \brief 生成地表温度的yml
- * \param hdf_list_file_path 
- * \param tmp_path 
- * \param min_lon 
- * \param max_lon 
- * \param min_lat 
- * \param max_lat 
- * \param resampling_type 
- * \param output_projection_type 
- * \param output_projection_parameters 
- * \param output_pixel_size 
- * \param output_image_path 
- * \return 
+ * \param hdf_list_file_path
+ * \param tmp_path
+ * \param min_lon
+ * \param max_lon
+ * \param min_lat
+ * \param max_lat
+ * \param resampling_type
+ * \param output_projection_type
+ * \param output_projection_parameters
+ * \param output_pixel_size
+ * \param output_image_path
+ * \return
  */
 std::string get_preprocess_lst_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
@@ -266,23 +290,46 @@ std::string get_preprocess_bt_yml_str(
 	const std::filesystem::path& output_image_path
 );
 
-#pragma endregion 预处理相关
+/**
+ * \brief 获取预处理结果输出目录（部分）
+ * \param product_type 产品类型，MOD或MYD
+ * \param product_name 产品名称
+ * \return 预处理结果输出目录（部分）
+ */
+inline std::string get_pp_folder(const std::string& product_type, const std::string& product_name)
+{
+	return (boost::format("%1%_%2%") % product_type % product_name).str();
+}
 
+/**
+ * \brief 获取预处理输出文件名
+ * \param product_name 产品名称
+ * \param year 年份
+ * \param day DOY
+ * \return 预处理输出文件名
+ */
+inline std::string get_pp_output_file_name(const std::string& product_name, const std::string& year, const std::string& day)
+{
+	return (boost::format("%1%_%2%_%3%.tif") % product_name % year % day).str();
+}
+
+#pragma endregion 预处理相关
 
 #pragma region 涡度相关
 
 /**
  * \brief 生成涡度Yml文件以及背景场计算需要的HdfList文件
- * \param workspace_path 
+ * \param workspace_path
  * \param tmp_path
  * \param product
- * \param product_type 
- * \param start_date 
- * \param end_date 
- * \param calc_ref 
- * \param calc_ano 
- * \param ano_method 
- * \return 
+ * \param product_type
+ * \param start_date
+ * \param end_date
+ * \param calc_ref
+ * \param calc_ano
+ * \param ano_method
+ * \param yml_folder_path
+ * \return
  */
 int generate_eddyfield_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
@@ -291,13 +338,14 @@ int generate_eddyfield_yml_hdflist_files(
 	const std::string& product_type,
 	const boost::gregorian::date& start_date,
 	const boost::gregorian::date& end_date,
-	bool calc_ref, bool calc_ano, int ano_method
+	bool calc_ref, bool calc_ano, int ano_method,
+	const std::filesystem::path& yml_folder_path
 );
 
 /**
  * \brief 生成涡度Yml字符串
  * \param workspace_path MODIS工作空间目录
- * \param tmp_path 
+ * \param tmp_path
  * \param calc_ref 是否计算背景场
  * \param calc_ano 是否计算涡度
  * \param ano_method 方法类别，1或者2
@@ -305,7 +353,7 @@ int generate_eddyfield_yml_hdflist_files(
  * \param ref_list_file_path 用于生成背景场的Tif列表文件
  * \param ref_image_file_path 背景场文件路径，如果生成背景场，则将生成的背景场保存到这个文件，如果不生成背景场，则用该文件作为背景场
  * \param output_ano_file_path 生成的涡度文件路径
- * \return 
+ * \return
  */
 std::string get_eddyfield_yml_str(
 	const std::filesystem::path& workspace_path,
@@ -316,6 +364,29 @@ std::string get_eddyfield_yml_str(
 	const std::filesystem::path& ref_image_file_path,
 	const std::filesystem::path& output_ano_file_path
 );
+
+/**
+ * \brief 获取涡度背景场hdflist字符串
+ * \param workspace_path
+ * \param tmp_path
+ * \param product
+ * \param product_type
+ * \param ano_method
+ * \param date
+ * \param years 用于生成涡度背景场的年份，即date的年份之前的年份
+ * \return 涡度背景场hdflist字符串
+ */
+std::string get_eddyfield_ref_hdflist_str(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	const std::string& product,
+	const std::string& product_type,
+	const boost::gregorian::date& date,
+	const std::vector<unsigned>& years,
+	int ano_method
+);
+
+
 
 #pragma endregion 涡度相关
 
@@ -333,8 +404,8 @@ int split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon,
 
 /**
  * \brief 将unordered map翻译为yml str
- * \param umap 
- * \return 
+ * \param umap
+ * \return
  */
 std::string get_yml_str(const std::unordered_map<std::string, std::string>& umap);
 
@@ -345,5 +416,18 @@ std::string get_yml_str(const std::unordered_map<std::string, std::string>& umap
  * \param year_and_day 年份及天数字符串
  * \return 数据存在返回true，不存在返回false
  */
-bool is_data_exist(const std::filesystem::path& workspace, 
+bool is_data_exist(const std::filesystem::path& workspace,
 	const std::string& product, const std::string& year_and_day);
+
+/**
+ * \brief 获取一个产品的预处理数据年份集合
+ * \param workspace_path 工作空间目录
+ * \param product_type 产品类型，MOD或MYD
+ * \param product 产品名称，限于[BT, AOD, WV, LST]
+ * \return 该产品的预处理数据年份集合，升序排序
+ */
+std::vector<unsigned int> get_years_of_product(
+	const std::filesystem::path& workspace_path,
+	const std::string& product_type,
+	const std::string& product
+);

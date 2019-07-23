@@ -87,14 +87,18 @@ int run_programs(const std::string& ymls_folder)
 
 int main()
 {
+	using namespace std;
 	init_logger();
-
 	/*generate_mxd11a1_ymls();*/
 	//generate_txt_for_general_ano();
 	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
 	process(yml);
 	run_programs("D:\\modis_workspace\\generated_ymls");
-
+	//auto years = get_years_of_product("D:\\modis_workspace", "MOD", "LST");
+	/*for (unsigned year : years)
+	{
+		cout << year << " ";
+	}*/
 }
 
 void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)
@@ -108,7 +112,7 @@ void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, c
 		std::string file_name = it->path().filename().string();
 		unsigned file_year = boost::lexical_cast<unsigned>(file_name.substr(3, 4));
 		unsigned file_day = boost::lexical_cast<unsigned>(trim_left_copy_if(file_name.substr(7, 3), boost::is_any_of("0")));
-		unsigned file_month = (boost::gregorian ::date(file_year, 1, 1) + boost::gregorian::days(file_day - 1)).month().as_number();
+		unsigned file_month = (boost::gregorian::date(file_year, 1, 1) + boost::gregorian::days(file_day - 1)).month().as_number();
 		BOOST_LOG_TRIVIAL(debug) << "file year:" << file_year << ", file month: " << file_month << " ,file day:" << file_day;
 		if (file_year == year && file_month == month)
 		{

@@ -8,9 +8,9 @@ YmlFolderPath: D:\modis_workspace\generated_ymls
 SelectedProducts: 
   - MOD11
 # 开始日期
-StartDate: 20150101
+StartDate: 20180101
 # 结束日期
-EndDate: 20151231
+EndDate: 20181231
 # 预处理地理范围
 PreprocessExtent: 115 120 40 45
 # 出图地理范围
@@ -59,7 +59,6 @@ Preprocess:
     OutputProjectionType: ER
     OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
     OutputPixelSize: 1000
-
 # 涡度处理
 EddyField:
   BT:
