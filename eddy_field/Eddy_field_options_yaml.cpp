@@ -1,18 +1,21 @@
 #include "Eddy_field_options_yaml.h"
-#include <boost/filesystem.hpp>
 #include <boost/log/trivial.hpp>
 #include <yaml-cpp/exceptions.h>
 #include <yaml-cpp/yaml.h>
-#include <iostream>
+#include <filesystem>
+#include <fstream>
 
 
 Eddy_field_options_yaml::Eddy_field_options_yaml(std::string& path)
 {
+	using namespace std;
+	using namespace filesystem;
+
 	YAML::Node config;
 	try
 	{
 		config = YAML::LoadFile(path);
-		BOOST_LOG_TRIVIAL(info) << "已加载配置文件：" << path;
+		BOOST_LOG_TRIVIAL(debug) << "已加载配置文件：" << path;
 	}
 	catch (const YAML::ParserException &ex)
 	{
@@ -20,44 +23,37 @@ Eddy_field_options_yaml::Eddy_field_options_yaml(std::string& path)
 		BOOST_LOG_TRIVIAL(error) << ex.what();
 	}
 
-	_modis_workspace_folder = config["Workspace"].as<std::string>();
-	if (_modis_workspace_folder[_modis_workspace_folder.size() - 1] != '\\')
-		_modis_workspace_folder = _modis_workspace_folder + "\\";
-	_need_compute_ref = config["CalcRef"].as<bool>();
-	_need_compute_eddy_field = config["CalcAno"].as<bool>();
-	_input_image_file = config["InputImageFile"].as<std::string>();
-	_method = config["AnoMethod"].as<int>();
-	//_dateStr = config["Date"].as<std::string>();
-	//_data = config["Data"].as<std::string>();
-	//_type = config["Type"].as<std::string>();
-	_support_ref_tif_file = config["RefListFile"].as<std::string>();
-	if (_need_compute_ref && !boost::filesystem::exists(_support_ref_tif_file))
+	m_workspace = config["Workspace"].as<std::string>();
+	m_calc_ref = config["CalcRef"].as<bool>();
+	m_calc_ano = config["CalcAno"].as<bool>();
+	m_input_image_file = config["InputImageFile"].as<std::string>();
+	m_ano_method = config["AnoMethod"].as<int>();
+	m_ref_list_file = config["RefListFile"].as<std::string>();
+	if (m_calc_ref && !exists(m_ref_list_file))
 	{
-		BOOST_LOG_TRIVIAL(error) << "背景场tif列表文件：" << _support_ref_tif_file << "不存在，无法生成背景场！";
+		BOOST_LOG_TRIVIAL(error) << "背景场tif列表文件：" << m_ref_list_file << "不存在，无法生成背景场！";
 		exit(EXIT_FAILURE);
 	}
-	_ref_image_file = config["RefImageFile"].as<std::string>();
-	_output_eddy_field_image_file = config["OutputAnoFile"].as<std::string>();
+	m_ref_image_file = config["RefImageFile"].as<std::string>();
+	m_output_ano_file = config["OutputAnoFile"].as<std::string>();
 }
 
 Eddy_field_options_yaml::~Eddy_field_options_yaml() = default;
 
-std::vector<std::string> Eddy_field_options_yaml::get_ref_tif_file_list()
+std::vector<std::filesystem::path> Eddy_field_options_yaml::get_tif_files_for_ref_computing()
 {
-	std::vector<std::string> svec;
-	std::ifstream ifs(_support_ref_tif_file);
-	if (ifs)
+	using namespace std;
+	std::vector<std::filesystem::path> paths;
+	std::ifstream ifs(m_ref_list_file);
+	if (!ifs)
 	{
-		std::string buffer;
-		while (std::getline(ifs, buffer)) svec.push_back(buffer);
+		BOOST_LOG_TRIVIAL(error) << "读取" << m_ref_list_file << "文件失败！";
 	}
-	else
-	{
-		BOOST_LOG_TRIVIAL(error) << "读取" << _support_ref_tif_file << "文件失败！";
-	}
-	BOOST_LOG_TRIVIAL(debug) << "获取 " << svec.size() << "个用于计算背景场的tif文件:";
-	for (auto it = svec.cbegin(); it != svec.cend(); ++it)
-		BOOST_LOG_TRIVIAL(debug) << *it;
-	return svec;
+	std::string buffer;
+	while (std::getline(ifs, buffer)) paths.emplace_back(buffer);
+	BOOST_LOG_TRIVIAL(debug) << "获取 " << paths.size() << "个用于计算背景场的tif文件:";
+	//for (auto it = paths.cbegin(); it != paths.cend(); ++it)
+	//	BOOST_LOG_TRIVIAL(debug) << *it;
+	return paths;
 }
 

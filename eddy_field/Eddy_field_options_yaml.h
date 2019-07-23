@@ -1,160 +1,84 @@
 #pragma once
+#include <filesystem>
 #include <string>
-#include <boost/format.hpp>
-#include <boost/algorithm/string/case_conv.hpp>
 #include <vector>
 
 /**
  * \brief 涡度输入参数解析类
  */
-class Eddy_field_options_yaml
-{
-private:
-	std::string _yml_path;
-
-	std::string _modis_workspace_folder;
-	/**
-	 * \brief 是否需要计算背景场
-	 */
-	bool _need_compute_ref;
-	/**
-	 * \brief 是否需要计算涡度
-	 */
-	bool _need_compute_eddy_field;
-	/**
-	 * \brief 方法，可以选择方法1或方法2
-	 */
-	int _method;
-	/**
-	 * \brief 日期字符串
-	 */
-	//std::string _dateStr;
-	/**
-	 * \brief 数据类型，BT、CM等，需要该字段配合Method字段确定存储的路径
-	 */
-	//std::string _data;
-	/**
-	 * \brief 数据类型 MOD或MYD
-	 */
-	//std::string _type;
-	/**
-	 * \brief 用于计算背景场的tif文件列表所在的txt文件路径
-	 */
-	std::string _support_ref_tif_file;
-	/**
-	 * \brief 输入Tif文件，即要进行涡度计算的Tif文件
-	 */
-	std::string _input_image_file;
-	/**
-	 * \brief 生成的背景场文件路径
-	 */
-	std::string _ref_image_file;
-	/**
-	 * \brief 生成的涡度文件路径
-	 */
-	std::string _output_eddy_field_image_file;
-
+class Eddy_field_options_yaml {
 public:
 	Eddy_field_options_yaml(std::string&);
 	~Eddy_field_options_yaml();
 
-	/**
-	 * \brief 背景场文件路径
-	 * \return 
-	 */
-	std::string ref_image_file() const
+	// 背景场文件路径
+	std::filesystem::path ref_image_file() const
 	{
-		return _ref_image_file;
+		return m_ref_image_file;
 	}
 
-	/**
-	 * \brief 输出涡度文件路径
-	 * \return 
-	 */
-	std::string output_eddy_field_image_file() const
+	// 异常文件路径
+	std::filesystem::path output_ano_file() const
 	{
-		return _output_eddy_field_image_file;
+		return m_output_ano_file;
 	}
 
-	/**
-	 * \brief 输入tif文件路径
-	 * \return 
-	 */
-	std::string input_image_file() const
+	// 输入文件路径
+	std::filesystem::path input_image_file() const
 	{
-		return _input_image_file;
+		return m_input_image_file;
 	}
 
-	/**
-	 * \brief MODIS工作空间
-	 * \return 
-	 */
-	std::string modis_workspace_folder() const
+	// 工作空间路径
+	std::filesystem::path workspace() const
 	{
-		return _modis_workspace_folder;
+		return m_workspace;
 	}
 
-	/**
-	 * \brief 是否生成背景场
-	 * \return 
-	 */
-	bool need_compute_ref() const
+	// 是否计算背景场
+	bool calc_ref() const
 	{
-		return _need_compute_ref;
+		return m_calc_ref;
 	}
 
-	/**
-	 * \brief 是否计算涡度
-	 * \return 
-	 */
-	bool need_compute_eddy_field() const
+	// 是否计算涡度
+	bool calc_ano() const
 	{
-		return _need_compute_eddy_field;
+		return m_calc_ano;
 	}
 
-	/**
-	 * \brief 计算方法，1或者2
-	 * \return 
-	 */
+	// 计算方法，1或者2
 	int method() const
 	{
-		return _method;
+		return m_ano_method;
 	}
 
-	/*std::string date_str() const
+	// 计算背景场需要的tiflist文件路径，该文件是一个txt文件，使用该文件中指定的tif文件生成背景场
+	std::filesystem::path ref_list_file() const
 	{
-		return _dateStr;
+		return m_ref_list_file;
 	}
 
-	std::string data() const
-	{
-		return _data;
-	}
+	// 获取计算背景场所需要的支持文件
+	std::vector<std::filesystem::path> get_tif_files_for_ref_computing();
 
-	std::string year() const
-	{
-		return _dateStr.substr(0, 4);
-	}
-
-	std::string day() const
-	{
-		return _dateStr.substr(4, 3);
-	}
-
-	std::string type() const
-	{
-		return _type;
-	}*/
-
-	std::string support_ref_tif_file() const
-	{
-		return _support_ref_tif_file;
-	}
-	
-	/**
-	 * \brief 获取用于计算背景场的tif文件路径列表（该路径文件列表来自于_support_ref_tif_file）
-	 * \return
-	 */
-	std::vector<std::string> get_ref_tif_file_list();
+private:
+	// 输入yml文件路径
+	std::string m_yml;
+	// 工作空间路径
+	std::string m_workspace;
+	// 是否计算背景场
+	bool m_calc_ref = false;
+	// 是否计算异常
+	bool m_calc_ano = false;
+	// 计算方法，1或者2
+	int m_ano_method = 1;
+	// 计算背景场需要的tiflist文件路径，该文件是一个txt文件，使用该文件中指定的tif文件生成背景场
+	std::string m_ref_list_file;
+	// 输入文件路径
+	std::string m_input_image_file;
+	// 背景场文件路径
+	std::string m_ref_image_file;
+	// 异常文件路径
+	std::string m_output_ano_file;
 };
-

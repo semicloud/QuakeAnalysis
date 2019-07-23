@@ -1,16 +1,14 @@
-#include "Eddy_ref.h"
 #include "..//modis_api//Gdal_operation.h"
 #include "..//modis_api//Mat_operation.h"
+#include "Eddy_ref.h"
 #include "Eddy_field.h"
 #include <armadillo>
 #include <boost/algorithm/string.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/log/trivial.hpp>
 #include <string>
+#include <filesystem>
 #include <vector>
-
-namespace fs = boost::filesystem;
 
 /**
  * \brief 获取用于生成背景场的Tif文件路径列表，该函数后期可移动到adasm.exe中
@@ -79,21 +77,24 @@ Eddy_ref::~Eddy_ref()
 
 void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 {
+	using namespace std;
+	using namespace std::filesystem;
+
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "============使用方法1生成背景场===============";
 	//auto file_path_list = get_tif_file_list_for_ref(options, type);
-	const auto file_path_list = options.get_ref_tif_file_list();
-	if (file_path_list.empty())
+	const vector<path>  tif_files_for_ref_computing = options.get_tif_files_for_ref_computing();
+	if (tif_files_for_ref_computing.empty())
 	{
 		BOOST_LOG_TRIVIAL(info) << "未找到数据，无法生成背景场！";
 		BOOST_LOG_TRIVIAL(info) << "===============使用方法1生成背景场结束===========";
 		BOOST_LOG_TRIVIAL(info) << "";
 		return;
 	}
-	auto mat_list = std::vector<arma::fmat>();
-	for (const auto& file_path : file_path_list)
+	std::vector<arma::fmat> mat_list;
+	for (const auto& file_path : tif_files_for_ref_computing)
 	{
-		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path);
+		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path.string());
 		if (optional_fmat)
 			mat_list.push_back(*optional_fmat);
 		else
@@ -110,9 +111,6 @@ void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 	}
 
 	// 写回tif文件
-	const std::string source_data_set = file_path_list.front();
-	const std::string dest_data_set = options.ref_image_file();
-	BOOST_LOG_TRIVIAL(debug) << "目标数据文件：" << dest_data_set;
 
 	/*
 	 * copy_file with copy_options is dangerous!
@@ -120,39 +118,41 @@ void Eddy_ref::compute_eddy_ref_m1(Eddy_field_options_yaml& options)
 	 * Beware of boost::copy_file with copy_option::overwrite_if_exists!
 	 * If the destination file exists and it is smaller than the source, the function will only overwrite the first size(from_file) bytes in the target file.
 	 */
-	if (fs::exists(dest_data_set))
-		fs::remove(dest_data_set);
+	if (exists(options.ref_image_file()))
+		remove(options.ref_image_file());
 	// 父目录不存在则创建之
-	if (!exists(fs::path(dest_data_set).parent_path()))
-		create_directories(fs::path(dest_data_set).parent_path());
+	if (!exists(options.ref_image_file().parent_path()))
+		create_directories(options.ref_image_file().parent_path());
 	// 然后复制过去
-	fs::copy_file(source_data_set, dest_data_set);
+	copy_file(tif_files_for_ref_computing.front(), options.ref_image_file());
 	// 写入数据
-	BOOST_LOG_TRIVIAL(debug) << "COPY " << source_data_set << " to " << dest_data_set;
-	modis_api::Gdal_operation::write_fmat_to_tif(dest_data_set, *mean_mat);
+	BOOST_LOG_TRIVIAL(debug) << "COPY " << tif_files_for_ref_computing.front() << " to " << options.ref_image_file();
+	modis_api::Gdal_operation::write_fmat_to_tif(options.ref_image_file().string(), *mean_mat);
 
-	BOOST_LOG_TRIVIAL(info) << "生成的背景场文件为：" << dest_data_set;
+	BOOST_LOG_TRIVIAL(info) << "生成的背景场文件为：" << options.ref_image_file();
 	BOOST_LOG_TRIVIAL(info) << "===============使用方法1生成背景场结束===========";
 	BOOST_LOG_TRIVIAL(info) << "";
 }
 
 void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 {
+	using namespace  std;
+	using namespace filesystem;
 	BOOST_LOG_TRIVIAL(info) << "";
 	BOOST_LOG_TRIVIAL(info) << "============使用方法2生成背景场===============";
 	//auto file_path_list = get_tif_file_list_for_ref(options, type);
-	const auto file_path_list = options.get_ref_tif_file_list();
-	if (file_path_list.empty())
+	const vector<path> tif_files_for_ref_computing = options.get_tif_files_for_ref_computing();
+	if (tif_files_for_ref_computing.empty())
 	{
 		BOOST_LOG_TRIVIAL(warning) << "未找到数据，无法生成背景场！";
 		BOOST_LOG_TRIVIAL(info) << "===============使用方法2生成背景场结束===========";
 		BOOST_LOG_TRIVIAL(info) << "";
 		return;
 	}
-	auto mat_list = std::vector<arma::fmat>();
-	for (auto file_path : file_path_list)
+	vector<arma::fmat> mat_list;
+	for (auto file_path : tif_files_for_ref_computing)
 	{
-		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path);
+		auto optional_fmat = modis_api::Gdal_operation::read_tif_to_fmat(file_path.string());
 		if (optional_fmat)
 			mat_list.push_back(*optional_fmat);
 		else
@@ -172,7 +172,7 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 		ef_mat_list.push_back(*ef_mat);
 	}
 
-	auto ef_mat_list_mean = modis_api::Mat_operation::mean_mat_by_each_pixel(ef_mat_list,0);
+	auto ef_mat_list_mean = modis_api::Mat_operation::mean_mat_by_each_pixel(ef_mat_list, 0);
 	if (!ef_mat_list_mean)
 	{
 		BOOST_LOG_TRIVIAL(error) << "涡度矩阵大小不同，无法生成背景场！";
@@ -184,20 +184,20 @@ void Eddy_ref::compute_eddy_ref_m2(Eddy_field_options_yaml& options)
 	BOOST_LOG_TRIVIAL(info) << "涡度矩阵的平均值计算完毕..";
 
 	// 写回tif文件
-	const std::string source_data_set = file_path_list.front();
-	const std::string dest_data_set = options.ref_image_file();
+	const path source_data_set = tif_files_for_ref_computing.front();
+	const path dest_data_set = options.ref_image_file();
 	BOOST_LOG_TRIVIAL(debug) << "目标数据文件：" << dest_data_set;
 
-	if (fs::exists(dest_data_set))
-		fs::remove(dest_data_set);
+	if (exists(dest_data_set))
+		remove(dest_data_set);
 	// 父目录不存在则创建之
-	if (!exists(fs::path(dest_data_set).parent_path()))
-		create_directories(fs::path(dest_data_set).parent_path());
+	if (!exists(dest_data_set.parent_path()))
+		create_directories(dest_data_set.parent_path());
 	// 然后复制过去
-	fs::copy_file(source_data_set, dest_data_set);
+	copy_file(source_data_set, dest_data_set);
 	// 写入数据
 	BOOST_LOG_TRIVIAL(debug) << "COPY " << source_data_set << " to " << dest_data_set;
-	modis_api::Gdal_operation::write_fmat_to_tif(dest_data_set, *ef_mat_list_mean);
+	modis_api::Gdal_operation::write_fmat_to_tif(dest_data_set.string(), *ef_mat_list_mean);
 
 	BOOST_LOG_TRIVIAL(info) << "生成的背景场文件为：" << dest_data_set;
 	BOOST_LOG_TRIVIAL(info) << "===============使用方法2生成背景场结束===========";
