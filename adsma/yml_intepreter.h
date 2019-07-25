@@ -386,6 +386,10 @@ std::string get_eddyfield_ref_hdflist_str(
 	int ano_method
 );
 
+std::string get_plot_eddyfield_ref_yml_str();
+
+std::string get_plot_eddyfield_ano_yml_str();
+
 
 
 #pragma endregion Œ–∂»œ‡πÿ

@@ -7,16 +7,11 @@
 #include "../modis_api/Logger_setting.h"
 #include "../modis_api/Mat_operation.h"
 #include <armadillo>
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <yaml-cpp/yaml.h>
-
+#include <filesystem>
 #include <iostream>
 #include <string>
-
-namespace po = boost::program_options;
-namespace fs = boost::filesystem;
-namespace m = modis_api;
 
 const std::string PROGRAM = "general_ano";
 const std::string VERSION = "1.0";
@@ -37,7 +32,7 @@ void check_node(const YAML::Node& node, const std::string& attr)
 	}
 }
 
-void handle_help_version(const po::variables_map& vm, const po::options_description& desc)
+void handle_help_version(const boost::program_options::variables_map& vm, const boost::program_options::options_description& desc)
 {
 	if (vm.count("help"))
 	{
@@ -55,19 +50,21 @@ void handle_help_version(const po::variables_map& vm, const po::options_descript
 
 int main(int argc, char** argv)
 {
+	using namespace std;
+	using namespace std::filesystem;
 	init_logger();
 	std::string path_yml;
 	YAML::Node node;
-	po::variables_map vm;
-	po::options_description desc("Usage:");
+	boost::program_options::variables_map vm;
+	boost::program_options::options_description desc("Usage:");
 	desc.add_options()
 		("help,h", "显示帮助信息")
 		("version,v", "显示版本信息")
-		("yml,y", po::value(&path_yml), ".yml文件路径")
+		("yml,y", boost::program_options::value(&path_yml), ".yml文件路径")
 		("debug,d", "使用debug模式运行该程序");
 	try
 	{
-		store(po::command_line_parser(argc, argv).options(desc).run(), vm);
+		store(boost::program_options::command_line_parser(argc, argv).options(desc).run(), vm);
 		notify(vm);
 	}
 	catch (std::exception& e)
@@ -78,7 +75,7 @@ int main(int argc, char** argv)
 
 	handle_help_version(vm, desc);
 
-	if (vm.count("yml") && fs::exists(path_yml))
+	if (vm.count("yml") && exists(path_yml))
 	{
 		if (vm.count("debug"))
 		{
@@ -109,28 +106,28 @@ int main(int argc, char** argv)
 	check_node(node, "TmpPath");
 
 	//最终输出图片路径
-	const fs::path path_output_image = node["OutputImageFile"].as<std::string>();
+	const path path_output_image = node["OutputImageFile"].as<std::string>();
 	//Temp目录路径
-	const fs::path dir_temp = node["TmpPath"].as<std::string>();
+	const path dir_temp = node["TmpPath"].as<std::string>();
 	//计算月平均的tif文件列表txt文件路径
-	const fs::path path_month_tif_file = node["MonthListFile"].as<std::string>();
+	const path path_month_tif_file = node["MonthListFile"].as<std::string>();
 	//计算历史月平均的tif文件列表txt文件路径
-	const fs::path path_ref_tif_file = node["RefListFile"].as<std::string>();
+	const path path_ref_tif_file = node["RefListFile"].as<std::string>();
 
-	if (!fs::exists(path_month_tif_file))
+	if (!exists(path_month_tif_file))
 	{
 		BOOST_LOG_TRIVIAL(error) << "找不到文件：" << path_month_tif_file.string();
 		return EXIT_FAILURE;
 	}
 
-	if (!fs::exists(path_ref_tif_file))
+	if (!exists(path_ref_tif_file))
 	{
 		BOOST_LOG_TRIVIAL(error) << "找不到文件：" << path_ref_tif_file.string();
 		return EXIT_FAILURE;
 	}
 
-	std::vector<std::string> vec_month_tif_files = m::File_operation::read_file_all_lines(path_month_tif_file.string());
-	std::vector<std::string> vec_ref_tif_files = m::File_operation::read_file_all_lines(path_ref_tif_file.string());
+	std::vector<std::string> vec_month_tif_files = modis_api::File_operation::read_file_all_lines(path_month_tif_file.string());
+	std::vector<std::string> vec_ref_tif_files = modis_api::File_operation::read_file_all_lines(path_ref_tif_file.string());
 
 	if (vec_month_tif_files.empty())
 	{
@@ -149,7 +146,7 @@ int main(int argc, char** argv)
 	std::vector<arma::fmat> mats_month;
 	std::vector<arma::fmat> mats_ref;
 
-	auto read_tif = [](const std::string& p) -> arma::fmat { return *m::Gdal_operation::read_tif_to_fmat(p);  };
+	auto read_tif = [](const std::string& p) -> arma::fmat { return *modis_api::Gdal_operation::read_tif_to_fmat(p);  };
 	transform(vec_month_tif_files.begin(), vec_month_tif_files.end(), back_inserter(mats_month), read_tif);
 	transform(vec_ref_tif_files.begin(), vec_ref_tif_files.end(), back_inserter(mats_ref), read_tif);
 
@@ -161,8 +158,8 @@ int main(int argc, char** argv)
 
 	arma::fmat result = mean_mats_month - mean_mats_ref;
 
-	if (fs::exists(path_output_image)) fs::remove(path_output_image);
-	fs::copy_file(vec_month_tif_files.front(), path_output_image.string());
+	if (exists(path_output_image)) remove(path_output_image);
+	copy_file(vec_month_tif_files.front(), path_output_image.string());
 	modis_api::Gdal_operation::write_fmat_to_tif(path_output_image.string(), result);
 	BOOST_LOG_TRIVIAL(info) << "距平计算完成，结果文件为：" << path_output_image.string();
 }

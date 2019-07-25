@@ -85,6 +85,7 @@ int process(const std::string& yml_path_str)
 
 		for (const string& product : products)
 		{
+			string product_type = product.substr(0, 3);
 			if (product.find(BT_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][BT_NAME].IsDefined())
@@ -96,7 +97,7 @@ int process(const std::string& yml_path_str)
 					const string mrt_projection_args = subNode["MRTProjectionArgs"].as<string>();
 					const float mrt_pixel_size = subNode["MRTPixelSize"].as<float>();
 					generate_pp_bt_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end,
-						product.substr(0, 3), pp_min_lon, pp_max_lon,
+						product_type, pp_min_lon, pp_max_lon,
 						pp_min_lat, pp_max_lat, band, mrt_kernel_type,
 						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
 				}
@@ -115,8 +116,18 @@ int process(const std::string& yml_path_str)
 					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
 					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
 					generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
-						product, product.substr(0, 3), date_start, date_end,
+						product, product_type, date_start, date_end,
 						calc_ref, calc_ano, ano_method, yml_folder_path);
+
+					if (subNode[PLOT_BACKGROUND].IsDefined()) // 背景场出图
+					{
+						// TODO 涡度出图
+					}
+
+					if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
+					{
+						// TODO 涡度出图
+					}
 				}
 			}
 			else if (product.find(AOD_CODE) != string::npos)
@@ -154,7 +165,7 @@ int process(const std::string& yml_path_str)
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
 					const float output_pixel_size = subNode["OutputPixelSize"].as<float>();
-					generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product.substr(0, 3), pp_min_lon,
+					generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product_type, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 						output_projection_type, output_projection_parameters, output_pixel_size,
 						yml_folder_path);
@@ -174,7 +185,7 @@ int process(const std::string& yml_path_str)
 					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
 					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
 					generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
-						LST_NAME, product.substr(0, 3), date_start, date_end,
+						LST_NAME, product_type, date_start, date_end,
 						calc_ref, calc_ano, ano_method, yml_folder_path);
 				}
 			}
@@ -699,6 +710,8 @@ int generate_eddyfield_yml_hdflist_files(
 	}
 	return 0;
 }
+
+
 
 
 
