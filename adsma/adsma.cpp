@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "../modis_api/File_operation.h"
 #include "../modis_api/Logger_setting.h"
+#include "Adsma_settings.h"
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
@@ -36,6 +37,7 @@ int run_programs(const std::string& ymls_folder)
 {
 	using namespace std;
 	using namespace filesystem;
+	using namespace adsma::settings;
 	path ymls_folder_path(ymls_folder);
 	vector<string> yml_files = modis_api::File_operation::get_all_files_by_extension(ymls_folder_path.string(), ".yml");
 	for (const string& yml_file : yml_files)

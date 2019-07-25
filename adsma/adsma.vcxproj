@@ -160,17 +160,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Adsma_settings.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Preprocess_aod_wv_interpreter.h" />
+    <ClInclude Include="Preprocess_bt_intepreter.h" />
+    <ClInclude Include="Interpreter_helper.h" />
+    <ClInclude Include="Preprocess_lst_interpreter.h" />
     <ClInclude Include="yml_intepreter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adsma.cpp" />
+    <ClCompile Include="Interpreter_helper.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Preprocess_aod_wv_interpreter.cpp" />
+    <ClCompile Include="Preprocess_bt_intepreter.cpp" />
+    <ClCompile Include="Preprocess_lst_interpreter.cpp" />
     <ClCompile Include="yml_intepreter.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,21 @@
     <ClInclude Include="yml_intepreter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Preprocess_bt_intepreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Preprocess_lst_interpreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Preprocess_aod_wv_interpreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Adsma_settings.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpreter_helper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -30,6 +45,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="yml_intepreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Preprocess_bt_intepreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Preprocess_lst_interpreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Preprocess_aod_wv_interpreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpreter_helper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
