@@ -36,6 +36,12 @@
     <ClInclude Include="Interpreter_helper.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Eddyfield_interpreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Preprocess_helper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -57,6 +63,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Interpreter_helper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Eddyfield_interpreter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

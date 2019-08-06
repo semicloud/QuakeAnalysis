@@ -9,6 +9,7 @@
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 #include <yaml-cpp/yaml.h>
+#include "Preprocess_helper.h"
 
 
 int adsma::generate_pp_aod_or_wv_yml_hdflist_files(
@@ -30,7 +31,6 @@ int adsma::generate_pp_aod_or_wv_yml_hdflist_files(
 	using namespace YAML;
 	using namespace modis_api;
 	using namespace settings;
-	using namespace adsma::interpreter::helper::preprocess;
 
 	const string product_type = m_product.substr(0, 3);
 	const string product_code = m_product.substr(3, 2);
@@ -94,7 +94,7 @@ std::string adsma::get_preprocess_aod_wv_yml_str(
 	umap.insert({ string("OutputProjectionParameters"),  output_projection_parameters });
 	umap.insert({ string("OutputImageFile"),  output_image_path.string() });
 	umap.insert({ string("TmpPath"),  tmp_path.string() });
-	string yml_str = interpreter::helper::get_yml_str(umap);
+	string yml_str = get_yml_str(umap);
 	return yml_str;
 }
 

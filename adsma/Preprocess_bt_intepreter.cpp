@@ -7,6 +7,7 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
+#include "Preprocess_helper.h"
 
 int adsma::generate_pp_bt_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
@@ -27,8 +28,7 @@ int adsma::generate_pp_bt_yml_hdflist_files(
 	using namespace gregorian;
 	using namespace YAML;
 	using namespace modis_api;
-	using namespace settings;
-	using namespace adsma::interpreter::helper::preprocess;
+	using namespace adsma::settings;
 
 	const path new_tmp_path = tmp_path / BT_NAME;
 	if (!exists(new_tmp_path)) create_directories(new_tmp_path);

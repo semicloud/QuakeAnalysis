@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Adsma_settings.h"
 #include "Interpreter_helper.h"
+#include "Preprocess_helper.h"
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
@@ -9,7 +10,7 @@
 #include <yaml-cpp/yaml.h>
 
 
-int adsma::interpreter::helper::split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon, float& out_max_lon, float& out_min_lat,
+int adsma::split_lonlat_str(const std::string& lon_lat_str, float& out_min_lon, float& out_max_lon, float& out_min_lat,
 	float& out_max_lat)
 {
 	using namespace std;
@@ -25,7 +26,7 @@ int adsma::interpreter::helper::split_lonlat_str(const std::string& lon_lat_str,
 	return EXIT_SUCCESS;
 }
 
-std::string adsma::interpreter::helper::get_yml_str(const std::unordered_map<std::string, std::string>& umap)
+std::string adsma::get_yml_str(const std::unordered_map<std::string, std::string>& umap)
 {
 	using namespace std;
 	using namespace YAML;
@@ -41,7 +42,7 @@ std::string adsma::interpreter::helper::get_yml_str(const std::unordered_map<std
 	return emt.c_str();
 }
 
-bool adsma::interpreter::helper::is_data_exist(const std::filesystem::path& workspace, const std::string& product, const std::string& year_and_day)
+bool adsma::is_data_exist(const std::filesystem::path& workspace, const std::string& product, const std::string& year_and_day)
 {
 	using namespace std;
 	using namespace std::filesystem;
@@ -63,7 +64,7 @@ bool adsma::interpreter::helper::is_data_exist(const std::filesystem::path& work
 	return true;
 }
 
-std::vector<unsigned int> adsma::interpreter::helper::get_years_of_product(
+std::vector<unsigned int> adsma::get_years_of_product(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_type,
 	const std::string& product)
@@ -73,7 +74,7 @@ std::vector<unsigned int> adsma::interpreter::helper::get_years_of_product(
 
 	vector<unsigned int> years;
 	const path pp_data_path = workspace_path / settings::PP_STANDARD_FOLDER /
-		preprocess::get_pp_folder(product_type, product);
+		adsma::get_pp_folder(product_type, product);
 	for (directory_iterator it(pp_data_path); it != directory_iterator(); ++it)
 	{
 		const string str = it->path().string().substr(it->path().string().size() - 4, 4);

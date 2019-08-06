@@ -9,6 +9,7 @@
 #include <boost/log/trivial.hpp>
 #include <yaml-cpp/yaml.h>
 #include <filesystem>
+#include "Preprocess_helper.h"
 
 int adsma::generate_pp_lst_yml_hdflist_files(const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
@@ -28,8 +29,6 @@ int adsma::generate_pp_lst_yml_hdflist_files(const std::filesystem::path& worksp
 	using namespace YAML;
 	using namespace modis_api;
 	using namespace adsma::settings;
-	using namespace adsma::interpreter::helper;
-	using namespace adsma::interpreter::helper::preprocess;
 
 	const path new_tmp_path = tmp_path / LST_NAME;
 	if (!exists(new_tmp_path)) create_directories(new_tmp_path);
@@ -85,7 +84,7 @@ std::string adsma::get_preprocess_lst_yml_str(
 	umap.insert({ string("OutputPixelSize"),  lexical_cast<string>(output_pixel_size) });
 	umap.insert({ string("TmpPath"),  tmp_path.string() });
 	umap.insert({ string("OutputImageFile"), output_image_path.string() });
-	string yml_str = interpreter::helper::get_yml_str(umap);
+	string yml_str = get_yml_str(umap);
 	return yml_str;
 }
 

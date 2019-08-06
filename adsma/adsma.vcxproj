@@ -161,15 +161,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Adsma_settings.h" />
+    <ClInclude Include="Eddyfield_interpreter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Preprocess_aod_wv_interpreter.h" />
     <ClInclude Include="Preprocess_bt_intepreter.h" />
     <ClInclude Include="Interpreter_helper.h" />
+    <ClInclude Include="Preprocess_helper.h" />
     <ClInclude Include="Preprocess_lst_interpreter.h" />
     <ClInclude Include="yml_intepreter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adsma.cpp" />
+    <ClCompile Include="Eddyfield_interpreter.cpp" />
     <ClCompile Include="Interpreter_helper.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
