@@ -62,6 +62,8 @@ int process(const std::string& yml_path_str)
 	using namespace modis_api;
 	using namespace adsma::settings;
 	using namespace adsma::settings::yaml;
+	using namespace adsma::settings::yaml::preprocess;
+	using namespace adsma::settings::yaml::eddy;
 	using namespace adsma::interpreter::helper;
 
 	const path yml_path(yml_path_str);
@@ -106,7 +108,7 @@ int process(const std::string& yml_path_str)
 					const string mrt_projection_type = subNode["MRTProjectionType"].as<string>();
 					const string mrt_projection_args = subNode["MRTProjectionArgs"].as<string>();
 					const float mrt_pixel_size = subNode["MRTPixelSize"].as<float>();
-					adsma::interpreter::preprocess::bt::generate_pp_bt_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end,
+					adsma::generate_pp_bt_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end,
 						product_type, pp_min_lon, pp_max_lon,
 						pp_min_lat, pp_max_lat, band, mrt_kernel_type,
 						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
@@ -148,7 +150,7 @@ int process(const std::string& yml_path_str)
 					const string resampling_type = subNode["ResamplingType"].as<string>();
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					adsma::interpreter::preprocess::aodwv::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+					adsma::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
 						yml_folder_path);
 				}
@@ -161,7 +163,7 @@ int process(const std::string& yml_path_str)
 					const string resampling_type = subNode["ResamplingType"].as<string>();
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					adsma::interpreter::preprocess::aodwv::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
+					adsma::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
 						yml_folder_path);
 				}
@@ -175,7 +177,7 @@ int process(const std::string& yml_path_str)
 					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
 					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
 					const float output_pixel_size = subNode["OutputPixelSize"].as<float>();
-					adsma::interpreter::preprocess::lst::generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product_type, pp_min_lon,
+					adsma::generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product_type, pp_min_lon,
 						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
 						output_projection_type, output_projection_parameters, output_pixel_size,
 						yml_folder_path);

@@ -3,7 +3,7 @@
 #include <boost/date_time.hpp>
 #include <filesystem>
 
-namespace adsma::interpreter::preprocess::aodwv
+namespace adsma
 {
 	/**
 	 * \brief 准备云掩膜（AOD）和水汽（WV）的预处理，生成yml文件和hdflist文件
@@ -15,7 +15,7 @@ namespace adsma::interpreter::preprocess::aodwv
 	 * \param pp_min_lon
 	 * \param pp_max_lon
 	 * \param pp_min_lat
-	prepare_aod_or_wv * \param pp_max_lat
+	 * \param pp_max_lat
 	 * \param resampling_type
 	 * \param output_projection_type
 	 * \param output_projection_parameters

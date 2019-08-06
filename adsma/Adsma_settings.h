@@ -38,10 +38,16 @@ namespace adsma::settings::yaml
 	const std::string YML_FOLDER_PATH = "YmlFolderPath";
 	const std::string SELECTED_PRODUCTS = "SelectedProducts";
 	const std::string PREPROCESS_EXTENT = "PreprocessExtent";
+}
 
+namespace adsma::settings::yaml::preprocess
+{
 	const std::string PREPROCESS = "Preprocess";
 	const std::string BAND = "Band";
+}
 
+namespace adsma::settings::yaml::eddy
+{
 	const std::string EDDY_FIELD = "EddyField";
 	const std::string CALC_REF = "CalcRef";
 	const std::string CALC_ANO = "CalcAno";
@@ -51,4 +57,3 @@ namespace adsma::settings::yaml
 	const std::string TITLE = "Title";
 	const std::string BAR_TITLE = "BarTitle";
 }
-

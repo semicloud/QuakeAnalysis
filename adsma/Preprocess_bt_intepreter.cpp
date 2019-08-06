@@ -8,7 +8,7 @@
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 
-int adsma::interpreter::preprocess::bt::generate_pp_bt_yml_hdflist_files(
+int adsma::generate_pp_bt_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -57,7 +57,7 @@ int adsma::interpreter::preprocess::bt::generate_pp_bt_yml_hdflist_files(
 	return EXIT_SUCCESS;
 }
 
-std::string adsma::interpreter::preprocess::bt::get_preprocess_bt_yml_str(
+std::string adsma::get_preprocess_bt_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon, float min_lat, float max_lat,
@@ -87,7 +87,7 @@ std::string adsma::interpreter::preprocess::bt::get_preprocess_bt_yml_str(
 	return emt.c_str();
 }
 
-std::string adsma::interpreter::preprocess::bt::get_preprocess_bt_hdf_list_str(const std::filesystem::path& workspace_path,
+std::string adsma::get_preprocess_bt_hdf_list_str(const std::filesystem::path& workspace_path,
 	const std::string& product_type, const boost::gregorian::date& date)
 {
 	using namespace std;

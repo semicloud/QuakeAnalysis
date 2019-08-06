@@ -3,7 +3,7 @@
 #include <boost/date_time.hpp>
 #include <filesystem>
 
-namespace adsma::interpreter::preprocess::lst
+namespace adsma
 {
 	/**
 	* \brief 准备地表温度的预处理，生成yml文件和hdflist文件

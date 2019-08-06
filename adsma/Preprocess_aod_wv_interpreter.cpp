@@ -11,7 +11,7 @@
 #include <yaml-cpp/yaml.h>
 
 
-int adsma::interpreter::preprocess::aodwv::generate_pp_aod_or_wv_yml_hdflist_files(
+int adsma::generate_pp_aod_or_wv_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
@@ -30,7 +30,7 @@ int adsma::interpreter::preprocess::aodwv::generate_pp_aod_or_wv_yml_hdflist_fil
 	using namespace YAML;
 	using namespace modis_api;
 	using namespace settings;
-	using namespace helper::preprocess;
+	using namespace adsma::interpreter::helper::preprocess;
 
 	const string product_type = m_product.substr(0, 3);
 	const string product_code = m_product.substr(3, 2);
@@ -71,7 +71,7 @@ int adsma::interpreter::preprocess::aodwv::generate_pp_aod_or_wv_yml_hdflist_fil
 
 }
 
-std::string adsma::interpreter::preprocess::aodwv::get_preprocess_aod_wv_yml_str(
+std::string adsma::get_preprocess_aod_wv_yml_str(
 	const std::filesystem::path& hdf_list_file_path,
 	const std::filesystem::path& tmp_path,
 	float min_lon, float max_lon, float min_lat, float max_lat,
@@ -94,12 +94,12 @@ std::string adsma::interpreter::preprocess::aodwv::get_preprocess_aod_wv_yml_str
 	umap.insert({ string("OutputProjectionParameters"),  output_projection_parameters });
 	umap.insert({ string("OutputImageFile"),  output_image_path.string() });
 	umap.insert({ string("TmpPath"),  tmp_path.string() });
-	string yml_str = helper::get_yml_str(umap);
+	string yml_str = interpreter::helper::get_yml_str(umap);
 	return yml_str;
 }
 
 
-std::string adsma::interpreter::preprocess::aodwv::get_preprocess_aod_wv_hdf_list_str(const std::filesystem::path& workspace_path,
+std::string adsma::get_preprocess_aod_wv_hdf_list_str(const std::filesystem::path& workspace_path,
 	const std::string& product_code, const std::string& product_type,
 	const boost::gregorian::date& date)
 {
