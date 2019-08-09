@@ -82,6 +82,22 @@ int run_programs(const std::string& ymls_folder)
 				assert(i == 0);
 			}
 		}
+		else
+		{
+			// 涡度处理
+			if(file_name.substr(0,2) == "ef") 
+			{
+				const string cmd = (boost::format("%1% -y %2%") % "eddy_field_ano.exe" % yml_file_path.string()).str();
+				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
+				int i = system(cmd.c_str());
+			}
+
+			if(file_name.substr(0,2) == "pl")
+			{
+				const string cmd = (boost::format("%1% -y %2%") % "modis_plot.exe" % yml_file_path.string()).str();
+				int i = system(cmd.c_str());
+			}
+		}
 	}
 	return EXIT_SUCCESS;
 }

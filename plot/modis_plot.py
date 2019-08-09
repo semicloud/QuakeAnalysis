@@ -34,7 +34,7 @@ plot_variables = yaml.load(open(args.yml, encoding='utf-8'), Loader=yaml.FullLoa
 plot_title = plot_variables['PlotTitle']
 plot_title_size = plot_variables['PlotTitleSize']
 plot_extent = plot_variables['PlotExtent']
-min_lon, max_lon, span_lon, min_lat, max_lat, span_lat = [float(s) for s in plot_extent.split(',')]
+min_lon, max_lon, span_lon, min_lat, max_lat, span_lat = [float(s) for s in plot_extent.split(' ')]
 logging.debug(u'load min_lon, max_lon, span_lon: %f, %f, %f' % (min_lon, max_lon, span_lon))
 logging.debug(u'load min_lat, max_lat, span_lat: %f, %f, %f' % (min_lat, max_lat, span_lat))
 color_bar_name = plot_variables['BarName']
@@ -123,6 +123,11 @@ if not os.path.exists(input_file):
 if os.path.exists(output_file):
     os.remove(output_file)
 # endif
+# Create directory
+plot_dir = os.path.dirname(os.path.abspath(output_file))
+if not os.path.exists(plot_dir):
+    os.makedirs(plot_dir)
+    print("create directory: %s" % plot_dir)
 
 fig = plt.figure()
 mymap = Basemap(projection='cyl', resolution='h',

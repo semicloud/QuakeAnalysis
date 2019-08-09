@@ -92,8 +92,15 @@ int process(const std::string& yml_path_str)
 		const string pp_extent = node[PREPROCESS_EXTENT].as<string>();
 		// pp means PreProcess
 		float pp_min_lon = 0, pp_max_lon = 0, pp_min_lat = 0, pp_max_lat = 0;
-		int ret = adsma:: split_lonlat_str(pp_extent, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat);
+		int ret = adsma::split_lonlat_str(pp_extent, pp_min_lon, pp_max_lon, pp_min_lat, pp_max_lat);
 		BOOST_ASSERT(ret == EXIT_SUCCESS);
+
+		// plot global setting
+		const path shp_boundary_path(node["ShpBoundary"].as<string>());
+		const path shp_fault_path(node["ShpFault"].as<string>());
+		const path shp_city_path(node["ShpCity"].as<string>());
+		const path quake_record_path(node["QuakeRecord"].as<string>());
+		const string plot_extent = node["PlotExtent"].as<string>();
 
 		for (const string& product : products)
 		{
@@ -121,9 +128,7 @@ int process(const std::string& yml_path_str)
 					const bool calc_ref = subNode[CALC_REF].as<bool>();
 					const bool calc_ano = subNode[CALC_ANO].as<bool>();
 					const int ano_method = subNode[ANO_METHOD].as<int>();
-					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
-					const string plot_bg_title = plot_bg_node[TITLE].as<string>();
-					const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
+
 					const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
 					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
 					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
@@ -131,9 +136,15 @@ int process(const std::string& yml_path_str)
 						product, product_type, date_start, date_end,
 						calc_ref, calc_ano, ano_method, yml_folder_path);
 
-					if (subNode[PLOT_BACKGROUND].IsDefined()) // 背景场出图
+					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
+					if (plot_bg_node.IsDefined()) // 背景场出图
 					{
-						// TODO 涡度出图
+						const string plot_bg_title = plot_bg_node[TITLE].as<string>();
+						const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
+						adsma::generate_plot_eddyfield_ref_yml_files(workspace_path,
+							tmp_path, product, product_type, date_start, date_end, calc_ref, calc_ano,
+							ano_method, plot_extent, shp_boundary_path, shp_fault_path, shp_city_path,
+							quake_record_path, yml_folder_path);
 					}
 
 					if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
@@ -190,15 +201,29 @@ int process(const std::string& yml_path_str)
 					const bool calc_ref = subNode[CALC_REF].as<bool>();
 					const bool calc_ano = subNode[CALC_ANO].as<bool>();
 					const int ano_method = subNode[ANO_METHOD].as<int>();
-					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
-					const string plot_bg_title = plot_bg_node[TITLE].as<string>();
-					const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
-					const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
-					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
-					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
+
 					adsma::generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
 						LST_NAME, product_type, date_start, date_end,
 						calc_ref, calc_ano, ano_method, yml_folder_path);
+
+					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
+					const string plot_bg_title = plot_bg_node[TITLE].as<string>();
+					const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
+					if (plot_bg_node.IsDefined()) // 背景场出图
+					{
+						adsma::generate_plot_eddyfield_ref_yml_files(workspace_path,
+							tmp_path, LST_NAME, product_type, date_start, date_end, calc_ref, calc_ano,
+							ano_method, plot_extent, shp_boundary_path, shp_fault_path, shp_city_path,
+							quake_record_path, yml_folder_path);
+					}
+
+					const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
+					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
+					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
+					if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
+					{
+						// TODO 涡度出图
+					}
 				}
 			}
 		}

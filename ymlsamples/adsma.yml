@@ -14,19 +14,19 @@ EndDate: 20181231
 # 预处理地理范围
 PreprocessExtent: 115 120 40 45
 # 出图地理范围
-PlotExtent: 100 140 20 50
+PlotExtent: 115 120 5 40 45 5
 # 图件标题字号
 PlotTitleSize: 16
 # 图件BarTitle字号
 PlotBarTitleSize: 12
 # 边界Shapefile路径
-ShpBoundary: xxxxx
+ShpBoundary: E:\modis_workspace_test\faults\ne_50m_admin_0_countries_polyline
 # 断层Shapefile路径
-ShpFault: xxxxx
+ShpFault: E:\modis_workspace_test\faults\faults_deng_simple
 # 主要城市Shapefile路径
-ShpCity: xxxxxx
+ShpCity: E:\modis_workspace_test\faults\cities
 # 地震目录文件路径
-QuakeRecord: xxxxx
+QuakeRecord: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\earthquakes.csv
 # 图件DPI，去除？
 # PlotDpi: xxxxx
 # 图件默认大小 单位：basemap默认值
@@ -38,27 +38,27 @@ Archive:
   DataDir: xxxxx
 
 # 预处理设置
-Preprocess:
-  BT:
-    # 目标波段值
-    Band: 31
-    MRTKernelType: NN
-    MRTProjectionType: EQRECT
-    MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-    MRTPixelSize: 1000
-  AOD:
-    ResamplingType: NN
-    OutputProjectionType: CEA
-    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
-  WV:
-    ResamplingType: NN
-    OutputProjectionType: CEA
-    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
-  LST:
-    ResamplingType: NEAREST_NEIGHBOR
-    OutputProjectionType: ER
-    OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-    OutputPixelSize: 1000
+# Preprocess:
+  # BT:
+    # # 目标波段值
+    # Band: 31
+    # MRTKernelType: NN
+    # MRTProjectionType: EQRECT
+    # MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    # MRTPixelSize: 1000
+  # AOD:
+    # ResamplingType: NN
+    # OutputProjectionType: CEA
+    # OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  # WV:
+    # ResamplingType: NN
+    # OutputProjectionType: CEA
+    # OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  # LST:
+    # ResamplingType: NEAREST_NEIGHBOR
+    # OutputProjectionType: ER
+    # OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    # OutputPixelSize: 1000
 # 涡度处理
 EddyField:
   BT:
@@ -70,12 +70,12 @@ EddyField:
     AnoMethod: 1
     # 背景场出图，无此项则背景场不出图
     PlotBackground:
-      Title: 焦博，Title如何确定？
-      BarTitle: 同上
+      Title: "%1% in %2% (DOY %3%)"
+      BarTitle: 
     # 异常出图，无此项则异常不出图
     PlotEddyField:
-      Title: xxxxx
-      BarTitle: xxxxx
+      Title: "%1% in %2% (DOY %3%)"
+      BarTitle: Brightness temperature anomaly by the k-valued method
   AOD:
     CalcRef: true
     CalcAno: true

@@ -130,3 +130,92 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 	}
 	return 0;
 }
+
+int adsma::generate_plot_eddyfield_ref_yml_files(
+	const std::filesystem::path& workspace_path,
+	const std::filesystem::path& tmp_path,
+	const std::string& product,
+	const std::string& product_type,
+	const boost::gregorian::date& start_date,
+	const boost::gregorian::date& end_date,
+	bool calc_ref, bool calc_ano,
+	int ano_method,
+	const std::string& fig_extent,
+	const std::filesystem::path& shp_bound_path,
+	const std::filesystem::path& shp_fault_path, 
+	const std::filesystem::path& shp_city_path,
+	const std::filesystem::path& quake_record_path,
+	const std::filesystem::path& yml_folder_path)
+{
+	using namespace std;
+	using namespace filesystem;
+
+	for (boost::gregorian::day_iterator it(start_date); it <= end_date; ++it)
+	{
+		const string year_and_day = modis_api::Date_utils::get_doy_str(*it);
+		const string year = modis_api::Date_utils::get_doy_year(year_and_day);
+		const string day = modis_api::Date_utils::get_doy_day(year_and_day);
+		// Example: EF1_MOD_LST
+		const string ref_folder_name = (boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product).str();
+		BOOST_LOG_TRIVIAL(debug) << "Ref folder name:" << ref_folder_name;
+
+		const string ref_tif_name = (boost::format("%1%_REF_%2%_%3%.tif") % product % year % day).str();
+		const path ref_tif_path = workspace_path / "Ref" / ref_folder_name / year / ref_tif_name;
+		BOOST_LOG_TRIVIAL(debug) << "Ref tif path:" << ref_tif_path;
+
+		const string ref_fig_name = (boost::format("%1%_REF_%2%_%3%.jpg") % product % year % day).str();
+		const path ref_fig_path = workspace_path / "Ref_Map" / ref_folder_name / year / ref_fig_name;
+		BOOST_LOG_TRIVIAL(debug) << "Ref fig path:" << ref_fig_path;
+
+		const string fig_title = (boost::format("%1%%2% in %3%-%4%-%5% (DOY %6%)") % product_type % product % year % it->month() % it->day_number() % day).str();
+		BOOST_LOG_TRIVIAL(debug) << "Fig title: " << fig_title;
+
+		const string yml_str = adsma::get_plot_eddyfield_ref_yml_str(
+			ref_tif_path, ref_fig_path, fig_title, "bar title", fig_extent,
+			shp_bound_path, shp_fault_path, shp_city_path, quake_record_path);
+		
+		// 生成的yml文件名，例如 pl_ref_ef1_mod_bt_2018_303.yml
+		const string yml_file_name = (boost::format("pl_ref_ef%1%_%2%_%3%_%4%_%5%.yml") %
+			ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product) %
+			year % day).str();
+		const path yml_path = yml_folder_path / yml_file_name;
+		BOOST_LOG_TRIVIAL(debug) << "Yml path: " << yml_path;
+
+		modis_api::File_operation::write_to_file(yml_path.string(), yml_str);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+std::string adsma::get_plot_eddyfield_ref_yml_str(
+	const std::filesystem::path& input_file_path,
+	const std::filesystem::path& output_file_path,
+	const std::string& fig_title, const std::string& fig_bar_title,
+	const std::string& fig_extent, const std::filesystem::path& shp_bound_path,
+	const std::filesystem::path& shp_fault_path, const std::filesystem::path& shp_city_path,
+	const std::filesystem::path& quake_record_path)
+{
+	using namespace std;
+	using namespace std::filesystem;
+	using namespace YAML;
+	Emitter emt;
+	emt << BeginMap;
+	emt << Key << "PlotTitle" << Value << fig_title;
+	emt << Key << "PlotTitleSize" << Value << PLOT_TITLE_SIZE;
+	emt << Key << "PlotExtent" << Value << fig_extent;
+	emt << Key << "BarName" << Value << REF_BAR_NAME;
+	emt << Key << "BarTitle" << Value << fig_bar_title;
+	emt << Key << "BarTitleSize" << Value << BAR_TITLE_SIZE;
+	emt << Key << "ShpBoundary" << Value << shp_bound_path.string();
+	emt << Key << "ShpFault" << Value << shp_fault_path.string();
+	emt << Key << "ShpCity" << Value << shp_city_path.string();
+	emt << Key << "QuakeRecord" << Value << quake_record_path.string();
+	emt << Key << "InputFile" << Value << input_file_path.string();
+	emt << Key << "OutputFile" << Value << output_file_path.string();
+	emt << Key << "OutputDpi" << Value << 600;
+	emt << Key << "OutputSize" << Value << "12,8";
+	emt << EndMap;
+	return emt.c_str();
+}
+
+

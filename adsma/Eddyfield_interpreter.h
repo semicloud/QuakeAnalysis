@@ -6,6 +6,10 @@
 
 namespace adsma
 {
+	const std::string PLOT_TITLE_SIZE = "16";
+	const std::string BAR_TITLE_SIZE = "12";
+	const std::string REF_BAR_NAME = "nipy_spectral";
+
 	/**
 	 * \brief 生成涡度Yml字符串
 	 * \param workspace_path MODIS工作空间目录
@@ -75,7 +79,75 @@ namespace adsma
 		const std::filesystem::path& yml_folder_path
 	);
 
-	std::string get_plot_eddyfield_ref_yml_str();
+	/**
+	 * \brief 生成涡度背景场出图yml文件
+	 * \param workspace_path 
+	 * \param tmp_path 
+	 * \param product 
+	 * \param product_type 
+	 * \param start_date 
+	 * \param end_date 
+	 * \param calc_ref 
+	 * \param calc_ano 
+	 * \param ano_method 
+	 * \param fig_extent 
+	 * \param shp_bound_path 
+	 * \param shp_fault_path 
+	 * \param shp_city_path 
+	 * \param quake_record_path 
+	 * \param yml_folder_path 
+	 * \return 
+	 */
+	int generate_plot_eddyfield_ref_yml_files(
+		const std::filesystem::path& workspace_path,
+		const std::filesystem::path& tmp_path,
+		const std::string& product,
+		const std::string& product_type,
+		const boost::gregorian::date& start_date,
+		const boost::gregorian::date& end_date,
+		bool calc_ref, bool calc_ano, int ano_method,
+		const std::string& fig_extent,
+		const std::filesystem::path& shp_bound_path,
+		const std::filesystem::path& shp_fault_path,
+		const std::filesystem::path& shp_city_path,
+		const std::filesystem::path& quake_record_path,
+		const std::filesystem::path& yml_folder_path);
+
+	/**
+	 * \brief 生成涡度异常出图yml文件
+	 * \param workspace_path 
+	 * \param tmp_path 
+	 * \param product 
+	 * \param product_type 
+	 * \param start_date 
+	 * \param end_date 
+	 * \param calc_ref 
+	 * \param calc_ano 
+	 * \param ano_method 
+	 * \param yml_folder_path 
+	 * \return 
+	 */
+	int generate_plot_eddyfield_ano_yml_files(
+		const std::filesystem::path& workspace_path,
+		const std::filesystem::path& tmp_path,
+		const std::string& product,
+		const std::string& product_type,
+		const boost::gregorian::date& start_date,
+		const boost::gregorian::date& end_date,
+		bool calc_ref, bool calc_ano, int ano_method,
+		const std::filesystem::path& yml_folder_path);
+
+	std::string get_plot_eddyfield_ref_yml_str(
+		const std::filesystem::path& input_file_path,
+		const std::filesystem::path& output_file_path,
+		const std::string& fig_title,
+		const std::string& fig_bar_title,
+		const std::string& fig_extent,
+		const std::filesystem::path& shp_bound_path,
+		const std::filesystem::path& shp_fault_path,
+		const std::filesystem::path& shp_city_path,
+		const std::filesystem::path& quake_record_path
+	);
 
 	std::string get_plot_eddyfield_ano_yml_str();
 
