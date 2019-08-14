@@ -75,6 +75,8 @@ std::vector<unsigned int> adsma::get_years_of_product(
 	vector<unsigned int> years;
 	const path pp_data_path = workspace_path / settings::PP_STANDARD_FOLDER /
 		adsma::get_pp_folder(product_type, product);
+	if (std::filesystem::is_empty(pp_data_path))
+		return years;
 	for (directory_iterator it(pp_data_path); it != directory_iterator(); ++it)
 	{
 		const string str = it->path().string().substr(it->path().string().size() - 4, 4);

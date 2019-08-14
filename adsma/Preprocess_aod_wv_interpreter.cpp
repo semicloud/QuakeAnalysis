@@ -17,7 +17,7 @@ int adsma::generate_pp_aod_or_wv_yml_hdflist_files(
 	const std::filesystem::path& tmp_path,
 	const boost::gregorian::date& date_start,
 	const boost::gregorian::date& date_end,
-	const std::string& m_product,
+	const std::string& product_str,
 	float pp_min_lon, float pp_max_lon, float pp_min_lat, float pp_max_lat,
 	const std::string& resampling_type,
 	const std::string& output_projection_type,
@@ -32,8 +32,8 @@ int adsma::generate_pp_aod_or_wv_yml_hdflist_files(
 	using namespace modis_api;
 	using namespace settings;
 
-	const string product_type = m_product.substr(0, 3);
-	const string product_code = m_product.substr(3, 2);
+	const string product_type = product_str.substr(0, 3);
+	const string product_code = product_str.substr(3, 2);
 	BOOST_ASSERT_MSG(product_code ==  AOD_CODE || product_code == WV_CODE, "wrong product code!");
 	string product;
 	if (product_code == AOD_CODE)

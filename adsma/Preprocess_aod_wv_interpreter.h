@@ -11,7 +11,7 @@ namespace adsma
 	 * \param tmp_path
 	 * \param date_start
 	 * \param date_end
-	 * \param m_product
+	 * \param product_str
 	 * \param pp_min_lon
 	 * \param pp_max_lon
 	 * \param pp_min_lat
@@ -27,7 +27,7 @@ namespace adsma
 		const std::filesystem::path& tmp_path,
 		const boost::gregorian::date& date_start,
 		const boost::gregorian::date& date_end,
-		const std::string& m_product,
+		const std::string& product_str,
 		float pp_min_lon, float pp_max_lon, float pp_min_lat, float pp_max_lat,
 		const std::string& resampling_type,
 		const std::string& output_projection_type,

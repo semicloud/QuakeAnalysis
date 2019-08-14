@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Adsma_settings.h"
+#include "Common_input.h"
 #include "Interpreter_helper.h"
 #include "yml_intepreter.h"
 #include "Preprocess_bt_intepreter.h"
@@ -71,6 +72,8 @@ int process(const std::string& yml_path_str)
 	if (std::optional<Node> node_optional = load_yml(yml_path.string()))
 	{
 		const Node node = node_optional.value();
+		const Common_input common_input(yml_path);
+
 		const path workspace_path(node[WORKSPACE].as<string>());
 		BOOST_ASSERT_MSG(exists(workspace_path) && is_directory(workspace_path), "workspace path is illegal!");
 		const path tmp_path(node[TMP_PATH].as<string>());
@@ -102,23 +105,17 @@ int process(const std::string& yml_path_str)
 		const path quake_record_path(node["QuakeRecord"].as<string>());
 		const string plot_extent = node["PlotExtent"].as<string>();
 
-		for (const string& product : products)
+		for (const string& product_str : products)
 		{
-			string product_type = product.substr(0, 3);
-			if (product.find(BT_CODE) != string::npos)
+			// MOD or MYD
+			string product_type = product_str.substr(0, 3);
+
+			// this product is MOD03, MOD11A1, MOD05, MOD04
+			if (product_str.find(BT_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][BT_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS][BT_NAME];
-					const int band = subNode[BAND].as<int>();
-					const string mrt_kernel_type = subNode["MRTProjectionType"].as<string>();
-					const string mrt_projection_type = subNode["MRTProjectionType"].as<string>();
-					const string mrt_projection_args = subNode["MRTProjectionArgs"].as<string>();
-					const float mrt_pixel_size = subNode["MRTPixelSize"].as<float>();
-					adsma::generate_pp_bt_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end,
-						product_type, pp_min_lon, pp_max_lon,
-						pp_min_lat, pp_max_lat, band, mrt_kernel_type,
-						mrt_projection_type, mrt_projection_args, mrt_pixel_size, yml_folder_path);
+					preprocess_bt(Preprocess_bt_input(node, product_type));
 				}
 
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][BT_NAME].IsDefined())
@@ -133,7 +130,7 @@ int process(const std::string& yml_path_str)
 					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
 					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
 					adsma::generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
-						product, product_type, date_start, date_end,
+						product_str, product_type, date_start, date_end,
 						calc_ref, calc_ano, ano_method, yml_folder_path);
 
 					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
@@ -142,7 +139,7 @@ int process(const std::string& yml_path_str)
 						const string plot_bg_title = plot_bg_node[TITLE].as<string>();
 						const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
 						adsma::generate_plot_eddyfield_ref_yml_files(workspace_path,
-							tmp_path, product, product_type, date_start, date_end, calc_ref, calc_ano,
+							tmp_path, product_str, product_type, date_start, date_end, calc_ref, calc_ano,
 							ano_method, plot_extent, shp_boundary_path, shp_fault_path, shp_city_path,
 							quake_record_path, yml_folder_path);
 					}
@@ -153,33 +150,21 @@ int process(const std::string& yml_path_str)
 					}
 				}
 			}
-			else if (product.find(AOD_CODE) != string::npos)
+			else if (product_str.find(AOD_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][AOD_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS][AOD_NAME];
-					const string resampling_type = subNode["ResamplingType"].as<string>();
-					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
-					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					adsma::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
-						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
-						yml_folder_path);
+					preprocess_aod(Preprocess_aod_wv_input(node, AOD_NAME, product_type));
 				}
 			}
-			else if (product.find(WV_CODE) != string::npos)
+			else if (product_str.find(WV_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][WV_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS][WV_NAME];
-					const string resampling_type = subNode["ResamplingType"].as<string>();
-					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
-					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					adsma::generate_pp_aod_or_wv_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product, pp_min_lon,
-						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type, output_projection_type, output_projection_parameters,
-						yml_folder_path);
+					preprocess_wv(Preprocess_aod_wv_input(node, WV_NAME, product_type));
 				}
 			}
-			else if (product.find(LST_CODE) != string::npos)
+			else if (product_str.find(LST_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][LST_NAME].IsDefined())
 				{
@@ -233,4 +218,37 @@ int process(const std::string& yml_path_str)
 
 	return EXIT_SUCCESS;
 }
+
+int preprocess_bt(const Preprocess_bt_input& p)
+{
+	const int ans = adsma::generate_pp_bt_yml_hdflist_files(p.workspace(),
+		p.tmp_dir(), p.start_date(), p.end_date(),
+		p.prodcut_type(), p.min_lon(), p.max_lon(),
+		p.min_lat(), p.max_lat(), p.band(), p.mrt_kernel_type(),
+		p.mrt_projection_type(), p.mrt_projection_args(), p.mrt_pixel_size(),
+		p.yml_folder());
+	return ans;
+}
+
+int preprocess_aod(const Preprocess_aod_wv_input& p)
+{
+	const std::string product_str = p.prodcut_type() + adsma::settings::AOD_CODE;
+	const int ans = adsma::generate_pp_aod_or_wv_yml_hdflist_files(
+		p.workspace(), p.tmp_dir(), p.start_date(), p.end_date(), product_str, p.min_lon(),
+		p.max_lon(), p.min_lat(), p.max_lat(), p.resampling_type(),
+		p.output_projection_type(), p.output_projection_parameters(), p.yml_folder());
+	return ans;
+}
+
+int preprocess_wv(const Preprocess_aod_wv_input& p)
+{
+	const std::string product_str = p.prodcut_type() + adsma::settings::WV_CODE;
+	const int ans = adsma::generate_pp_aod_or_wv_yml_hdflist_files(
+		p.workspace(), p.tmp_dir(),p.start_date(), p.end_date(), product_str, 
+		p.min_lon(), p.max_lon(), p.min_lat(), p.max_lat(), 
+		p.resampling_type(), p.output_projection_type(), p.output_projection_parameters(),
+		p.yml_folder());
+	return ans;
+}
+
 
