@@ -1,6 +1,7 @@
 #pragma once
 #include "Preprocess_bt_input.h"
 #include "Preprocess_aod_wv_input.h"
+#include "Preprocess_lst_input.h"
 #include <yaml-cpp/yaml.h>
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include <optional>
@@ -24,3 +25,12 @@ int preprocess_aod(const Preprocess_aod_wv_input&);
 
 int preprocess_wv(const Preprocess_aod_wv_input&);
 
+int preprocess_lst(const Preprocess_lst_input&);
+
+int eddy_field_bt();
+
+int eddy_field_aod();
+
+int eddy_field_wv();
+
+int eddy_field_lst();

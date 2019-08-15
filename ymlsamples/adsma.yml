@@ -57,11 +57,11 @@ Preprocess:
     ResamplingType: NN
     OutputProjectionType: CEA
     OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
-  # LST:
-    # ResamplingType: NEAREST_NEIGHBOR
-    # OutputProjectionType: ER
-    # OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-    # OutputPixelSize: 1000
+  LST:
+    ResamplingType: NEAREST_NEIGHBOR
+    OutputProjectionType: ER
+    OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    OutputPixelSize: 1000
 # 涡度处理
 EddyField:
   # BT:

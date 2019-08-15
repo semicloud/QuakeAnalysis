@@ -111,7 +111,7 @@ int main()
 	//generate_txt_for_general_ano();
 	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
 	process(yml);
-	run_programs("D:\\modis_workspace\\generated_ymls");
+	// run_programs("D:\\modis_workspace\\generated_ymls");
 	//auto years = get_years_of_product("D:\\modis_workspace", "MOD", "LST");
 	/*for (unsigned year : years)
 	{

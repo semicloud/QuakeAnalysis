@@ -171,6 +171,7 @@
     <ClInclude Include="Interpreter_helper.h" />
     <ClInclude Include="Preprocess_helper.h" />
     <ClInclude Include="Preprocess_input.h" />
+    <ClInclude Include="Preprocess_lst_input.h" />
     <ClInclude Include="Preprocess_lst_interpreter.h" />
     <ClInclude Include="yml_intepreter.h" />
   </ItemGroup>
@@ -190,6 +191,7 @@
     <ClCompile Include="Preprocess_bt_input.cpp" />
     <ClCompile Include="Preprocess_bt_intepreter.cpp" />
     <ClCompile Include="Preprocess_input.cpp" />
+    <ClCompile Include="Preprocess_lst_input.cpp" />
     <ClCompile Include="Preprocess_lst_interpreter.cpp" />
     <ClCompile Include="yml_intepreter.cpp" />
   </ItemGroup>

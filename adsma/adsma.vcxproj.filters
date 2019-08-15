@@ -54,6 +54,9 @@
     <ClInclude Include="Preprocess_aod_wv_input.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Preprocess_lst_input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,6 +93,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Preprocess_aod_wv_input.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Preprocess_lst_input.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

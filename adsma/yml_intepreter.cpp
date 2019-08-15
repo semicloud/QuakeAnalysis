@@ -168,15 +168,7 @@ int process(const std::string& yml_path_str)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][LST_NAME].IsDefined())
 				{
-					const Node subNode = node[PREPROCESS][LST_NAME];
-					const string resampling_type = subNode["ResamplingType"].as<string>();
-					const string output_projection_type = subNode["OutputProjectionType"].as<string>();
-					const string output_projection_parameters = subNode["OutputProjectionParameters"].as<string>();
-					const float output_pixel_size = subNode["OutputPixelSize"].as<float>();
-					adsma::generate_pp_lst_yml_hdflist_files(workspace_path, tmp_path, date_start, date_end, product_type, pp_min_lon,
-						pp_max_lon, pp_min_lat, pp_max_lat, resampling_type,
-						output_projection_type, output_projection_parameters, output_pixel_size,
-						yml_folder_path);
+					preprocess_lst(Preprocess_lst_input(node, product_type));
 				}
 
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][LST_NAME].IsDefined())
@@ -248,6 +240,17 @@ int preprocess_wv(const Preprocess_aod_wv_input& p)
 		p.min_lon(), p.max_lon(), p.min_lat(), p.max_lat(), 
 		p.resampling_type(), p.output_projection_type(), p.output_projection_parameters(),
 		p.yml_folder());
+	return ans;
+}
+
+int preprocess_lst(const Preprocess_lst_input& p)
+{
+	const std::string product_str = p.prodcut_type() + adsma::settings::LST_CODE;
+	const int ans = adsma::generate_pp_lst_yml_hdflist_files(
+		p.workspace(), p.tmp_dir(), p.start_date(), p.end_date(), p.prodcut_type(),
+		p.min_lon(), p.max_lon(), p.min_lat(), p.max_lat(), p.resampling_type(),
+		p.output_projection_type(), p.output_projection_parameters(),
+		p.output_pixel_size(), p.yml_folder());
 	return ans;
 }
 
