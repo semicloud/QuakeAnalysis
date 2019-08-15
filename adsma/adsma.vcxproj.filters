@@ -57,6 +57,9 @@
     <ClInclude Include="Preprocess_lst_input.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Eddy_field_input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -96,6 +99,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Preprocess_lst_input.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Eddy_field_input.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

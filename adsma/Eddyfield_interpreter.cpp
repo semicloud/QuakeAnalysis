@@ -65,7 +65,7 @@ std::string adsma::get_eddyfield_ref_hdflist_str(
 int adsma::generate_eddyfield_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
-	const std::string& product,
+	const std::string& product_name,
 	const std::string& product_type,
 	const boost::gregorian::date& start_date,
 	const boost::gregorian::date& end_date,
@@ -77,7 +77,7 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 	using namespace boost::gregorian;
 
 	vector<unsigned> product_years = get_years_of_product(workspace_path,
-		product_type, product);
+		product_type, product_name);
 
 	for (day_iterator it(start_date); it <= end_date; ++it)
 	{
@@ -86,8 +86,8 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 		const unsigned year_u = stoul(year);
 		const string day = modis_api::Date_utils::get_doy_day(year_and_day);
 		const path input_image_path = workspace_path / adsma::settings::PP_STANDARD_FOLDER
-			/ get_pp_folder(product_type, product) / year
-			/ get_pp_output_file_name(product, year, day);
+			/ get_pp_folder(product_type, product_name) / year
+			/ get_pp_output_file_name(product_name, year, day);
 		if (!exists(input_image_path))
 		{
 			BOOST_LOG_TRIVIAL(error) << "文件" << input_image_path << "不存在，无法进行进行涡度处理" << endl;
@@ -99,7 +99,7 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 		copy_if(product_years.begin(), product_years.end(), back_inserter(ref_years),
 			[&year_u](const unsigned& y) {return y < year_u; });
 		const string hdf_list_str = get_eddyfield_ref_hdflist_str(workspace_path,
-			tmp_path, product, product_type, *it, ref_years, ano_method);
+			tmp_path, product_name, product_type, *it, ref_years, ano_method);
 		if (boost::trim_copy(hdf_list_str).empty())
 		{
 			BOOST_LOG_TRIVIAL(error) << "没有找到可用于生成背景场的文件，无法为" << input_image_path << "生成涡度背景场";
@@ -107,23 +107,23 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 			continue;
 		}
 		const string hdf_list_name = (boost::format("ef_ref%1%_%2%_%3%_%4%.txt")
-			% ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product)
+			% ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product_name)
 			% year_and_day).str();
 		const path hdf_list_path = yml_folder_path / hdf_list_name;
 		modis_api::File_operation::write_to_file(hdf_list_path.string(), hdf_list_str);
 
 		// 背景场文件存放路径
 		const path ref_file_path = workspace_path / "Ref" /
-			(boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product).str() /
-			year / (boost::format("%1%_REF_%2%_%3%.tif") % product % year% day).str();
+			(boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product_name).str() /
+			year / (boost::format("%1%_REF_%2%_%3%.tif") % product_name % year% day).str();
 		// 涡度异常文件存放路径
 		const path ano_file_path = workspace_path / "Ano" /
-			(boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product).str() /
-			year / (boost::format("%1%_ANO_%2%_%3%.tif") % product % year% day).str();
+			(boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product_name).str() /
+			year / (boost::format("%1%_ANO_%2%_%3%.tif") % product_name % year% day).str();
 		const string yml_str = get_eddyfield_yml_str(workspace_path, tmp_path, calc_ref, calc_ano, ano_method,
 			input_image_path, hdf_list_path, ref_file_path, ano_file_path);
 		const string yml_file_name = (boost::format("ef_ano%1%_%2%_%3%_%4%.yml")
-			% ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product)
+			% ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product_name)
 			% year_and_day).str();
 		const path yml_path = yml_folder_path / yml_file_name;
 		modis_api::File_operation::write_to_file(yml_path.string(), yml_str);
@@ -134,7 +134,7 @@ int adsma::generate_eddyfield_yml_hdflist_files(
 int adsma::generate_plot_eddyfield_ref_yml_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,
-	const std::string& product,
+	const std::string& product_name,
 	const std::string& product_type,
 	const boost::gregorian::date& start_date,
 	const boost::gregorian::date& end_date,
@@ -156,18 +156,18 @@ int adsma::generate_plot_eddyfield_ref_yml_files(
 		const string year = modis_api::Date_utils::get_doy_year(year_and_day);
 		const string day = modis_api::Date_utils::get_doy_day(year_and_day);
 		// Example: EF1_MOD_LST
-		const string ref_folder_name = (boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product).str();
+		const string ref_folder_name = (boost::format("EF%1%_%2%_%3%") % ano_method % product_type % product_name).str();
 		BOOST_LOG_TRIVIAL(debug) << "Ref folder name:" << ref_folder_name;
 
-		const string ref_tif_name = (boost::format("%1%_REF_%2%_%3%.tif") % product % year % day).str();
+		const string ref_tif_name = (boost::format("%1%_REF_%2%_%3%.tif") % product_name % year % day).str();
 		const path ref_tif_path = workspace_path / "Ref" / ref_folder_name / year / ref_tif_name;
 		BOOST_LOG_TRIVIAL(debug) << "Ref tif path:" << ref_tif_path;
 
-		const string ref_fig_name = (boost::format("%1%_REF_%2%_%3%.jpg") % product % year % day).str();
+		const string ref_fig_name = (boost::format("%1%_REF_%2%_%3%.jpg") % product_name % year % day).str();
 		const path ref_fig_path = workspace_path / "Ref_Map" / ref_folder_name / year / ref_fig_name;
 		BOOST_LOG_TRIVIAL(debug) << "Ref fig path:" << ref_fig_path;
 
-		const string fig_title = (boost::format("%1%%2% in %3%-%4%-%5% (DOY %6%)") % product_type % product % year % it->month() % it->day_number() % day).str();
+		const string fig_title = (boost::format("%1%%2% in %3%-%4%-%5% (DOY %6%)") % product_type % product_name % year % it->month() % it->day_number() % day).str();
 		BOOST_LOG_TRIVIAL(debug) << "Fig title: " << fig_title;
 
 		const string yml_str = adsma::get_plot_eddyfield_ref_yml_str(
@@ -176,7 +176,7 @@ int adsma::generate_plot_eddyfield_ref_yml_files(
 		
 		// 生成的yml文件名，例如 pl_ref_ef1_mod_bt_2018_303.yml
 		const string yml_file_name = (boost::format("pl_ref_ef%1%_%2%_%3%_%4%_%5%.yml") %
-			ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product) %
+			ano_method % boost::to_lower_copy(product_type) % boost::to_lower_copy(product_name) %
 			year % day).str();
 		const path yml_path = yml_folder_path / yml_file_name;
 		BOOST_LOG_TRIVIAL(debug) << "Yml path: " << yml_path;

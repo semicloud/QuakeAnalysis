@@ -39,6 +39,9 @@ Common_input::Common_input(const YAML::Node& node) : m_node(node)
 
 	m_yml_folder = node["YmlFolderPath"].as<string>();
 	BOOST_LOG_TRIVIAL(debug) << "Yml folder path: " << m_yml_folder;
+
+	m_plot_extent = node["PlotExtent"].as<string>();
+	BOOST_LOG_TRIVIAL(debug) << "Plot extent: " << m_plot_extent;
 }
 
 Common_input::Common_input(const std::filesystem::path& yml_path) : Common_input(load_node(yml_path))

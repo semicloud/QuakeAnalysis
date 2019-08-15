@@ -39,13 +39,13 @@ namespace adsma
 	 * \brief 获取一个产品的预处理数据年份集合
 	 * \param workspace_path 工作空间目录
 	 * \param product_type 产品类型，MOD或MYD
-	 * \param product 产品名称，限于[BT, AOD, WV, LST]
+	 * \param product_name 产品名称，限于[BT, AOD, WV, LST]
 	 * \return 该产品的预处理数据年份集合，升序排序
 	 */
 	std::vector<unsigned int> get_years_of_product(
 		const std::filesystem::path& workspace_path,
 		const std::string& product_type,
-		const std::string& product
+		const std::string& product_name
 	);
 }
 

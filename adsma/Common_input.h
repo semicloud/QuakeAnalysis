@@ -66,6 +66,11 @@ public:
 		return m_quake_record;
 	}
 
+	std::string plot_extent() const
+	{
+		return m_plot_extent;
+	}
+
 protected:
 	YAML::Node m_node;
 
@@ -75,9 +80,11 @@ private:
 	std::filesystem::path m_yml_folder;
 	boost::gregorian::date m_start_date;
 	boost::gregorian::date m_end_date;
+
 	std::filesystem::path m_shp_boundary;
 	std::filesystem::path m_shp_fault;
 	std::filesystem::path m_shp_city;
 	std::filesystem::path m_quake_record;
+	std::string m_plot_extent;
 	YAML::Node load_node(const std::filesystem::path&);
 };

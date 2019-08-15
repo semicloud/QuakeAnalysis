@@ -58,7 +58,7 @@ namespace adsma
 	 * \brief 生成涡度Yml文件以及背景场计算需要的HdfList文件
 	 * \param workspace_path
 	 * \param tmp_path
-	 * \param product
+	 * \param product_name
 	 * \param product_type
 	 * \param start_date
 	 * \param end_date
@@ -71,7 +71,7 @@ namespace adsma
 	int generate_eddyfield_yml_hdflist_files(
 		const std::filesystem::path& workspace_path,
 		const std::filesystem::path& tmp_path,
-		const std::string& product,
+		const std::string& product_name,
 		const std::string& product_type,
 		const boost::gregorian::date& start_date,
 		const boost::gregorian::date& end_date,
@@ -83,7 +83,7 @@ namespace adsma
 	 * \brief 生成涡度背景场出图yml文件
 	 * \param workspace_path 
 	 * \param tmp_path 
-	 * \param product 
+	 * \param product_name 
 	 * \param product_type 
 	 * \param start_date 
 	 * \param end_date 
@@ -101,7 +101,7 @@ namespace adsma
 	int generate_plot_eddyfield_ref_yml_files(
 		const std::filesystem::path& workspace_path,
 		const std::filesystem::path& tmp_path,
-		const std::string& product,
+		const std::string& product_name,
 		const std::string& product_type,
 		const boost::gregorian::date& start_date,
 		const boost::gregorian::date& end_date,

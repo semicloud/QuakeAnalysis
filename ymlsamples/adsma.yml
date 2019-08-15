@@ -64,21 +64,21 @@ Preprocess:
     OutputPixelSize: 1000
 # 涡度处理
 EddyField:
-  # BT:
-    # # 是否计算背景场
-    # CalcRef: true
-    # # 是否计算异常
-    # CalcAno: true
-    # # 计算方法
-    # AnoMethod: 1
-    # # 背景场出图，无此项则背景场不出图
-    # PlotBackground:
-      # Title: "%1% in %2% (DOY %3%)"
-      # BarTitle: 
-    # # 异常出图，无此项则异常不出图
-    # PlotEddyField:
-      # Title: "%1% in %2% (DOY %3%)"
-      # BarTitle: Brightness temperature anomaly by the k-valued method
+  BT:
+    # 是否计算背景场
+    CalcRef: true
+    # 是否计算异常
+    CalcAno: true
+    # 计算方法
+    AnoMethod: 1
+    # 背景场出图，无此项则背景场不出图
+    PlotBackground:
+      Title: "%1% in %2% (DOY %3%)"
+      BarTitle: 
+    # 异常出图，无此项则异常不出图
+    PlotEddyField:
+      Title: "%1% in %2% (DOY %3%)"
+      BarTitle: Brightness temperature anomaly by the k-valued method
   # AOD:
     # CalcRef: true
     # CalcAno: true

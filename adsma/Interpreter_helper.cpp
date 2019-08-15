@@ -67,14 +67,14 @@ bool adsma::is_data_exist(const std::filesystem::path& workspace, const std::str
 std::vector<unsigned int> adsma::get_years_of_product(
 	const std::filesystem::path& workspace_path,
 	const std::string& product_type,
-	const std::string& product)
+	const std::string& product_name)
 {
 	using namespace std;
 	using namespace filesystem;
 
 	vector<unsigned int> years;
 	const path pp_data_path = workspace_path / settings::PP_STANDARD_FOLDER /
-		adsma::get_pp_folder(product_type, product);
+		adsma::get_pp_folder(product_type, product_name);
 	if (std::filesystem::is_empty(pp_data_path))
 		return years;
 	for (directory_iterator it(pp_data_path); it != directory_iterator(); ++it)
@@ -84,7 +84,7 @@ std::vector<unsigned int> adsma::get_years_of_product(
 		years.push_back(year);
 	}
 	sort(years.begin(), years.end());
-	BOOST_LOG_TRIVIAL(debug) << "Years of " << product_type << product << ": "
+	BOOST_LOG_TRIVIAL(debug) << "Years of " << product_type << product_name << ": "
 		<< join(years | boost::adaptors::transformed([](const unsigned& y) {return to_string(y); }), " ");
 	return years;
 }

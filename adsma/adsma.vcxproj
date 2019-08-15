@@ -163,6 +163,7 @@
     <ClInclude Include="Adsma_settings.h" />
     <ClInclude Include="Common_input.h" />
     <ClInclude Include="Eddyfield_interpreter.h" />
+    <ClInclude Include="Eddy_field_input.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Preprocess_aod_wv_input.h" />
     <ClInclude Include="Preprocess_aod_wv_interpreter.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="adsma.cpp" />
     <ClCompile Include="Common_input.cpp" />
     <ClCompile Include="Eddyfield_interpreter.cpp" />
+    <ClCompile Include="Eddy_field_input.cpp" />
     <ClCompile Include="Interpreter_helper.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
