@@ -99,16 +99,16 @@ EddyField:
     # PlotEddyField:
       # Title: xxxxx
       # BarTitle: xxxxx
-  # LST:
-    # CalcRef: true
-    # CalcAno: true
-    # AnoMethod: 1
-    # PlotBackground:
-      # Title: xxxxx
-      # BarTitle: xxxxx
-    # PlotEddyField:
-      # Title: xxxxx
-      # BarTitle: xxxxx
+  LST:
+    CalcRef: true
+    CalcAno: true
+    AnoMethod: 1
+    PlotBackground:
+      Title: xxxxx
+      BarTitle: xxxxx
+    PlotEddyField:
+      Title: xxxxx
+      BarTitle: xxxxx
 
 # 年周变处理
 GeneralAno:

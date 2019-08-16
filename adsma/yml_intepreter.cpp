@@ -121,34 +121,6 @@ int process(const std::string& yml_path_str)
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][BT_NAME].IsDefined())
 				{
 					eddy_field_bt(Eddy_field_input(node, BT_NAME, product_type));
-					// // 这就要开始算涡度了！
-					// const Node subNode = node[EDDY_FIELD][BT_NAME];
-					// const bool calc_ref = subNode[CALC_REF].as<bool>();
-					// const bool calc_ano = subNode[CALC_ANO].as<bool>();
-					// const int ano_method = subNode[ANO_METHOD].as<int>();
-					//
-					// const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
-					// const string plot_ef_title = plot_ef_node[TITLE].as<string>();
-					// const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
-					// adsma::generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
-					// 	product_str, product_type, date_start, date_end,
-					// 	calc_ref, calc_ano, ano_method, yml_folder_path);
-					//
-					// const Node plot_bg_node = subNode[PLOT_BACKGROUND];
-					// if (plot_bg_node.IsDefined()) // 背景场出图
-					// {
-					// 	const string plot_bg_title = plot_bg_node[TITLE].as<string>();
-					// 	const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
-					// 	adsma::generate_plot_eddyfield_ref_yml_files(workspace_path,
-					// 		tmp_path, product_str, product_type, date_start, date_end, calc_ref, calc_ano,
-					// 		ano_method, plot_extent, shp_boundary_path, shp_fault_path, shp_city_path,
-					// 		quake_record_path, yml_folder_path);
-					// }
-					//
-					// if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
-					// {
-					// 	// TODO 涡度出图
-					// }
 				}
 			}
 			else if (product_str.find(AOD_CODE) != string::npos)
@@ -174,34 +146,7 @@ int process(const std::string& yml_path_str)
 
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][LST_NAME].IsDefined())
 				{
-					// 这就要开始算涡度了！
-					const Node subNode = node[EDDY_FIELD][LST_NAME];
-					const bool calc_ref = subNode[CALC_REF].as<bool>();
-					const bool calc_ano = subNode[CALC_ANO].as<bool>();
-					const int ano_method = subNode[ANO_METHOD].as<int>();
-
-					adsma::generate_eddyfield_yml_hdflist_files(workspace_path, tmp_path,
-						LST_NAME, product_type, date_start, date_end,
-						calc_ref, calc_ano, ano_method, yml_folder_path);
-
-					const Node plot_bg_node = subNode[PLOT_BACKGROUND];
-					const string plot_bg_title = plot_bg_node[TITLE].as<string>();
-					const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
-					if (plot_bg_node.IsDefined()) // 背景场出图
-					{
-						adsma::generate_plot_eddyfield_ref_yml_files(workspace_path,
-							tmp_path, LST_NAME, product_type, date_start, date_end, calc_ref, calc_ano,
-							ano_method, plot_extent, shp_boundary_path, shp_fault_path, shp_city_path,
-							quake_record_path, yml_folder_path);
-					}
-
-					const Node plot_ef_node = subNode[PLOT_EDDYFIELD];
-					const string plot_ef_title = plot_ef_node[TITLE].as<string>();
-					const string plot_ef_bar_title = plot_ef_node[BAR_TITLE].as<string>();
-					if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
-					{
-						// TODO 涡度出图
-					}
+					eddy_field_bt(Eddy_field_input(node, LST_NAME, product_type));
 				}
 			}
 		}
@@ -270,22 +215,11 @@ int eddy_field_bt(const Eddy_field_input& p)
 	}
 	if (p.is_plot_ano())
 	{
-		
+		adsma::generate_plot_eddyfield_ano_yml_files(p.workspace(),
+			p.tmp_dir(), p.product_name(), p.product_type(), p.start_date(), p.end_date(),
+			p.is_calc_ref(), p.is_calc_ano(), p.ano_method(), p.plot_extent(),
+			p.shp_boundary(), p.shp_fault(), p.shp_city(), p.quake_record(), p.yml_folder());
 	}
-	// const Node plot_bg_node = subNode[PLOT_BACKGROUND];
-	// if (plot_bg_node.IsDefined()) // 背景场出图
-	// {
-	// 	const string plot_bg_title = plot_bg_node[TITLE].as<string>();
-	// 	const string plot_bg_bar_title = plot_bg_node[BAR_TITLE].as<string>();
-
-	// }
-	//
-	// if (subNode[PLOT_EDDYFIELD].IsDefined()) // 异常出图
-	// {
-	// 	// TODO 涡度出图
-	// }
 
 	return 0;
 }
-
-
