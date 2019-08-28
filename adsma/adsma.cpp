@@ -8,10 +8,10 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -29,7 +29,7 @@ boost::gregorian::date get_date(const std::string& date_str);
 
 void generate_mxd11a1_ymls();
 void generate_txt_for_general_ano();
-void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref);
+void prepare_general_ano_tif(const std::filesystem::path& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref);
 
 int run_programs(const std::string& ymls_folder);
 
@@ -85,14 +85,14 @@ int run_programs(const std::string& ymls_folder)
 		else
 		{
 			// 涡度处理
-			if(file_name.substr(0,2) == "ef") 
+			if (file_name.substr(0, 2) == "ef")
 			{
 				const string cmd = (boost::format("%1% -y %2%") % "eddy_field_ano.exe" % yml_file_path.string()).str();
 				BOOST_LOG_TRIVIAL(debug) << "CMD: " << cmd;
 				int i = system(cmd.c_str());
 			}
 
-			if(file_name.substr(0,2) == "pl")
+			if (file_name.substr(0, 2) == "pl")
 			{
 				const string cmd = (boost::format("%1% -y %2%") % "modis_plot.exe" % yml_file_path.string()).str();
 				int i = system(cmd.c_str());
@@ -108,9 +108,17 @@ int main()
 	using namespace std;
 	init_logger();
 	/*generate_mxd11a1_ymls();*/
-	//generate_txt_for_general_ano();
-	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
-	process(yml);
+	 const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
+	 process(yml);
+	// std::string  str("月份");
+	// std::cout << str.length() << std::endl;
+	// std::cout << str.capacity() << std::endl;
+	// std::cout << int(str[0]) << std::endl;
+	// std::cout << int(str[1]) << std::endl;
+	// std::cout << int(str[2]) << std::endl;
+	// std::cout << int(str[3]) << std::endl;
+	// std::cout << str[2] << std::endl;
+	// generate_txt_for_general_ano();
 	// run_programs("D:\\modis_workspace\\generated_ymls");
 	//auto years = get_years_of_product("D:\\modis_workspace", "MOD", "LST");
 	/*for (unsigned year : years)
@@ -119,7 +127,7 @@ int main()
 	}*/
 }
 
-void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)
+void prepare_general_ano_tif(const std::filesystem::path& dir_data, const unsigned year, const unsigned month, std::vector<std::string>& vec_month, std::vector<std::string>& vec_ref)
 {
 	using namespace std;
 	using namespace filesystem;
@@ -127,9 +135,11 @@ void prepare_general_ano_tif(const std::string& dir_data, const unsigned year, c
 	for (; it != recursive_directory_iterator(); ++it)
 	{
 		if (it->path().extension() != ".tif") continue;
-		std::string file_name = it->path().filename().string();
-		unsigned file_year = boost::lexical_cast<unsigned>(file_name.substr(3, 4));
-		unsigned file_day = boost::lexical_cast<unsigned>(trim_left_copy_if(file_name.substr(7, 3), boost::is_any_of("0")));
+		std::string file_name = it->path().filename().stem().string();
+		vector<string> file_names;
+		boost::split(file_names, file_name, boost::is_any_of("_"));
+		unsigned file_year = boost::lexical_cast<unsigned>(file_names[1]);
+		unsigned file_day = boost::lexical_cast<unsigned>(trim_left_copy_if(file_names[2], boost::is_any_of("0")));
 		unsigned file_month = (boost::gregorian::date(file_year, 1, 1) + boost::gregorian::days(file_day - 1)).month().as_number();
 		BOOST_LOG_TRIVIAL(debug) << "file year:" << file_year << ", file month: " << file_month << " ,file day:" << file_day;
 		if (file_year == year && file_month == month)
@@ -152,8 +162,8 @@ void generate_txt_for_general_ano()
 	path path_txt_month_tif = dir_output / "genenal_ano_month_tif_list.txt";
 	path path_txt_ref_tif = dir_output / "general_ano_ref_tif_list.txt";
 
-	path dir_workspace("e:\\modis_workspace_test\\");
-	path dir_data = dir_workspace / "Standard" / "MOD11A1" / "\\";
+	path dir_workspace("D:\\modis_workspace\\");
+	path dir_data = dir_workspace / "Standard" / "MOD_LST";
 	const unsigned year = 2018, month = 1;
 	BOOST_LOG_TRIVIAL(debug) << "data dir: " << dir_data.string();
 	std::vector<std::string> vec_month, vec_ref;

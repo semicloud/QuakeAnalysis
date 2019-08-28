@@ -3,6 +3,7 @@
 #include "Preprocess_aod_wv_input.h"
 #include "Preprocess_lst_input.h"
 #include "Eddy_field_input.h"
+#include "General_ano_input.h"
 #include <yaml-cpp/yaml.h>
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include <optional>
@@ -28,10 +29,6 @@ int preprocess_wv(const Preprocess_aod_wv_input&);
 
 int preprocess_lst(const Preprocess_lst_input&);
 
-int eddy_field_bt(const Eddy_field_input&);
+int eddy_field(const Eddy_field_input&);
 
-int eddy_field_aod(const Eddy_field_input&);
-
-int eddy_field_wv(const Eddy_field_input&);
-
-int eddy_field_lst(const Eddy_field_input&);
+int general_ano(const General_ano_input&);

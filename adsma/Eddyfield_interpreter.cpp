@@ -62,6 +62,20 @@ std::string adsma::get_eddyfield_ref_hdflist_str(
 	return oss.str();
 }
 
+/**
+ * \brief 生成涡度处理yml文件及hdflist文件
+ * \param workspace_path 工作空间路径
+ * \param tmp_path tmp路径
+ * \param product_name 产品名称
+ * \param product_type 产品类型
+ * \param start_date 开始日期
+ * \param end_date 结束日期
+ * \param calc_ref 是否计算背景场
+ * \param calc_ano 是否计算异常
+ * \param ano_method 异常计算方法
+ * \param yml_folder_path 生成的yml文件存放目录
+ * \return 
+ */
 int adsma::generate_eddyfield_yml_hdflist_files(
 	const std::filesystem::path& workspace_path,
 	const std::filesystem::path& tmp_path,

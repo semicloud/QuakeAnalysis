@@ -60,6 +60,12 @@
     <ClInclude Include="Eddy_field_input.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="General_ano_interpreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="General_ano_input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -102,6 +108,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Eddy_field_input.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="General_ano_interpreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="General_ano_input.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "Preprocess_lst_interpreter.h"
 #include "Preprocess_aod_wv_interpreter.h"
 #include "Eddyfield_interpreter.h"
+#include "General_ano_interpreter.h"
 #include "../modis_api/Date_utils.h"
 #include "../modis_api/File_operation.h"
 #include <boost/algorithm/string.hpp>
@@ -66,6 +67,7 @@ int process(const std::string& yml_path_str)
 	using namespace adsma::settings::yaml;
 	using namespace adsma::settings::yaml::preprocess;
 	using namespace adsma::settings::yaml::eddy;
+	using namespace adsma::settings::yaml::ga;
 
 	const path yml_path(yml_path_str);
 
@@ -86,6 +88,7 @@ int process(const std::string& yml_path_str)
 
 		BOOST_LOG_TRIVIAL(debug) << "load " << products.size() << " products";
 		BOOST_LOG_TRIVIAL(debug) << join(products, ",");
+
 
 		vector<date> dates = parse_date(node);
 		date date_start = dates[0], date_end = dates[1];
@@ -110,7 +113,7 @@ int process(const std::string& yml_path_str)
 			// MOD or MYD
 			string product_type = product_str.substr(0, 3);
 
-			// this product is MOD03, MOD11A1, MOD05, MOD04
+			// this product_str is MOD03, MOD11A1, MOD05, MOD04
 			if (product_str.find(BT_CODE) != string::npos)
 			{
 				if (node[PREPROCESS].IsDefined() && node[PREPROCESS][BT_NAME].IsDefined())
@@ -120,7 +123,12 @@ int process(const std::string& yml_path_str)
 
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][BT_NAME].IsDefined())
 				{
-					eddy_field_bt(Eddy_field_input(node, BT_NAME, product_type));
+					eddy_field(Eddy_field_input(node, BT_NAME, product_type));
+				}
+
+				if (node[GENERAL_ANO].IsDefined() && node[GENERAL_ANO][BT_NAME].IsDefined())
+				{
+					general_ano(General_ano_input(node, BT_NAME, product_type));
 				}
 			}
 			else if (product_str.find(AOD_CODE) != string::npos)
@@ -146,7 +154,12 @@ int process(const std::string& yml_path_str)
 
 				if (node[EDDY_FIELD].IsDefined() && node[EDDY_FIELD][LST_NAME].IsDefined())
 				{
-					eddy_field_bt(Eddy_field_input(node, LST_NAME, product_type));
+					eddy_field(Eddy_field_input(node, LST_NAME, product_type));
+				}
+
+				if (node[GENERAL_ANO].IsDefined() && node[GENERAL_ANO][LST_NAME].IsDefined())
+				{
+					general_ano(General_ano_input(node, LST_NAME, product_type));
 				}
 			}
 		}
@@ -200,7 +213,12 @@ int preprocess_lst(const Preprocess_lst_input& p)
 	return ans;
 }
 
-int eddy_field_bt(const Eddy_field_input& p)
+/**
+ * \brief 进行涡度处理
+ * \param p
+ * \return
+ */
+int eddy_field(const Eddy_field_input& p)
 {
 	// 这就要开始算涡度了！
 	adsma::generate_eddyfield_yml_hdflist_files(p.workspace(), p.tmp_dir(),
@@ -221,5 +239,17 @@ int eddy_field_bt(const Eddy_field_input& p)
 			p.shp_boundary(), p.shp_fault(), p.shp_city(), p.quake_record(), p.yml_folder());
 	}
 
+	return 0;
+}
+
+/**
+ * \brief 进行年变处理
+ * \return
+ */
+int general_ano(const General_ano_input& p)
+{
+	adsma::generate_general_ano_yml_hdflist_files(p.workspace(), p.tmp_dir(),
+		p.product_name(), p.product_type(),
+		p.start_date(), p.end_date(), p.yml_folder());
 	return 0;
 }

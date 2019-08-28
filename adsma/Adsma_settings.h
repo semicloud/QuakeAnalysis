@@ -57,3 +57,8 @@ namespace adsma::settings::yaml::eddy
 	const std::string TITLE = "Title";
 	const std::string BAR_TITLE = "BarTitle";
 }
+
+namespace adsma::settings::yaml::ga
+{
+	const std::string GENERAL_ANO = "GeneralAno";
+}

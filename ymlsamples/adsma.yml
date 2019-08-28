@@ -13,7 +13,7 @@ SelectedProducts:
 # 开始日期
 StartDate: 20180101
 # 结束日期
-EndDate: 20180131
+EndDate: 20181231
 # 预处理地理范围
 PreprocessExtent: 115 120 40 45
 # 出图地理范围
@@ -42,43 +42,43 @@ Archive:
 
 # 预处理设置
 Preprocess:
-  BT:
-    # 目标波段值
-    Band: 31
-    MRTKernelType: NN
-    MRTProjectionType: EQRECT
-    MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-    MRTPixelSize: 1000
-  AOD:
-    ResamplingType: NN
-    OutputProjectionType: CEA
-    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
-  WV:
-    ResamplingType: NN
-    OutputProjectionType: CEA
-    OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
-  LST:
-    ResamplingType: NEAREST_NEIGHBOR
-    OutputProjectionType: ER
-    OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
-    OutputPixelSize: 1000
+  # BT:
+    # # 目标波段值
+    # Band: 31
+    # MRTKernelType: NN
+    # MRTProjectionType: EQRECT
+    # MRTProjectionArgs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    # MRTPixelSize: 1000
+  # AOD:
+    # ResamplingType: NN
+    # OutputProjectionType: CEA
+    # OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  # WV:
+    # ResamplingType: NN
+    # OutputProjectionType: CEA
+    # OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+  # LST:
+    # ResamplingType: NEAREST_NEIGHBOR
+    # OutputProjectionType: ER
+    # OutputProjectionParameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+    # OutputPixelSize: 1000
 # 涡度处理
-EddyField:
-  BT:
-    # 是否计算背景场
-    CalcRef: true
-    # 是否计算异常
-    CalcAno: true
-    # 计算方法
-    AnoMethod: 1
-    # 背景场出图，无此项则背景场不出图
-    PlotBackground:
-      Title: "%1% in %2% (DOY %3%)"
-      BarTitle: 
-    # 异常出图，无此项则异常不出图
-    PlotEddyField:
-      Title: "%1% in %2% (DOY %3%)"
-      BarTitle: Brightness temperature anomaly by the k-valued method
+# EddyField:
+  # BT:
+    # # 是否计算背景场
+    # CalcRef: true
+    # # 是否计算异常
+    # CalcAno: true
+    # # 计算方法
+    # AnoMethod: 1
+    # # 背景场出图，无此项则背景场不出图
+    # PlotBackground:
+      # Title: "%1% in %2% (DOY %3%)"
+      # BarTitle: 
+    # # 异常出图，无此项则异常不出图
+    # PlotEddyField:
+      # Title: "%1% in %2% (DOY %3%)"
+      # BarTitle: Brightness temperature anomaly by the k-valued method
   # AOD:
     # CalcRef: true
     # CalcAno: true
@@ -99,23 +99,23 @@ EddyField:
     # PlotEddyField:
       # Title: xxxxx
       # BarTitle: xxxxx
-  LST:
-    CalcRef: true
-    CalcAno: true
-    AnoMethod: 1
-    PlotBackground:
-      Title: xxxxx
-      BarTitle: xxxxx
-    PlotEddyField:
-      Title: xxxxx
-      BarTitle: xxxxx
+  # LST:
+    # CalcRef: true
+    # CalcAno: true
+    # AnoMethod: 1
+    # PlotBackground:
+      # Title: xxxxx
+      # BarTitle: xxxxx
+    # PlotEddyField:
+      # Title: xxxxx
+      # BarTitle: xxxxx
 
 # 年周变处理
 GeneralAno:
-  PlotGeneralAno:
-    Title: xxxxx
-    BarTitle: xxxxx
-
-
+  # BT:
+    # PlotGeneralAno: true
+  # AOD:
+  # WV:
+  LST:
 Rst-en:
   PrepSupport: 2
