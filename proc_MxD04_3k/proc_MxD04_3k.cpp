@@ -5,17 +5,12 @@
 #include "../modis_api/File_operation.h"
 #include "../modis_api/Heg_utils.h"
 #include "../modis_api/Logger_setting.h"
-#include "../modis_api/Modis_type.h"
 #include "Preprocess_aerosol.h"
-#include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <filesystem>
 #include <string>
-#include <vector>
 #include <yaml-cpp/yaml.h>
-
-namespace fs = boost::filesystem;
-namespace po = boost::program_options;
 
 const std::string PROGRAM = "proc_MxD04_3k";
 const std::string VERSION = "1.0";
@@ -29,6 +24,8 @@ inline void init_logger_setting()
 
 int main(int argc, char** argv)
 {
+	namespace fs = std::filesystem;
+	namespace po = boost::program_options;
 	// MXD 03 04的数据文件可能不匹配
 	init_logger_setting();
 
@@ -93,23 +90,4 @@ int main(int argc, char** argv)
 	}
 
 	proc_MxD04_3k::Preprocess_aerosol::preprocess(yml_path, node, debug_mode);
-
-	//proc_MxD04_3k::Preprocess_aerosol::run("D:\\ddd111\\heg_MOD04_3K.A2016353.0330.061.2017329090849.bat");
-	//proc_MxD04_3k::Preprocess_aerosol::run("D:\\ddd111\\heg_MOD04_3K.A2016353.0335.061.2017329090901.bat");
-	//modis_api::Heg_utils::run_heg("E:\\modis_workspace\\MOD04_3K\\2010\\351\\MOD04_3K.A2010351.0250.061.2017319014259.hdf",
-	//	"mod04", "Optical_Depth_Land_And_Ocean|", 1, 3000, 3000, 106.37, 138.37, 27.78, 49.13, "NN", "CEA", "WGS84",
-	//	"( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )",
-	//	"D:\\ddd111\\123.tif", "GEO",
-	//	"D:\\ddd111\\");
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门提示: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
