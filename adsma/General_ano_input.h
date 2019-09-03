@@ -22,8 +22,20 @@ public:
 		return m_product_type;
 	}
 
+	bool is_plot_ref() const
+	{
+		return m_is_plot_ref;
+	}
+
+	bool is_plot_ano() const
+	{
+		return m_is_plot_ano;
+	}
+
 private:
 	std::string m_product_name;
 	std::string m_product_type;
+	bool m_is_plot_ref;
+	bool m_is_plot_ano;
 };
 

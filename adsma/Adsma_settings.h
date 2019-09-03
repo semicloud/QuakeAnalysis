@@ -27,6 +27,9 @@ namespace adsma::settings
 	const std::string AOD_FOLDER_SUFFIX = "04_3K";
 	const std::string WV_FOLDER_SUFFIX = "05_L2";
 	const std::string LST_FOLDER_SUFFIX = "11A1";
+
+	const std::string PLOT_TITLE_SIZE = "16";
+	const std::string BAR_TITLE_SIZE = "12";
 }
 
 namespace adsma::settings::yaml

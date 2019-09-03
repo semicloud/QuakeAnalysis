@@ -98,6 +98,11 @@ int run_programs(const std::string& ymls_folder)
 				int i = system(cmd.c_str());
 			}
 		}
+		if (file_name.substr(0, 2) == "ga")
+		{
+			const string cmd = (boost::format("%1% -y %2%") % "juping_ano.exe" % yml_file_path.string()).str();
+			int i = system(cmd.c_str());
+		}
 	}
 	return EXIT_SUCCESS;
 }
@@ -108,8 +113,9 @@ int main()
 	using namespace std;
 	init_logger();
 	/*generate_mxd11a1_ymls();*/
-	 const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
-	 process(yml);
+	const std::string yml = "E:\\CodeWorld\\VSProjects\\QuakeAnalysis\\QuakeAnalysis\\ymlsamples\\adsma.yml";
+	process(yml);
+
 	// std::string  str("月份");
 	// std::cout << str.length() << std::endl;
 	// std::cout << str.capacity() << std::endl;

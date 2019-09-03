@@ -159,7 +159,18 @@ int main(int argc, char** argv)
 	arma::fmat result = mean_mats_month - mean_mats_ref;
 
 	if (exists(path_output_image)) remove(path_output_image);
-	copy_file(vec_month_tif_files.front(), path_output_image.string());
+	if (!std::filesystem::exists(path_output_image.parent_path()))
+	{
+		try
+		{
+			std::filesystem::create_directories(path_output_image.parent_path());
+		}
+		catch (std::exception& ex)
+		{
+			std::cout << ex.what() << std::endl;
+		}
+	}
+	std::filesystem::copy(vec_month_tif_files.front(), path_output_image.string());
 	modis_api::Gdal_operation::write_fmat_to_tif(path_output_image.string(), result);
 	BOOST_LOG_TRIVIAL(info) << "距平计算完成，结果文件为：" << path_output_image.string();
 }

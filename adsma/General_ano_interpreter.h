@@ -8,10 +8,10 @@ namespace adsma
 {
 	/**
 	 * \brief 获取年变yml字符串
-	 * \param month_list_file 
-	 * \param ref_list_file 
-	 * \param output_image_file 
-	 * \param tmp_path 
+	 * \param month_list_file
+	 * \param ref_list_file
+	 * \param output_image_file
+	 * \param tmp_path
 	 * \return yml_str
 	 */
 	std::string get_general_ano_yml_str(
@@ -60,5 +60,90 @@ namespace adsma
 		const boost::gregorian::date& end_date,
 		const std::filesystem::path& yml_folder_path
 	);
+
+	/**
+	 * \brief 生成年变背景场绘制yml文件
+	 * \param workspace_path 工作空间路径
+	 * \param tmp_path tmp目录
+	 * \param product_name 产品名称
+	 * \param product_type 产品类型
+	 * \param start_date 开始日期
+	 * \param end_date 结束日期
+	 * \param fig_extent 图件范围
+	 * \param shp_bound_path 边界shpfile
+	 * \param shp_fault_path 断层shpfile
+	 * \param shp_city_path 城市shpfile
+	 * \param quake_record_path 地震目录文件路径
+	 * \param yml_folder_path 存放yml文件的路径
+	 * \return
+	 */
+	int generate_plot_general_ref_yml_files(
+		const std::filesystem::path& workspace_path,
+		const std::filesystem::path& tmp_path,
+		const std::string& product_name,
+		const std::string& product_type,
+		const boost::gregorian::date& start_date,
+		const boost::gregorian::date& end_date,
+		const std::string& fig_extent,
+		const std::filesystem::path& shp_bound_path,
+		const std::filesystem::path& shp_fault_path,
+		const std::filesystem::path& shp_city_path,
+		const std::filesystem::path& quake_record_path,
+		const std::filesystem::path& yml_folder_path);
+
+
+	/**
+	 * \brief 生成年变异常绘制yml文件
+	 * \param workspace_path 工作空间路径
+	 * \param tmp_path tmp目录
+	 * \param product_name 产品名称
+	 * \param product_type 产品类型
+	 * \param start_date 开始日期
+	 * \param end_date 结束日期
+	 * \param fig_extent 图件范围
+	 * \param shp_bound_path 边界shpfile
+	 * \param shp_fault_path 断层shpfile
+	 * \param shp_city_path 城市shpfile
+	 * \param quake_record_path 地震目录文件路径
+	 * \param yml_folder_path 存放yml文件的路径
+	 * \return
+	 */
+	int generate_plot_general_ano_yml_files(
+		const std::filesystem::path& workspace_path,
+		const std::filesystem::path& tmp_path,
+		const std::string& product_name,
+		const std::string& product_type,
+		const boost::gregorian::date& start_date,
+		const boost::gregorian::date& end_date,
+		const std::string& fig_extent,
+		const std::filesystem::path& shp_bound_path,
+		const std::filesystem::path& shp_fault_path,
+		const std::filesystem::path& shp_city_path,
+		const std::filesystem::path& quake_record_path,
+		const std::filesystem::path& yml_folder_path);
+
+	/**
+	 * \brief 获取年变异常出图yml字符串
+	 * \param ano_tif_path 年变tif文件路径
+	 * \param ano_fig_path 年变异常主题图输出路径
+	 * \param fig_title 图件标题
+	 * \param bar_title Bar标题
+	 * \param fig_extent 图件展示地理范围
+	 * \param shp_bound_path 边界shpfile
+	 * \param shp_fault_path 断层shpfile
+	 * \param shp_city_path 城市shpfile
+	 * \param quake_record_path 地震目录文件路径
+	 * \return 
+	 */
+	std::string get_plot_generala_ano_yml_str(
+		std::filesystem::path const & ano_tif_path,
+		std::filesystem::path const & ano_fig_path,
+		std::string const & fig_title,
+		std::string const & bar_title,
+		std::string const & fig_extent,
+		std::filesystem::path const & shp_bound_path,
+		std::filesystem::path const & shp_fault_path,
+		std::filesystem::path const & shp_city_path,
+		std::filesystem::path const & quake_record_path);
 
 }

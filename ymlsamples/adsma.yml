@@ -117,5 +117,7 @@ GeneralAno:
   # AOD:
   # WV:
   LST:
+    PlotBackground: false
+    PlotGeneralAno: true
 Rst-en:
   PrepSupport: 2

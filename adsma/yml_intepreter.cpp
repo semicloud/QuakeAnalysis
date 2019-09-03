@@ -251,5 +251,18 @@ int general_ano(const General_ano_input& p)
 	adsma::generate_general_ano_yml_hdflist_files(p.workspace(), p.tmp_dir(),
 		p.product_name(), p.product_type(),
 		p.start_date(), p.end_date(), p.yml_folder());
+	if (p.is_plot_ref())
+	{
+
+	}
+	if (p.is_plot_ano())
+	{
+		adsma::generate_plot_general_ano_yml_files(
+			p.workspace(), p.tmp_dir(), p.product_name(), p.product_type(),
+			p.start_date(), p.end_date(), p.plot_extent(), p.shp_boundary(),
+			p.shp_fault(), p.shp_city(), p.quake_record(), p.yml_folder()
+		);
+	}
+
 	return 0;
 }
