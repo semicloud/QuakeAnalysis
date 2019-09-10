@@ -135,7 +135,7 @@ namespace adsma
 	 * \param quake_record_path 地震目录文件路径
 	 * \return 
 	 */
-	std::string get_plot_generala_ano_yml_str(
+	std::string get_plot_general_ano_yml_str(
 		std::filesystem::path const & ano_tif_path,
 		std::filesystem::path const & ano_fig_path,
 		std::string const & fig_title,

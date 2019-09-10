@@ -197,7 +197,7 @@ int adsma::generate_plot_general_ano_yml_files(
 		const std::string fig_title = "general_ano_interpreter::generate_plot_general_ano_yml_files";
 		BOOST_LOG_TRIVIAL(debug) << "Fig title: " << fig_title;
 
-		const std::string yml_str = adsma::get_plot_generala_ano_yml_str(
+		const std::string yml_str = adsma::get_plot_general_ano_yml_str(
 			ano_tif_path, ano_fig_path, fig_title, "bar title", fig_extent,
 			shp_bound_path, shp_fault_path, shp_city_path, quake_record_path);
 
@@ -214,7 +214,7 @@ int adsma::generate_plot_general_ano_yml_files(
 	return 1;
 }
 
-std::string adsma::get_plot_generala_ano_yml_str(
+std::string adsma::get_plot_general_ano_yml_str(
 	std::filesystem::path const& ano_tif_path,
 	std::filesystem::path const& ano_fig_path,
 	std::string const& fig_title,
