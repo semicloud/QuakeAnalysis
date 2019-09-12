@@ -2,17 +2,13 @@
 //
 
 #include "pch.h"
+#include "../modis_api/Gdal_operation.h"
 #include "../modis_api/Logger_setting.h"
-#include "boost/filesystem.hpp"
 #include "boost/program_options.hpp"
 #include "Preprocess_water.h"
 #include <iostream>
+#include <filesystem>
 #include <string>
-#include <vector>
-#include "../modis_api/Gdal_operation.h"
-
-namespace po = boost::program_options;
-namespace fs = boost::filesystem;
 
 const std::string PROGRAM = "proc_MxD05_L2";
 const std::string VERSION = "1.0";
@@ -26,12 +22,9 @@ void init_logger()
 
 int main(int argc, char** argv)
 {
+	namespace fs = std::filesystem;
+	namespace po = boost::program_options;
 	init_logger();
-	// const std::string hdf_file("D:\\modis_workspace\\MOD05_L2\\2018\\001\\MOD05_L2.A2018001.0130.061.2018003202146.hdf");
-	// const std::string tmp_folder("D:\\modis_workspace\\tmp");
-	// double ulx=0, uly=0, lrx=0, lry=0;
-	// modis_api::Gdal_operation::read_geo_bound_py_h5(hdf_file, tmp_folder, ulx, uly, lrx, lry);
-
 	std::string yml_path;
 	YAML::Node node;
 	po::variables_map vm;
@@ -95,13 +88,3 @@ int main(int argc, char** argv)
 	proc_MxD05_L2::Preprocess_water::preprocess(yml_path, node, debug_mode);
 }
 
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门提示: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

@@ -9,6 +9,7 @@
 #include <boost/log/expressions.hpp>
 #include <boost/log/trivial.hpp>
 #include <gdal_priv.h>
+#include <gdal_utils.h>
 #include <filesystem>
 
 modis_api::Gdal_operation::Gdal_operation()
@@ -190,7 +191,7 @@ bool modis_api::Gdal_operation::translate_copy(const std::filesystem::path& sour
 	return system(cmd.c_str()) == 0;
 }
 
-bool modis_api::Gdal_operation::set_no_data_value(const std::string& source_path, float no_data_value)
+bool modis_api::Gdal_operation::set_no_data_value(const std::filesystem::path& source_path, float no_data_value)
 {
 	const std::string cmd = str(boost::format("gdal_edit.py -a_nodata %1% %2%") % no_data_value % source_path);
 	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
@@ -258,7 +259,29 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_
 	return boost::optional<arma::fmat>(ans_mat);
 }
 
-bool modis_api::Gdal_operation::read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx,
+bool modis_api::Gdal_operation::gdal_translate(
+	const std::string& src, const std::string& dst,
+	const std::vector<std::string>& opts)
+{
+	GDALAllRegister();
+
+	char** params = nullptr;
+	for (const std::string& option : opts)
+		params = CSLAddString(params, option.c_str());
+	GDALTranslateOptions* options = GDALTranslateOptionsNew(params, nullptr);
+
+	int bUsgError = FALSE;
+	GDALDatasetH src_handle = GDALOpen(src.c_str(), GA_ReadOnly);
+	GDALDataset* dst_dataset = (GDALDataset*)GDALTranslate(dst.c_str(), src_handle, options, &bUsgError);
+	GDALClose(dst_dataset);
+	GDALClose(src_handle);
+	GDALTranslateOptionsFree(options);
+	CSLDestroy(params);
+	assert(bUsgError == FALSE);
+	return std::filesystem::exists(dst);
+}
+
+bool modis_api::Gdal_operation::read_geo_bound_x(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx,
 	double& lry)
 {
 	if (!std::filesystem::exists(hdf_path) || !std::filesystem::is_regular_file(hdf_path))
@@ -296,6 +319,55 @@ bool modis_api::Gdal_operation::read_geo_bound(const std::string& hdf_path, cons
 	lry = stod(east_str);
 
 	GDALClose(dataset);
+
+	return true;
+}
+
+bool modis_api::Gdal_operation::read_geo_bound(const std::filesystem::path& hdf_path,
+	const std::filesystem::path& tmp_path, double& ulx, double& uly, double& lrx, double& lry)
+{
+	// get mod04 or mod05
+	const std::string type_code = boost::to_lower_copy(hdf_path.filename().string().substr(0, 5));
+	BOOST_LOG_TRIVIAL(debug) << "type_code:" << type_code;
+	// %1% hdf file path 
+	// %2% type_code, lower case 
+	// %3% Longitude or Latitude
+	boost::format fmter1("HDF4_EOS:EOS_SWATH:\"%1%\":%2%:%3%");
+	std::string const lng_ds_path = (fmter1 % hdf_path % type_code % "Longitude").str();
+	std::string const lat_ds_path = (fmter1 % hdf_path % type_code % "Latitude").str();
+
+	// %1% hdf file name without extension
+	// %2% Longitude or Latitude
+	boost::format fmter2("%1%_%2%.tif");
+	const std::string file_name_no_ex = hdf_path.filename().stem().string();
+	std::string const lng_tif_path = (fmter2%file_name_no_ex % "Longitude").str();
+	std::string const lat_tif_path = (fmter2%file_name_no_ex % "Latitude").str();
+
+	std::vector<std::string> options{ "-of","GTIFF" };
+	bool b1 = gdal_translate(lng_ds_path, lng_tif_path, options);
+	bool b2 = gdal_translate(lat_ds_path, lat_tif_path, options);
+	if (!b1)
+	{
+		BOOST_LOG_TRIVIAL(error) << hdf_path << "经度数据提取失败！";
+		exit(EXIT_FAILURE);
+	}
+
+	if (!b2)
+	{
+		BOOST_LOG_TRIVIAL(error) << hdf_path << "纬度数据提取失败！";
+		exit(EXIT_FAILURE);
+	}
+
+	boost::optional<arma::fmat> lng_mat = read_tif_to_fmat(lng_tif_path);
+	boost::optional<arma::fmat> lat_mat = read_tif_to_fmat(lat_tif_path);
+	arma::arma_assert_same_size(*lng_mat, *lat_mat, "经纬度矩阵大小不一致！");
+	const arma::uword n_rows = lng_mat->n_rows;
+	const arma::uword n_cols = lng_mat->n_cols;
+
+	ulx = (*lat_mat)(0, 0); // the largest latitude
+	uly = (*lng_mat)(n_rows - 1, 0); // the smallest longitude
+	lrx = (*lat_mat) (n_rows - 1, n_cols - 1);  // the smallest latitude
+	lry = (*lng_mat)(0, n_cols - 1); // the largest longitude
 
 	return true;
 }
