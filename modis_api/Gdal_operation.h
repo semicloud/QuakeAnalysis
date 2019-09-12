@@ -47,7 +47,7 @@ namespace modis_api
 		 * \param no_data_value NO_DATA_VALUE值
 		 * \return 成功返回true，失败返回false
 		 */
-		static bool set_no_data_value(const std::string& source_path, float no_data_value);
+		static bool set_no_data_value(const std::filesystem::path& source_path, float no_data_value);
 
 
 		/**
@@ -67,6 +67,14 @@ namespace modis_api
 		 */
 		static boost::optional<arma::fmat> read_radiance_scales_and_offsets(const std::filesystem::path& path);
 
+		/**
+		 * \brief 执行gdal_translate.exe命令
+		 * \param src 源数据集名称
+		 * \param dst 目标数据集名称
+		 * \param opts 参数集合
+		 * \return 转换成功返回true，失败返回false
+		 */
+		static bool gdal_translate(const std::string& src, const std::string& dst, const std::vector<std::string> & opts);
 
 		/**
 		 * \brief 读取HDF文件的GeoBound属性
@@ -77,18 +85,40 @@ namespace modis_api
 		 * \param lrx lower right x，输出参数
 		 * \param lry lower right y，输出参数
 		 * \return 提取成功返回ture，失败返回false
-		 * \remark 该函数通过读取子数据集的属性来获取空间范围（可能）是错误的，不应再使用
-		 * \remark 该函数，该函数只是为了记录有这种读取GeoBound的方法
+		 * \remark ！该函数通过读取子数据集的属性来获取空间范围（可能）是错误的
+		 * \remark ！不应再使用该函数，该函数只是为了记录有这种读取GeoBound的方法
 		 */
-		static bool read_geo_bound(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+		static bool read_geo_bound_x(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+
 
 		/**
 		 * \brief 读取HDF文件的GeoBound属性
+		 * \param hdf_path hdf_path hdf文件路径
+		 * \param tmp_path tmp目录文件夹
+		 * \param ulx upper left x，输出参数，最小经度
+		 * \param uly upper left y，输出参数，最大纬度
+		 * \param lrx lower right x，输出参数，最大经度
+		 * \param lry lower right y，输出参数，最小纬度
+		 * \return 提取成功返回true，失败返回false
+		 */
+		static bool read_geo_bound(const std::filesystem::path& hdf_path,
+			const std::filesystem::path& tmp_path,
+			double& ulx, double& uly, double& lrx, double& lry);
+
+		/**
+		 * \brief 读取HDF文件的GeoBound属性，通过h4转换为h5，再使用pyhdf的方法
 		 * \param hdf_path hdf文件路径
+		 * \param tmp_folder tmp文件路径
+		 * \param ulx 输出参数，最小经度
+		 * \param uly 输出参数，最大纬度
+		 * \param lrx 输出参数，最大经度
+		 * \param lry 输出参数，最小纬度
 		 * \return 提取成功返回true，失败返回false
 		 */
 		static bool read_geo_bound_py_h5(const std::string& hdf_path, const std::string& tmp_folder,
 			double& ulx, double& uly, double& lrx, double& lry);
+
+
 	};
 }
 

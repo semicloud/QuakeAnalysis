@@ -17,7 +17,7 @@ int BAND_NUMBER = 1;
 double OUTPUT_PIXEL_SIZE_X = 5000;
 double OUTPUT_PIXEL_SIZE_Y = 5000;
 int MAX_SLEEP = 5;
-float NO_DATA_VALUE = -9999;
+float NO_DATA_VALUE = -1;
 float OFFSET = 0;
 float SCALE = 0.01f;
 const std::string OBJECT_NAME = "mod05";
@@ -82,7 +82,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	{
 		const fs::path hdf_file_path(hdf_file);
 		double ulx, uly, lrx, lry;
-		if (!modis_api::Gdal_operation::read_geo_bound_py_h5(hdf_file_path.string(), temp_dir.string(), ulx, uly, lrx, lry))
+		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, temp_dir, ulx, uly, lrx, lry))
 		{
 			BOOST_LOG_TRIVIAL(error) << "提取GeoBound失败，跳过" << hdf_file_path << "文件的处理";
 			continue;
@@ -129,7 +129,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 
 		mat_optional->transform([](float dn) -> float
 		{
-			if (dn < 0) return -1;
+			if (dn < 0) return NO_DATA_VALUE;
 			//if ((dn - NO_DATA_VALUE) < 1E-5) return 0;
 			return (dn - OFFSET) * SCALE;
 		});
@@ -140,9 +140,9 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 		modis_api::Gdal_operation::write_fmat_to_tif(heg_gdal_scaled_tif_path.string(), *mat_optional);
 		BOOST_LOG_TRIVIAL(debug) << "Scale操作完成，处理结果文件为：" << heg_gdal_scaled_tif_path;
 
-		bool isOK = modis_api::Gdal_operation::set_no_data_value(heg_gdal_scaled_tif_path.string(), -1);
+		bool isOK = modis_api::Gdal_operation::set_no_data_value(heg_gdal_scaled_tif_path.string(), NO_DATA_VALUE);
 		if (isOK)
-			BOOST_LOG_TRIVIAL(debug) << "已设置" << heg_gdal_scaled_tif_path << "的NO_DATA_VALUE属性为-1";
+			BOOST_LOG_TRIVIAL(debug) << "已设置" << heg_gdal_scaled_tif_path << "的NO_DATA_VALUE属性为" << NO_DATA_VALUE;
 		else
 			BOOST_LOG_TRIVIAL(error) << "设置" << heg_gdal_scaled_tif_path << "的NO_DATA_VALUE属性失败";
 
@@ -157,7 +157,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	std::vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
 		[](const fs::path& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p.string());  });
-	std::optional<arma::fmat> mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, -1);
+	std::optional<arma::fmat> mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, NO_DATA_VALUE);
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";
@@ -183,12 +183,9 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	modis_api::Gdal_operation::write_fmat_to_tif(output_image_file.string(), *mean_mat_optional);
 	BOOST_LOG_TRIVIAL(debug) << "成功向最终结果文件" << output_image_file << "写入DN值";
 
-	const std::string gdal_edit_command = str(boost::format("gdal_edit.py -a_nodata -1 %1%") % output_image_file);
-	const int ans = system(gdal_edit_command.c_str());
-	BOOST_LOG_TRIVIAL(debug) << "设置NODATAVALUE，命令：" << gdal_edit_command;
-	BOOST_LOG_TRIVIAL(debug) << "返回：" << ans;
-	if (ans < 0)
-		BOOST_LOG_TRIVIAL(error) << "调用gdal_edit.py出现异常，可能未正确设置NODATAVALUE";
+	// %1% NO Data Value
+	// %2% output tif path
+	modis_api::Gdal_operation::set_no_data_value(output_image_file, NO_DATA_VALUE);
 
 	BOOST_LOG_TRIVIAL(info) << "预处理完成，最终结果文件为：" << output_image_file;
 	BOOST_LOG_TRIVIAL(info) << "";

@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "../modis_api/File_operation.h"
 #include "../modis_api/Heg_utils.h"
+#include "../modis_api/Gdal_operation.h"
 #include "../modis_api/Logger_setting.h"
 #include "Preprocess_aerosol.h"
 #include <boost/program_options.hpp>
@@ -28,6 +29,21 @@ int main(int argc, char** argv)
 	namespace po = boost::program_options;
 	// MXD 03 04的数据文件可能不匹配
 	init_logger_setting();
+
+	// 测试代码，以后可用于测试，模块稳定后删除
+	//std::string path = "D:\\modis_workspace\\MOD04_3K\\2018\\001\\MOD04_3K.A2018001.0315.061.2018003202246.hdf";
+	//double a = 0, b = 0, c = 0, d = 0;
+	//modis_api::Gdal_operation::read_geo_bound(path, std::filesystem::path(path).parent_path(), a, b, c, d);
+	//std::cout << a << std::endl;
+	//std::cout << b << std::endl;
+	//std::cout << c << std::endl;
+	//std::cout << d << std::endl;
+	//std::cout << "----------------" << std::endl;
+	//modis_api::Gdal_operation::read_geo_bound_py_h5(path, std::filesystem::path(path).parent_path().string(), a, b, c, d);
+	//std::cout << a << std::endl;
+	//std::cout << b << std::endl;
+	//std::cout << c << std::endl;
+	//std::cout << d << std::endl;
 
 	std::string yml_path;
 	YAML::Node node;
