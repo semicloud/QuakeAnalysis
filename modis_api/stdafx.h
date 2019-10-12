@@ -14,7 +14,6 @@
 #define BOOST_ALL_DYN_LINK				// 指定BOOST库全部以动态链接形式装载
 #endif
 
-
 // Windows 头文件
 #define NOMINMAX
 #include <windows.h>

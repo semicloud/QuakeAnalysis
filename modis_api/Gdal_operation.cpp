@@ -265,6 +265,8 @@ bool modis_api::Gdal_operation::gdal_translate(
 {
 	GDALAllRegister();
 
+
+
 	char** params = nullptr;
 	for (const std::string& option : opts)
 		params = CSLAddString(params, option.c_str());
@@ -327,7 +329,11 @@ bool modis_api::Gdal_operation::read_geo_bound(const std::filesystem::path& hdf_
 	const std::filesystem::path& tmp_path, double& ulx, double& uly, double& lrx, double& lry)
 {
 	// get mod04 or mod05
-	const std::string type_code = boost::to_lower_copy(hdf_path.filename().string().substr(0, 5));
+	const std::string type_num_str = boost::to_lower_copy(hdf_path.filename().string().substr(3, 2));
+	assert(type_num_str == "04" || type_num_str == "05");
+	// mod and myd -> mod
+	const std::string type_code = (boost::format("mod%1%") % type_num_str).str();
+
 	BOOST_LOG_TRIVIAL(debug) << "type_code:" << type_code;
 	// %1% hdf file path 
 	// %2% type_code, lower case 

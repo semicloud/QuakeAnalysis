@@ -12,4 +12,11 @@
 // TODO: 添加要在此处预编译的标头
 #define BOOST_ALL_DYN_LINK
 
+#include <string>
+#include <vector>
+#include <map>
+#include <yaml-cpp/yaml.h>
+#include <boost/foreach.hpp>
+#include <boost/algorithm/string.hpp>
+
 #endif //PCH_H

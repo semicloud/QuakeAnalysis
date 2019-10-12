@@ -1,0 +1,19 @@
+HDFListFile: E:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples\proc_MxD04_3k_hdf_list_myd.txt
+# 最小经度
+MinLon: 115
+# 最大经度
+MaxLon: 120
+# 最小纬度
+MinLat: 40
+# 最大纬度
+MaxLat: 45
+# Resampling Type
+ResamplingType: NN
+# Output Projection Type
+OutputProjectionType: CEA
+# Output Projection Parameters
+OutputProjectionParameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+# Output Image File
+OutputImageFile: D:\123.tif
+# TempDir，中间操作目录
+TmpPath: D:\ddd111\
