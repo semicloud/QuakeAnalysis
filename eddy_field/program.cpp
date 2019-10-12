@@ -1,4 +1,3 @@
-#include <boost/log/support/date_time.hpp>
 #include <boost/program_options.hpp>
 #include <filesystem>
 #include <iostream>

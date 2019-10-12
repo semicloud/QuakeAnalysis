@@ -15,8 +15,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
+#include <filesystem>
 #include <yaml-cpp/yaml.h>
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 
 #endif //PCH_H
