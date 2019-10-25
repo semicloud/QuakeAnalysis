@@ -82,7 +82,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	{
 		const fs::path hdf_file_path(hdf_file);
 		double ulx, uly, lrx, lry;
-		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, temp_dir, ulx, uly, lrx, lry))
+		if (!modis_api::Gdal_operation::read_geo_bound(hdf_file_path, ulx, uly, lrx, lry))
 		{
 			BOOST_LOG_TRIVIAL(error) << "提取GeoBound失败，跳过" << hdf_file_path << "文件的处理";
 			continue;

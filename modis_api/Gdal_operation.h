@@ -77,47 +77,19 @@ namespace modis_api
 		static bool gdal_translate(const std::string& src, const std::string& dst, const std::vector<std::string> & opts);
 
 		/**
-		 * \brief 读取HDF文件的GeoBound属性
-		 * \param hdf_path hdf文件路径
-		 * \param sds 子数据集名称
-		 * \param ulx upper left x，输出参数
-		 * \param uly upper left y，输出参数
-		 * \param lrx lower right x，输出参数
-		 * \param lry lower right y，输出参数
-		 * \return 提取成功返回ture，失败返回false
-		 * \remark ！该函数通过读取子数据集的属性来获取空间范围（可能）是错误的
-		 * \remark ！不应再使用该函数，该函数只是为了记录有这种读取GeoBound的方法
+		 * \brief 读取0或05数据集的geo_bound
+		 * \param hdfPath 04或05的hdf文件路径
+		 * \param ulx 
+		 * \param uly 
+		 * \param lrx 
+		 * \param lry 
+		 * \return 读取成功返回true，失败返回false
 		 */
-		static bool read_geo_bound_x(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx, double &lry);
+		static bool read_geo_bound(std::filesystem::path const& hdfPath, double& ulx, double& uly,
+			double& lrx, double& lry);
 
-
-		/**
-		 * \brief 读取HDF文件的GeoBound属性
-		 * \param hdf_path hdf_path hdf文件路径
-		 * \param tmp_path tmp目录文件夹
-		 * \param ulx upper left x，输出参数，最小经度
-		 * \param uly upper left y，输出参数，最大纬度
-		 * \param lrx lower right x，输出参数，最大经度
-		 * \param lry lower right y，输出参数，最小纬度
-		 * \return 提取成功返回true，失败返回false
-		 */
-		static bool read_geo_bound(const std::filesystem::path& hdf_path,
-			const std::filesystem::path& tmp_path,
-			double& ulx, double& uly, double& lrx, double& lry);
-
-		/**
-		 * \brief 读取HDF文件的GeoBound属性，通过h4转换为h5，再使用pyhdf的方法
-		 * \param hdf_path hdf文件路径
-		 * \param tmp_folder tmp文件路径
-		 * \param ulx 输出参数，最小经度
-		 * \param uly 输出参数，最大纬度
-		 * \param lrx 输出参数，最大经度
-		 * \param lry 输出参数，最小纬度
-		 * \return 提取成功返回true，失败返回false
-		 */
-		static bool read_geo_bound_py_h5(const std::string& hdf_path, const std::string& tmp_folder,
-			double& ulx, double& uly, double& lrx, double& lry);
-
+	private:
+		static bool read_min_max_loc(std::string const&, double&, double&);
 
 	};
 }

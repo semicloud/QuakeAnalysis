@@ -281,151 +281,51 @@ bool modis_api::Gdal_operation::gdal_translate(
 	return std::filesystem::exists(dst);
 }
 
-bool modis_api::Gdal_operation::read_geo_bound_x(const std::string& hdf_path, const std::string& sds, double& ulx, double& uly, double& lrx,
-	double& lry)
-{
-	if (!std::filesystem::exists(hdf_path) || !std::filesystem::is_regular_file(hdf_path))
-	{
-		BOOST_LOG_TRIVIAL(error) << "HDF文件" << hdf_path << "不存在或不是规范文件，无法读取相关字段值";
-		return false;
-	}
-
-	GDALAllRegister();
-
-	std::string sds_path = "HDF4_EOS:EOS_SWATH:\"" + hdf_path + sds;
-
-	BOOST_LOG_TRIVIAL(debug) << "sds_path: " << sds_path;
-
-	GDALDataset* dataset = static_cast<GDALDataset*>(GDALOpen(sds_path.data(), GA_ReadOnly));
-	if (!dataset)
-	{
-		BOOST_LOG_TRIVIAL(error) << "使用GDAL打开数据集" << sds_path << "失败，无法读取相关字段值";
-		return false;
-	}
-
-	std::string west_str = dataset->GetMetadataItem("WESTBOUNDINGCOORDINATE");
-	std::string east_str = dataset->GetMetadataItem("EASTBOUNDINGCOORDINATE");
-	std::string south_str = dataset->GetMetadataItem("SOUTHBOUNDINGCOORDINATE");
-	std::string north_str = dataset->GetMetadataItem("NORTHBOUNDINGCOORDINATE");
-	BOOST_LOG_TRIVIAL(debug) << "从" << hdf_path << "读取数据集四至：";
-	BOOST_LOG_TRIVIAL(debug) << "West: " << west_str;
-	BOOST_LOG_TRIVIAL(debug) << "East: " << east_str;
-	BOOST_LOG_TRIVIAL(debug) << "South:" << south_str;
-	BOOST_LOG_TRIVIAL(debug) << "North:" << north_str;
-
-	ulx = stod(north_str);
-	uly = stod(west_str);
-	lrx = stod(south_str);
-	lry = stod(east_str);
-
-	GDALClose(dataset);
-
-	return true;
-}
-
-bool modis_api::Gdal_operation::read_geo_bound(const std::filesystem::path& hdf_path,
-	const std::filesystem::path& tmp_path, double& ulx, double& uly, double& lrx, double& lry)
+bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdfPath,
+	double& ulx, double& uly, double& lrx, double& lry)
 {
 	// get mod04 or mod05
-	const std::string type_num_str = boost::to_lower_copy(hdf_path.filename().string().substr(3, 2));
+	const std::string type_num_str = boost::to_lower_copy(hdfPath.filename().string().substr(3, 2));
 	assert(type_num_str == "04" || type_num_str == "05");
 	// mod and myd -> mod
 	const std::string type_code = (boost::format("mod%1%") % type_num_str).str();
-
-	BOOST_LOG_TRIVIAL(debug) << "type_code:" << type_code;
-	// %1% hdf file path 
-	// %2% type_code, lower case 
-	// %3% Longitude or Latitude
-	boost::format fmter1("HDF4_EOS:EOS_SWATH:\"%1%\":%2%:%3%");
-	std::string const lng_ds_path = (fmter1 % hdf_path % type_code % "Longitude").str();
-	std::string const lat_ds_path = (fmter1 % hdf_path % type_code % "Latitude").str();
-
-	// %1% hdf file name without extension
-	// %2% Longitude or Latitude
-	boost::format fmter2("%1%_%2%.tif");
-	const std::string file_name_no_ex = hdf_path.filename().stem().string();
-	std::string const lng_tif_path = (fmter2%file_name_no_ex % "Longitude").str();
-	std::string const lat_tif_path = (fmter2%file_name_no_ex % "Latitude").str();
-
-	std::vector<std::string> options{ "-of","GTIFF" };
-	bool b1 = gdal_translate(lng_ds_path, lng_tif_path, options);
-	bool b2 = gdal_translate(lat_ds_path, lat_tif_path, options);
-	if (!b1)
+	const std::string lng_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Longitude") % hdfPath % type_num_str).str();
+	const std::string lat_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Latitude") % hdfPath % type_num_str).str();
+	BOOST_LOG_TRIVIAL(debug) << "lng_ds:" << lng_ds_path;
+	BOOST_LOG_TRIVIAL(debug) << "lat_ds:" << lat_ds_path;
+	double min_lng = 0, max_lng = 0, min_lat = 0, max_lat = 0;
+	const bool readLng = read_min_max_loc(lng_ds_path, min_lng, max_lng);
+	const bool readLat = read_min_max_loc(lat_ds_path, min_lat, max_lat);
+	bool ans = readLng && readLat;
+	if (ans)
 	{
-		BOOST_LOG_TRIVIAL(error) << hdf_path << "经度数据提取失败！";
-		exit(EXIT_FAILURE);
-	}
-
-	if (!b2)
-	{
-		BOOST_LOG_TRIVIAL(error) << hdf_path << "纬度数据提取失败！";
-		exit(EXIT_FAILURE);
-	}
-
-	boost::optional<arma::fmat> lng_mat = read_tif_to_fmat(lng_tif_path);
-	boost::optional<arma::fmat> lat_mat = read_tif_to_fmat(lat_tif_path);
-	arma::arma_assert_same_size(*lng_mat, *lat_mat, "经纬度矩阵大小不一致！");
-	const arma::uword n_rows = lng_mat->n_rows;
-	const arma::uword n_cols = lng_mat->n_cols;
-
-	//ulx = (*lat_mat)(0, 0); // the largest latitude
-	//uly = (*lng_mat)(n_rows - 1, 0); // the smallest longitude
-	//lrx = (*lat_mat) (n_rows - 1, n_cols - 1);  // the smallest latitude
-	//lry = (*lng_mat)(0, n_cols - 1); // the largest longitude
-
-	ulx = lat_mat->max();
-	uly = lng_mat->min();
-	lrx = lat_mat->min();
-	lry = lng_mat->max();
-
-	return true;
-}
-
-bool modis_api::Gdal_operation::read_geo_bound_py_h5(const std::string& hdf_path,
-	const std::string& tmp_folder,
-	double& ulx, double& uly, double& lrx, double& lry)
-{
-	using namespace boost;
-	using namespace std;
-	using namespace std::filesystem;
-	bool ans = false;
-	const path hdf_path_obj(hdf_path);
-	const path tmp_folder_obj(tmp_folder);
-
-	const string hdf_file_name = hdf_path_obj.filename().stem().string();
-	BOOST_LOG_TRIVIAL(debug) << "hdf file name: " << hdf_file_name;
-
-	const path h5_path_obj = tmp_folder_obj / str(format("%1%.%2%") % hdf_file_name % "h5");
-	BOOST_LOG_TRIVIAL(debug) << "h5 file path:" << h5_path_obj;
-
-	const string h4h5convert = str(format("h4toh5convert.exe %1% %2%")
-		% hdf_path % h5_path_obj.string());
-	BOOST_LOG_TRIVIAL(debug) << h4h5convert;
-	std::system(h4h5convert.c_str());
-	if (exists(h5_path_obj))
-	{
-		const std::string py_command = str(format("read_geo_bound.py %1% %2%") %
-			h5_path_obj.string() % to_lower_copy(hdf_file_name.substr(0, 5)));
-		BOOST_LOG_TRIVIAL(debug) << py_command;
-		std::system(py_command.c_str());
-		const path geo_txt_path_obj = tmp_folder_obj / str(format("%1%_geo.%2%") % hdf_file_name % "txt");
-		BOOST_LOG_TRIVIAL(debug) << "geo txt path:" << geo_txt_path_obj.string();
-		if (exists(geo_txt_path_obj))
-		{
-			std::string str;
-			getline(ifstream(geo_txt_path_obj.string()), str);
-			BOOST_LOG_TRIVIAL(debug) << "Geo bounds:" << str;
-			vector<string> geo_bounds;
-			split(geo_bounds, str, is_any_of(" "));
-			BOOST_LOG_TRIVIAL(debug) << "Load geo bounds: " << join(geo_bounds, ", ");
-			if (geo_bounds.size() != 4)
-				return false;
-			ulx = stod(geo_bounds[3]);
-			uly = stod(geo_bounds[0]);
-			lrx = stod(geo_bounds[2]);
-			lry = stod(geo_bounds[1]);
-			ans = true;
-		}
+		ulx = max_lat;
+		uly = min_lng;
+		lrx = min_lat;
+		lry = max_lng;
 	}
 	return ans;
+}
+
+bool modis_api::Gdal_operation::read_min_max_loc(std::string const& ds, double& min, double& max)
+{
+	GDALAllRegister();
+
+	GDALDataset* pDataset = static_cast<GDALDataset*>(GDALOpen(ds.c_str(), GA_ReadOnly));
+	if (!pDataset)
+	{
+		GDALClose(pDataset);
+		return false;
+	}
+	GDALRasterBand* pBand(pDataset->GetRasterBand(1));
+	if (!pBand) return false;
+	const int x_size = pBand->GetXSize();
+	const int y_size = pBand->GetYSize();
+	float* pData = static_cast<float*>(CPLMalloc(sizeof(float)* x_size * y_size));
+	pBand->RasterIO(GF_Read, 0, 0, x_size, y_size, pData, x_size, y_size, GDT_Float32, 0, 0);
+	min = *std::min_element(pData, pData + x_size * y_size);
+	max = *std::max_element(pData, pData + x_size * y_size);
+	CPLFree(pData);
+	GDALClose(pDataset);
+	return true;
 }

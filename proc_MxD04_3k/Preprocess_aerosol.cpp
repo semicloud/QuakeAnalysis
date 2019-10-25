@@ -111,7 +111,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& yml_path, 
 	for (const string& hdf_file_path : hdf_files)
 	{
 		double ulx, uly, lrx, lry;
-		if (!modis_api::Gdal_operation::read_geo_bound(fs::path(hdf_file_path), temp_dir, ulx, uly, lrx, lry))
+		if (!modis_api::Gdal_operation::read_geo_bound(fs::path(hdf_file_path), ulx, uly, lrx, lry))
 		{
 			BOOST_LOG_TRIVIAL(error) << "提取GeoBound失败，跳过" << hdf_file_path << "文件的处理";
 			continue;

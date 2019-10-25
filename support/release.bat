@@ -1,17 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <IncludePath>C:\SDK\armadillo-9.800.1\include;C:\SDK\boost_1_69_0;C:\SDK\gdal\include;C:\SDK\yaml-cpp-master\include;C:\SDK\gsl_x64-windows\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\gdal\lib;C:\SDK\OpenBLAS-0.3.6-x64\lib;C:\SDK\lapack-3.7.0-x64\lib;C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\yaml-cpp-master\build\Debug;C:\SDK\gsl_x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>yaml-cpp.lib;gdal_i.lib;liblapack.lib;libopenblas.lib;gslcblasd.lib;gsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <PostBuildEvent>
-      <Command>echo "..copy openblas libraries.."
+echo "..copy openblas libraries.."
 if not exist $(TargetDir)libgcc_s_seh-1.dll copy C:\SDK\OpenBLAS-0.3.6-x64\bin\libgcc_s_seh-1.dll $(TargetDir)libgcc_s_seh-1.dll
 if not exist $(TargetDir)libgfortran-3.dll copy C:\SDK\OpenBLAS-0.3.6-x64\bin\libgfortran-3.dll $(TargetDir)libgfortran-3.dll
 if not exist $(TargetDir)libopenblas.dll copy C:\SDK\OpenBLAS-0.3.6-x64\bin\libopenblas.dll $(TargetDir)libopenblas.dll
@@ -21,15 +8,15 @@ echo "..copy lapack libraries.."
 if not exist $(TargetDir)liblapack.dll copy C:\SDK\lapack-3.7.0-x64\lib\liblapack.dll $(TargetDir)liblapack.dll
 
 echo "..copy gsl libraries.."
-if not exist $(TargetDir)gslcblasd.dll copy C:\SDK\gsl_x64-windows\debug\bin\gslcblasd.dll $(TargetDir)gslcblasd.dll
-if not exist $(TargetDir)gsld.dll copy C:\SDK\gsl_x64-windows\debug\bin\gsld.dll $(TargetDir)gsld.dll
+if not exist $(TargetDir)gslcblas.dll copy C:\SDK\gsl_x64-windows\bin\gslcblas.dll $(TargetDir)gslcblas.dll
+if not exist $(TargetDir)gsl.dll copy C:\SDK\gsl_x64-windows\bin\gslcblas.dll $(TargetDir)gsl.dll
 
 echo "..copy boost libraries.."
-if not exist $(TargetDir)boost_program_options-vc141-mt-gd-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-gd-x64-1_69.dll
-if not exist $(TargetDir)boost_filesystem-vc141-mt-gd-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-gd-x64-1_69.dll
-if not exist $(TargetDir)boost_log-vc141-mt-gd-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-gd-x64-1_69.dll $(TargetDir)\boost_log-vc141-mt-gd-x64-1_69.dll
-if not exist $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll
-if not exist $(TargetDir)boost_date_time-vc141-mt-gd-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-gd-x64-1_69.dll
+if not exist $(TargetDir)boost_program_options-vc141-mt-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-x64-1_69.dll
+if not exist $(TargetDir)boost_filesystem-vc141-mt-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-x64-1_69.dll
+if not exist $(TargetDir)boost_log-vc141-mt-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-x64-1_69.dll $(TargetDir)\boost_log-vc141-mt-x64-1_69.dll
+if not exist $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll
+if not exist $(TargetDir)boost_date_time-vc141-mt-x64-1_69.dll copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-x64-1_69.dll
 
 echo "..copy MRTSwath files.."
 if not exist $(TargetDir)MRTSWath\bin xcopy C:\DevLib\MRTSwath\bin\* $(TargetDir)MRTSWath\bin /y /e /i
@@ -62,11 +49,4 @@ if not exist $(TargetDir)ymlsamples xcopy $(SolutionDir)ymlsamples\* $(TargetDir
 if not exist $(TargetDir)templates xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
 
 echo "..copy external executables.."
-if not exist $(TargetDir)dos2unix.exe copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe</Command>
-    </PostBuildEvent>
-    <ClCompile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemGroup />
-</Project>
+if not exist $(TargetDir)dos2unix.exe copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
