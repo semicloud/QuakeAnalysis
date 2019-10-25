@@ -65,15 +65,17 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="modis_debug_x64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="modis_release_x64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDK\gdal\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -83,8 +85,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\SDK\gdal\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDK\gdal\include;C:\SDK\armadillo-9.800.1\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDK\gdal\lib;C:\SDK\lapack-3.7.0-x64\lib;C:\SDK\OpenBLAS-0.3.6-x64\lib;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -101,38 +103,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libopenblas.lib;liblapack.lib;gdal_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
-copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
-
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-gd-x64-1_69.dll $(TargetDir)\boost_log-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-gd-x64-1_69.dll
-
-xcopy C:\DevLib\MRTSwath\bin\* $(TargetDir)MRTSWath\bin /y /e /i
-xcopy C:\DevLib\MRTSwath\data\* $(TargetDir)MRTSWath\data /y /e /i
-xcopy C:\SDK\gdal\modis_library\* $(TargetDir) /y /e /i
-xcopy C:\SDK\HEG_Win\bin\* $(TargetDir)HEG_Win\bin /y /e /i
-xcopy C:\SDK\HEG_Win\data\* $(TargetDir)HEG_Win\data /y /e /i
-
-REM 拷贝MRT所需的文件
-xcopy C:\SDK\MRT_Win\bin\* $(TargetDir)MRT\bin /y /e /i
-xcopy C:\SDK\MRT_Win\data\* $(TargetDir)MRT\data /y /e /i
-
-xcopy $(SolutionDir)ymlsamples\* $(TargetDir)ymlsamples /y /e /i
-xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
-
-copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
-copy $(SolutionDir)python\read_geo_bound.py $(TargetDir)read_geo_bound.py
-
-
-
-</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -184,38 +157,9 @@ copy $(SolutionDir)python\read_geo_bound.py $(TargetDir)read_geo_bound.py
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>liblapack.lib;libopenblas.lib;gdal_i.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
-copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
-
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-x64-1_69.dll $(TargetDir)\boost_log-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-x64-1_69.dll
-
-xcopy C:\DevLib\MRTSwath\bin\* $(TargetDir)MRTSWath\bin /y /e /i
-xcopy C:\DevLib\MRTSwath\data\* $(TargetDir)MRTSWath\data /y /e /i
-xcopy C:\SDK\HEG_Win\bin\* $(TargetDir)HEG_Win\bin /y /e /i
-xcopy C:\SDK\HEG_Win\data\* $(TargetDir)HEG_Win\data /y /e /i
-xcopy C:\SDK\gdal\modis_library\* $(TargetDir) /y /e /i
-
-REM 拷贝MRT所需的文件
-xcopy C:\SDK\MRT_Win\bin\* $(TargetDir)MRT\bin /y /e /i
-xcopy C:\SDK\MRT_Win\data\* $(TargetDir)MRT\data /y /e /i
-
-xcopy $(SolutionDir)ymlsamples\* $(TargetDir)ymlsamples /y /e /i
-xcopy $(SolutionDir)templates\* $(TargetDir)templates /y /e /i
-
-copy $(SolutionDir)support\dos2unix.exe $(TargetDir)dos2unix.exe
-copy $(SolutionDir)support\clear_temp_file.bat $(TargetDir)clear_temp_file.bat
-copy $(SolutionDir)\README.md $(TargetDir)README.md
-
-copy $(SolutionDir)python\read_geo_bound.py $(TargetDir)read_geo_bound.py
-</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Date_utils.h" />

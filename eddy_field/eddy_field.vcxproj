@@ -65,19 +65,21 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_debug_x64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_release_x64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDK\armadillo-9.200.7\include;C:\SDK\yaml-cpp-master\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\yaml-cpp-master\build\Debug;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <TargetName>eddy_field_ano</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\SDK\armadillo-9.200.7\include;C:\SDK\yaml-cpp-master\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\yaml-cpp-master\build\Release;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <TargetName>eddy_field_ano</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -93,15 +95,11 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\yaml-cpp-master\build\Debug\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
-
-
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -144,15 +142,11 @@ copy C:\SDK\yaml-cpp-master\build\Debug\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy C:\SDK\yaml-cpp-master\build\Release\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_program_options-vc141-mt-x64-1_69.dll $(TargetDir)boost_program_options-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_filesystem-vc141-mt-x64-1_69.dll $(TargetDir)boost_filesystem-vc141-mt-x64-1_69.dll
-
-
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

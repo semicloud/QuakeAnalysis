@@ -65,15 +65,17 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_debug_x64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_release_x64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\SDK\boost_1_69_0;C:\SDK\armadillo-9.200.7\include;C:\SDK\gsl_x64-windows\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\gsl_x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SDK\gsl_x64-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SDK\boost_1_69_0\bin\vc14.1\lib;C:\SDK\lapack-3.7.0-x64;C:\SDK\OpenBLAS-0.3.6-x64\lib;C:\SDK\gsl_x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -101,13 +103,17 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>gsld.lib;gslcblasd.lib;blas_win64_MT.lib;lapack_win64_MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gsld.lib;gslcblasd.lib;libopenblas.lib;liblapack.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>copy C:\SDK\gsl_x64-windows\debug\bin\gsld.dll $(TargetDir)gsld.dll
 copy C:\SDK\gsl_x64-windows\debug\bin\gslcblasd.dll $(TargetDir)gslcblasd.dll</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,6 +168,9 @@ copy C:\SDK\gsl_x64-windows\debug\bin\gslcblasd.dll $(TargetDir)gslcblasd.dll</C
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>gsl.lib;gslcblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

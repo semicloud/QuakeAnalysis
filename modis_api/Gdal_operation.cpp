@@ -265,8 +265,6 @@ bool modis_api::Gdal_operation::gdal_translate(
 {
 	GDALAllRegister();
 
-
-
 	char** params = nullptr;
 	for (const std::string& option : opts)
 		params = CSLAddString(params, option.c_str());
@@ -370,10 +368,15 @@ bool modis_api::Gdal_operation::read_geo_bound(const std::filesystem::path& hdf_
 	const arma::uword n_rows = lng_mat->n_rows;
 	const arma::uword n_cols = lng_mat->n_cols;
 
-	ulx = (*lat_mat)(0, 0); // the largest latitude
-	uly = (*lng_mat)(n_rows - 1, 0); // the smallest longitude
-	lrx = (*lat_mat) (n_rows - 1, n_cols - 1);  // the smallest latitude
-	lry = (*lng_mat)(0, n_cols - 1); // the largest longitude
+	//ulx = (*lat_mat)(0, 0); // the largest latitude
+	//uly = (*lng_mat)(n_rows - 1, 0); // the smallest longitude
+	//lrx = (*lat_mat) (n_rows - 1, n_cols - 1);  // the smallest latitude
+	//lry = (*lng_mat)(0, n_cols - 1); // the largest longitude
+
+	ulx = lat_mat->max();
+	uly = lng_mat->min();
+	lrx = lat_mat->min();
+	lry = lng_mat->max();
 
 	return true;
 }

@@ -64,18 +64,20 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_debug_x64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\modis_api\modis_release_x64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\gdal\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\yaml-cpp-master\build\Debug;C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\SDK\yaml-cpp-master\include;C:\SDK\armadillo-9.200.7\include;C:\SDK\gdal\include;C:\SDK\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SDK\yaml-cpp-master\build\Release;C:\SDK\gdal\lib;C:\SDK\armadillo-9.200.7\examples\lib_win64;C:\SDK\boost_1_69_0\bin\vc14.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -88,20 +90,14 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
-copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
+      <Command>echo "..copy yaml-cpp library.."
 copy C:\SDK\yaml-cpp-master\build\Debug\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
 
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log_setup-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_log_setup-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_log-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-gd-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-gd-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-gd-x64-1_69.dll
-
+echo "..copy LUT tables.."
 mkdir $(TargetDir)data
 copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)data\Terra_MODIS_rad2BT_LUT.txt
 copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS_rad2BT_LUT.txt
@@ -146,20 +142,14 @@ copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>blas_win64_MT.lib;lapack_win64_MT.lib;gdal_i.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy C:\SDK\armadillo-9.200.7\examples\lib_win64\blas_win64_MT.dll $(TargetDir)blas_win64_MT.dll
-copy C:\SDK\armadillo-9.200.7\examples\lib_win64\lapack_win64_MT.dll $(TargetDir)lapack_win64_MT.dll
+      <Command>echo "..copy yaml-cpp libraries.." 
 copy C:\SDK\yaml-cpp-master\build\Release\yaml-cpp.dll $(TargetDir)yaml-cpp.dll
 
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_date_time-vc141-mt-x64-1_69.dll $(TargetDir)boost_date_time-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log_setup-vc141-mt-x64-1_69.dll $(TargetDir)boost_log_setup-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_log-vc141-mt-x64-1_69.dll $(TargetDir)boost_log-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_thread-vc141-mt-x64-1_69.dll $(TargetDir)boost_thread-vc141-mt-x64-1_69.dll
-copy C:\SDK\boost_1_69_0\bin\vc14.1\lib\boost_regex-vc141-mt-x64-1_69.dll $(TargetDir)boost_regex-vc141-mt-x64-1_69.dll
-
+echo "..copy LUT tables.."
 mkdir $(TargetDir)data
 copy $(SolutionDir)support\Terra_MODIS_rad2BT_LUT.txt $(TargetDir)data\Terra_MODIS_rad2BT_LUT.txt
 copy $(SolutionDir)support\Aqua_MODIS_rad2BT_LUT.txt $(TargetDir)data\Aqua_MODIS_rad2BT_LUT.txt</Command>

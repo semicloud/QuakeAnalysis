@@ -19,6 +19,9 @@ int main()
 	arma::mat mat3(3, 4, arma::fill::randn);
 	mat3.print(std::cout, "mat3");
 
+	arma::mat mat4 = mat1 * mat2.t();
+	mat4.print("mat4");
+
 	arma::cube cube(3, 4, 3, arma::fill::zeros);
 	cube.slice(0) = mat1;
 	cube.slice(1) = mat2;
