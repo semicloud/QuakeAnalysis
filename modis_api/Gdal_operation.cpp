@@ -188,7 +188,15 @@ bool modis_api::Gdal_operation::translate_copy(const std::filesystem::path& sour
 	const std::string cmd = std::filesystem::current_path().string()
 		+ str(boost::format("\\gdal_translate.exe %1% %2% %3%") % param % source_path.string() % dest_path.string());
 	BOOST_LOG_TRIVIAL(debug) << "GDAL cmd: " << cmd;
-	return system(cmd.c_str()) == 0;
+	int ans = system(cmd.c_str());
+	if (!std::filesystem::exists(dest_path))
+	{
+		BOOST_LOG_TRIVIAL(error) << "调用gdal_translate.exe处理" << source_path << "文件失败";
+		BOOST_LOG_TRIVIAL(error) << "gdal arg: " << param;
+		BOOST_LOG_TRIVIAL(error) << "程序退出";
+		exit(EXIT_FAILURE);
+	}
+	return ans == 0;
 }
 
 bool modis_api::Gdal_operation::set_no_data_value(const std::filesystem::path& source_path, float no_data_value)
@@ -281,16 +289,16 @@ bool modis_api::Gdal_operation::gdal_translate(
 	return std::filesystem::exists(dst);
 }
 
-bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdfPath,
+bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdf_path,
 	double& ulx, double& uly, double& lrx, double& lry)
 {
 	// get mod04 or mod05
-	const std::string type_num_str = boost::to_lower_copy(hdfPath.filename().string().substr(3, 2));
+	const std::string type_num_str = boost::to_lower_copy(hdf_path.filename().string().substr(3, 2));
 	assert(type_num_str == "04" || type_num_str == "05");
 	// mod and myd -> mod
 	const std::string type_code = (boost::format("mod%1%") % type_num_str).str();
-	const std::string lng_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Longitude") % hdfPath % type_num_str).str();
-	const std::string lat_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Latitude") % hdfPath % type_num_str).str();
+	const std::string lng_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Longitude") % hdf_path % type_num_str).str();
+	const std::string lat_ds_path = (boost::format("HDF4_EOS:EOS_SWATH_GEOL:%1%:mod%2%:Latitude") % hdf_path % type_num_str).str();
 	BOOST_LOG_TRIVIAL(debug) << "lng_ds:" << lng_ds_path;
 	BOOST_LOG_TRIVIAL(debug) << "lat_ds:" << lat_ds_path;
 	double min_lng = 0, max_lng = 0, min_lat = 0, max_lat = 0;
@@ -307,6 +315,13 @@ bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdfP
 	return ans;
 }
 
+/**
+ * \brief 读取hdf4子数据集中的最大最小位置
+ * \param ds hdf子数据集路径
+ * \param min 输出参数，最小值
+ * \param max 输出参数，最大值
+ * \return 读取成功返回true，失败返回false
+ */
 bool modis_api::Gdal_operation::read_min_max_loc(std::string const& ds, double& min, double& max)
 {
 	GDALAllRegister();

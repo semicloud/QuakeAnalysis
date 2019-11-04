@@ -21,6 +21,9 @@
     <ClInclude Include="Preprocess_aerosol.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Aerosol_param.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -30,6 +33,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Preprocess_aerosol.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Aerosol_param.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

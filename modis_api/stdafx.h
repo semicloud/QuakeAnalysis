@@ -19,20 +19,20 @@
 #include <windows.h>
 
 // 在此处引用程序需要的其他标头
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
-#include <map>
-#include <memory>
-#include <vector>
-#include <climits>
-#include <filesystem>
-
-#include <gdal.h>
 #include <armadillo>
-#include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/minmax_element.hpp>
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
+#include <boost/program_options.hpp>
+#include <climits>
+#include <filesystem>
+#include <fstream>
+#include <gdal.h>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>

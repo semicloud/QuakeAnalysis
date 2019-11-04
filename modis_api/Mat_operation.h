@@ -49,6 +49,8 @@ namespace modis_api
 		 */
 		static std::optional<arma::fmat> mean_mat_by_each_pixel(std::vector<arma::fmat>& mat_list, int default_value);
 
+		static std::optional <arma::fmat> mean_mat(std::vector<arma::fmat>& mat_list, float default_value);
+
 		/**
 		 * \brief ¾ØÕóÃèÊö
 		 * \param mat

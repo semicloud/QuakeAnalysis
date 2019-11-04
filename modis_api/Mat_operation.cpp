@@ -103,6 +103,41 @@ std::optional<arma::fmat> modis_api::Mat_operation::mean_mat_by_each_pixel(
 	return std::optional<arma::fmat>(ans);
 }
 
+std::optional <arma::fmat> modis_api::Mat_operation::mean_mat(std::vector<arma::fmat>& mat_list, float default_value)
+{
+	if (!same_size(mat_list))
+	{
+		BOOST_LOG_TRIVIAL(error) << "矩阵大小不等，无法进行平均值计算！";
+		return std::optional<arma::fmat>();
+	}
+	const arma::uword n_rows = mat_list.front().n_rows;
+	const arma::uword n_cols = mat_list.front().n_cols;
+
+	//计算矩阵的平均值，主要逐个像元计算，并且忽略值为零的像元
+	auto ans = arma::fmat(n_rows, n_cols, arma::fill::zeros);
+	for (arma::uword i = 0; i < n_rows; ++i)
+	{
+		for (arma::uword j = 0; j < n_cols; ++j)
+		{
+			float sum = 0;
+			float no_zeros_count = 0;
+			for (const auto& mat : mat_list)
+			{
+				if (mat(i, j) != default_value)
+				{
+					sum += mat(i, j);
+					++no_zeros_count;
+				}
+			}
+			ans(i, j) = no_zeros_count != 0 ? sum / no_zeros_count : default_value;
+		}
+	}
+
+	BOOST_LOG_TRIVIAL(debug) << mat_list.size() << "个矩阵的逐像元平均值计算完毕";
+
+	return std::optional<arma::fmat>(ans);
+}
+
 std::string modis_api::Mat_operation::mat_desc(arma::fmat& mat)
 {
 	//const arma::fvec vec = arma::vectorise(mat);

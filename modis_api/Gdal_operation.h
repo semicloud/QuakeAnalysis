@@ -78,16 +78,16 @@ namespace modis_api
 
 		/**
 		 * \brief 读取0或05数据集的geo_bound
-		 * \param hdfPath 04或05的hdf文件路径
+		 * \param hdf_path 04或05的hdf文件路径
 		 * \param ulx 
 		 * \param uly 
 		 * \param lrx 
 		 * \param lry 
 		 * \return 读取成功返回true，失败返回false
 		 */
-		static bool read_geo_bound(std::filesystem::path const& hdfPath, double& ulx, double& uly,
+		static bool read_geo_bound(std::filesystem::path const& hdf_path, double& ulx, double& uly,
 			double& lrx, double& lry);
-
+		
 	private:
 		static bool read_min_max_loc(std::string const&, double&, double&);
 

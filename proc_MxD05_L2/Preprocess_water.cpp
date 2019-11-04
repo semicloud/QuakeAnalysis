@@ -19,7 +19,7 @@ double OUTPUT_PIXEL_SIZE_Y = 5000;
 int MAX_SLEEP = 5;
 float NO_DATA_VALUE = -1;
 float OFFSET = 0;
-float SCALE = 0.01f;
+float SCALE = 0.001f;
 const std::string OBJECT_NAME = "mod05";
 const std::string ELLIPSOID_CODE = "WGS84";
 const std::string OUTPUT_TYPE = "GEO";
@@ -129,7 +129,7 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 
 		mat_optional->transform([](float dn) -> float
 		{
-			if (dn < 0) return NO_DATA_VALUE;
+			if (dn <= 0) return NO_DATA_VALUE;
 			//if ((dn - NO_DATA_VALUE) < 1E-5) return 0;
 			return (dn - OFFSET) * SCALE;
 		});
@@ -157,7 +157,8 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 	std::vector<arma::fmat> mat_list;
 	std::transform(preprocessed_file_paths.cbegin(), preprocessed_file_paths.cend(), back_inserter(mat_list),
 		[](const fs::path& p) { return *modis_api::Gdal_operation::read_tif_to_fmat(p.string());  });
-	std::optional<arma::fmat> mean_mat_optional = modis_api::Mat_operation::mean_mat_by_each_pixel(mat_list, NO_DATA_VALUE);
+	std::optional<arma::fmat> mean_mat_optional = modis_api::Mat_operation::mean_mat(mat_list, -1.0);
+	
 	if (!mean_mat_optional)
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵合成出现错误";

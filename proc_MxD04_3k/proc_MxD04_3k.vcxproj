@@ -170,10 +170,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Aerosol_param.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Preprocess_aerosol.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Aerosol_param.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

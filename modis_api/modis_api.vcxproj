@@ -168,6 +168,7 @@
     <ClInclude Include="Gdal_operation.h" />
     <ClInclude Include="Hdf_file.h" />
     <ClInclude Include="Hdf_to_gtiff.h" />
+    <ClInclude Include="Heg_param.h" />
     <ClInclude Include="Heg_utils.h" />
     <ClInclude Include="Logger_setting.h" />
     <ClInclude Include="Mat_operation.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Gdal_operation.cpp" />
     <ClCompile Include="Hdf_file.cpp" />
     <ClCompile Include="Hdf_to_gtiff.cpp" />
+    <ClCompile Include="Heg_param.cpp" />
     <ClCompile Include="Heg_utils.cpp" />
     <ClCompile Include="Mat_operation.cpp" />
     <ClCompile Include="modis_api.cpp" />
