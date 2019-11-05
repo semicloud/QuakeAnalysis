@@ -87,6 +87,16 @@ namespace modis_api
 		 */
 		static bool read_geo_bound(std::filesystem::path const& hdf_path, double& ulx, double& uly,
 			double& lrx, double& lry);
+
+		/**
+		 * \brief 获取用于gdal_translate.exe的命令行参数，该方法只应用于云掩膜和水汽的预处理使用
+		 * \param min_lon 最小经度
+		 * \param max_lon 最大经度
+		 * \param min_lat 最小纬度
+		 * \param max_lat 最大纬度
+		 * \return arg
+		 */
+		static std::string get_reproj_arg(double min_lon, double max_lon, double min_lat, double max_lat) { return (boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"") % min_lon % max_lat % max_lon % min_lat).str(); }
 		
 	private:
 		static bool read_min_max_loc(std::string const&, double&, double&);

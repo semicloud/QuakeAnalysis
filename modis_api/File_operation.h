@@ -39,6 +39,11 @@ namespace modis_api
 			if (d[d.size() - 1] != '\\')
 				d.push_back('\\');
 		}
+
+		static std::filesystem::path get_tmp_file(std::filesystem::path const& base_path,
+			std::filesystem::path const& tmp_folder, std::string const& tmp_appender, std::string const& ext = "tif");
+
+		static void prepare_file_output_envir(std::filesystem::path const& out_file);
 	};
 }
 

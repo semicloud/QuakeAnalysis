@@ -21,8 +21,8 @@
 // 在此处引用程序需要的其他标头
 #include <algorithm>
 #include <armadillo>
-#include <boost/algorithm/string.hpp>
 #include <boost/algorithm/minmax_element.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/program_options.hpp>
@@ -33,6 +33,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>

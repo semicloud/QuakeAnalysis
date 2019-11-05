@@ -8,6 +8,7 @@
 namespace proc_MxD04_3k
 {
 	typedef const std::string& cs;
+	typedef std::filesystem::path path;
 	typedef std::vector<std::filesystem::path> paths;
 
 	class Preprocess_aerosol
@@ -15,17 +16,13 @@ namespace proc_MxD04_3k
 	public:
 		Preprocess_aerosol();
 		~Preprocess_aerosol();
-		static void preprocess(const std::string& ymlPath, const YAML::Node& node, bool useDebugMode);
-		static std::string get_gdal_argument(double minLng, double maxLng, double minLat, double maxLat)
-		{
-			const std::string argument = (boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"") % minLng % maxLat % maxLng % minLat).str();
-			return argument;
-		}
-
-		static int prepare_tmp_folder(std::filesystem::path const&);
+		static void preprocess(const std::string& ymlPath, const YAML::Node& node, bool use_debug);
+	private:
+		static void heg_process(path const& hdf_file, path const& out_file, path const& tmp_folder);
+		static void gdal_process(path const& in_file, path const& out_file, double min_lon, double max_lon, double min_lat, double max_lat);
+		static void scale_process(path const& in_file, path const& out_file);
 		static int scale(arma::fmat&);
-		static std::vector<arma::fmat> readToMat(std::vector<std::filesystem::path> const&);
-
+		static void combine(std::vector<path> const& in_file_vec, path const& out_file);
 	};
 
 	Aerosol_param load_params(std::filesystem::path const& yml_path);

@@ -1,8 +1,7 @@
 #include "stdafx.h"
-
+#include "Gdal_operation.h"
 #include "Mat_operation.h"
-#include <boost/log/trivial.hpp>
-#include <numeric>
+
 
 modis_api::Mat_operation::Mat_operation()
 {
@@ -108,7 +107,7 @@ std::optional <arma::fmat> modis_api::Mat_operation::mean_mat(std::vector<arma::
 	if (!same_size(mat_list))
 	{
 		BOOST_LOG_TRIVIAL(error) << "矩阵大小不等，无法进行平均值计算！";
-		return std::optional<arma::fmat>();
+		throw std::runtime_error("matrix size incorrect!");
 	}
 	const arma::uword n_rows = mat_list.front().n_rows;
 	const arma::uword n_cols = mat_list.front().n_cols;
@@ -133,8 +132,6 @@ std::optional <arma::fmat> modis_api::Mat_operation::mean_mat(std::vector<arma::
 		}
 	}
 
-	BOOST_LOG_TRIVIAL(debug) << mat_list.size() << "个矩阵的逐像元平均值计算完毕";
-
 	return std::optional<arma::fmat>(ans);
 }
 
@@ -158,5 +155,26 @@ std::string modis_api::Mat_operation::mat_desc(arma::fmat& mat)
 	std::string desc = boost::str(boost::format("MAT INFO [ROW_COUNT:%1%, COL_COUNT:%2%, MIN:%3%,MAX:%4%]"
 	) % mat.n_rows % mat.n_cols % min_value_greater_than_zero % mat.max());*/
 	return ss.str();
+}
+
+/**
+ * \brief 从文件中加载mat
+ * \param path_vec 文件路径列表
+ * \return
+ */
+std::vector<arma::fmat> modis_api::Mat_operation::load_mat_vec(std::vector<std::filesystem::path> const& path_vec)
+{
+	std::vector<arma::fmat> ans;
+	for (const std::filesystem::path& tifPath : path_vec)
+	{
+		boost::optional<arma::fmat> oMat(Gdal_operation::read_tif_to_fmat(tifPath.string()));
+		if (!oMat)
+		{
+			BOOST_LOG_TRIVIAL(error) << "读取" << tifPath << "文件失败，程序退出";
+			exit(EXIT_FAILURE);
+		}
+		ans.push_back(*oMat);
+	}
+	return ans;
 }
 

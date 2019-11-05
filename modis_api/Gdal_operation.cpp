@@ -95,7 +95,7 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const st
 	if (!std::filesystem::exists(tif_path) || !std::filesystem::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << boost::str(boost::format("非法的tif文件：%1%，读取失败！") % tif_path);
-		return boost::optional<arma::fmat>();
+		throw std::runtime_error("read tif file failed!");
 	}
 
 	//GDALAllRegister();
@@ -106,10 +106,10 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const st
 	if (!data_set)
 	{
 		BOOST_LOG_TRIVIAL(error) << boost::str(boost::format("打开%1%文件失败！") % tif_path);
-		return boost::optional<arma::fmat>();
+		throw std::runtime_error("read tif file failed!");
 	}
 
-# pragma endregion 
+# pragma endregion
 
 	auto band = static_cast<GDALRasterBand*>(data_set->GetRasterBand(1));
 	// x_size是列数，y_size是行数
@@ -168,7 +168,7 @@ bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, a
 		return false;
 	}
 
-#pragma endregion 
+#pragma endregion
 
 	GDALRasterBand* band = data_set->GetRasterBand(1);
 	const int x_size = band->GetXSize();
@@ -228,7 +228,6 @@ float modis_api::Gdal_operation::get_no_data_value(const std::string& source_pat
 	BOOST_LOG_TRIVIAL(debug) << "文件" << source_path << "的NO_DATA_VALUE为" << no_data_value;
 	return no_data_value;
 }
-
 
 boost::optional<arma::fmat> modis_api::Gdal_operation::read_radiance_scales_and_offsets(const std::filesystem::path& hdf_path)
 {
@@ -292,6 +291,12 @@ bool modis_api::Gdal_operation::gdal_translate(
 bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdf_path,
 	double& ulx, double& uly, double& lrx, double& lry)
 {
+	// ! x是纬度，y是经度
+// ! ulx：最大纬度
+// ! lrx：最小纬度
+// ! uly：最小经度
+// ! lry：最大经度
+
 	// get mod04 or mod05
 	const std::string type_num_str = boost::to_lower_copy(hdf_path.filename().string().substr(3, 2));
 	assert(type_num_str == "04" || type_num_str == "05");

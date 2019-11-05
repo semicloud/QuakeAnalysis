@@ -57,6 +57,9 @@ namespace modis_api
 		 * \return
 		 */
 		static std::string mat_desc(arma::fmat& mat);
+
+		static std::vector<arma::fmat> load_mat_vec(std::vector<std::filesystem::path> const&);
+
 	};
 
 }
