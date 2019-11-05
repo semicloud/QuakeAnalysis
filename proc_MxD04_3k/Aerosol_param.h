@@ -4,7 +4,7 @@ namespace proc_MxD04_3k
 {
 	class Aerosol_param
 	{
-		friend Aerosol_param load_aerosol_params(std::filesystem::path const&);
+		friend Aerosol_param load_aerosol_param(std::filesystem::path const&);
 	public:
 		Aerosol_param() = default;
 		~Aerosol_param();
@@ -45,7 +45,7 @@ namespace proc_MxD04_3k
 		std::filesystem::path tmp_path_;
 		static std::set<std::string> valid_attribute_names_;
 	};
-	Aerosol_param load_aerosol_params(std::filesystem::path const&);
+	Aerosol_param load_aerosol_param(std::filesystem::path const&);
 	bool  is_valid_aerosol_yml_file(std::filesystem::path const& yml_path);
 	bool  check_yml_exists(std::filesystem::path const& yml_path);
 	bool  check_hdf_list_file_exists(std::filesystem::path const& hdf_list_file);

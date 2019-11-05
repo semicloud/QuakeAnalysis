@@ -173,6 +173,7 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Preprocess_water.h" />
+    <ClInclude Include="Water_vapor_param.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -183,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="Preprocess_water.cpp" />
     <ClCompile Include="proc_MxD05_L2.cpp" />
+    <ClCompile Include="Water_vapor_param.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\modis_api\modis_api.vcxproj">

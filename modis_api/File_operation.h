@@ -44,8 +44,13 @@ namespace modis_api
 			std::filesystem::path const& tmp_folder, std::string const& tmp_appender, std::string const& ext = "tif");
 
 		static void prepare_file_output_envir(std::filesystem::path const& out_file);
+
+		static void create_directories_if_not_exist(std::filesystem::path const& p)
+		{
+			if (!std::filesystem::exists(p)) {
+				std::filesystem::create_directories(p);
+				BOOST_LOG_TRIVIAL(debug) << "create directory " << p;
+			}
+		}
 	};
 }
-
-
-

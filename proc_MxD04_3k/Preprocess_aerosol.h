@@ -25,6 +25,6 @@ namespace proc_MxD04_3k
 		static void combine(std::vector<path> const& in_file_vec, path const& out_file);
 	};
 
-	Aerosol_param load_params(std::filesystem::path const& yml_path);
+	Aerosol_param load_param(std::filesystem::path const& yml_path);
 }
 

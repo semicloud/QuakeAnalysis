@@ -35,7 +35,7 @@ void proc_MxD04_3k::Preprocess_aerosol::preprocess(const std::string& ymlPath, c
 {
 	BOOST_LOG_TRIVIAL(info) << "\n开始进行Aerosol预处理，使用的.yml文件为：" << ymlPath;
 
-	Aerosol_param param = load_params(ymlPath);
+	Aerosol_param param = load_param(ymlPath);
 	path tmp_folder(param.tmp_path());
 	modis_api::File_operation::clear_directory(tmp_folder.string());
 
@@ -135,12 +135,12 @@ void proc_MxD04_3k::Preprocess_aerosol::combine(std::vector<path> const& in_file
 	BOOST_LOG_TRIVIAL(debug) << "设置" << out_file << "的NODATAVALUE为" << NO_DATA_VALUE;
 }
 
-proc_MxD04_3k::Aerosol_param proc_MxD04_3k::load_params(path const& yml_path)
+proc_MxD04_3k::Aerosol_param proc_MxD04_3k::load_param(path const& yml_path)
 {
-	Aerosol_param params;
+	Aerosol_param param;
 	try
 	{
-		params = proc_MxD04_3k::load_aerosol_params(yml_path);
+		param = proc_MxD04_3k::load_aerosol_param(yml_path);
 	}
 	catch (std::exception& ex)
 	{
@@ -148,5 +148,5 @@ proc_MxD04_3k::Aerosol_param proc_MxD04_3k::load_params(path const& yml_path)
 		BOOST_LOG_TRIVIAL(error) << "load config file failed!";
 		exit(EXIT_FAILURE);
 	}
-	return params;
+	return param;
 }

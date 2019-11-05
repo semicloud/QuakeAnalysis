@@ -45,9 +45,6 @@
     <ClInclude Include="Heg_utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Program_operation.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Mrt_utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -96,9 +93,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Heg_utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Program_operation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Mrt_utils.cpp">
