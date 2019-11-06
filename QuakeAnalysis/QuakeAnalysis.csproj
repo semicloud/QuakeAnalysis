@@ -128,10 +128,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmModisArchive.cs" />
-    <Compile Include="FrmModisArchive.Designer.cs">
-      <DependentUpon>FrmModisArchive.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmModisMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,9 +173,6 @@
     <None Include="Resources\open_16x16.png" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmModisArchive.resx">
-      <DependentUpon>FrmModisArchive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmModisMain.resx">
       <DependentUpon>FrmModisMain.cs</DependentUpon>
