@@ -128,9 +128,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmModisArchive.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FrmModisArchive.cs" />
     <Compile Include="FrmModisArchive.Designer.cs">
       <DependentUpon>FrmModisArchive.cs</DependentUpon>
     </Compile>
