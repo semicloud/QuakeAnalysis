@@ -18,12 +18,27 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="jplg_parser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JplgItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="proc_jplg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="proc_jplg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="jplg_parser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JplgItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

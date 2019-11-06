@@ -24,10 +24,7 @@
     <ClInclude Include="codg_parser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="collections.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="strings.h">
+    <ClInclude Include="proc_codg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -42,15 +39,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="codg_parser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="collections.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="strings.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="test_strings.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

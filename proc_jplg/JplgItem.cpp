@@ -1,36 +1,34 @@
 #include "pch.h"
-#include "CodgItem.h"
-#include "codg_parser.h"
+#include "jplg_parser.h"
+#include "JplgItem.h"
 #include "../commons/collections.h"
-#include <boost/assert.hpp>
-#include <boost/algorithm/string.hpp>
 #include <boost/log/trivial.hpp>
+#include <cassert>
 #include <filesystem>
-#include <iostream>
 
-CodgItem::CodgItem(const std::vector<std::string>& dataSec)
+proc_jplg::JplgItem::JplgItem(const std::vector<std::string>& dataSec)
 {
 	const int i = parse_epoch(dataSec, m_year, m_month, m_day, m_hour);
 	assert(i == EXIT_SUCCESS);
 	BOOST_LOG_TRIVIAL(debug) << "m_year:" << m_year << ", m_month:"
 		<< m_month << ", m_day:" << m_day << ", m_hour:" << m_hour;
-	m_mat = parse_fmat(dataSec);
+	m_mat = parse_mat(dataSec);
 }
 
-CodgItem::~CodgItem()
+proc_jplg::JplgItem::~JplgItem()
 {
 }
 
 const std::string TEC_MAP_START = "START OF TEC MAP";
 const std::string TEC_MAP_END = "END OF TEC MAP";
 
-std::vector<CodgItem> CodgItem::load_items(const std::string& file_path_str)
+std::vector<proc_jplg::JplgItem> proc_jplg::JplgItem::load_items(const std::string& file_path_str)
 {
 	using namespace arma;
 	using namespace std;
 	using namespace std::filesystem;
 
-	vector<CodgItem> items;
+	vector<JplgItem> items;
 	const path codg_file_path(file_path_str);
 	assert(exists(codg_file_path));
 	auto LoadFile = [](const string& file_path)

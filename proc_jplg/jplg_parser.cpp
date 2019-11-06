@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "codg_parser.h"
+#include "jplg_parser.h"
 #include "../commons/collections.h"
 #include "../commons/strings.h"
-#include <boost/log/trivial.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/log/trivial.hpp>
 
-std::optional<arma::fmat> proc_codg::parse_fmat(const std::vector<std::string>& dataSec)
+std::optional<arma::fmat> proc_jplg::parse_mat(const std::vector<std::string>& dataSec)
 {
 	using namespace std;
 	string mat_str;
@@ -29,7 +29,7 @@ std::optional<arma::fmat> proc_codg::parse_fmat(const std::vector<std::string>& 
 	return optional<arma::fmat>(mat);
 }
 
-int proc_codg::parse_epoch(const std::vector<std::string>& dataSec, int& year, int& month, int& day, int& hour)
+int proc_jplg::parse_epoch(const std::vector<std::string>& dataSec, int& year, int& month, int& day, int& hour)
 {
 	using namespace std;
 	BOOST_ASSERT(!dataSec.empty());

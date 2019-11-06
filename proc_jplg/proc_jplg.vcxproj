@@ -99,7 +99,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command />
+      <Command>copy $(SolutionDir)support\gzip.exe $(TargetDir)gzip.exe</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -155,13 +155,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command />
+      <Command>copy $(SolutionDir)support\gzip.exe $(TargetDir)gzip.exe</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="JplgItem.h" />
+    <ClInclude Include="jplg_parser.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="proc_jplg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JplgItem.cpp" />
+    <ClCompile Include="jplg_parser.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -169,6 +174,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="proc_jplg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\commons\commons.vcxproj">
+      <Project>{ab2b8d32-d370-4417-8210-7dbda4d0dfb6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\modis_api\modis_api.vcxproj">
+      <Project>{2e8b7f32-78f3-4c40-a68d-6f5f95590feb}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
