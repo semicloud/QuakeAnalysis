@@ -1,2 +1,40 @@
-﻿font-size: 9
+﻿# 界面字号
+font-size: 9
 test-attr: 12
+# MODIS工作空间目录
+workspace-dir: D:\modis
+# 数据目录
+data-dir: D:\modis_download
+
+# modis归档程序路径
+modis-archive: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\modis_archive.exe
+modis-proc_mxd021km: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD021km.exe
+modis-proc_mxd04_3k: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD04_3k.exe
+modis-proc_mxd05_l2: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD05_L2.exe
+modis-proc_mxd11a1: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD11A1.exe
+modis-eddyfield: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\eddy_field_ano.exe
+modis-generalano: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\juping_ano.exe.exe
+modis-rsten: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\rst_en_ano.exe
+modis-plot: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\modis_plot.exe
+
+# 预处理部分的设置
+prep-min-lon: 110
+prep-max-lon: 115
+prep-min-lat: 45
+prep-max-lat: 50
+
+prep02-band: 31
+prep02-mrtkerneltype: NN
+prep02-mrtprojtype: EQRECT
+prep02-mrtprojargs: 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+prep02-mrtpixelsize: 1000
+prep04-resamptype: NN
+prep04-projtype: CEA
+prep04-projparameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+prep05-resamptype: NN
+prep05-projtype: CEA
+prep05-projparameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )
+# prep11-resamptype: NEAREST_NEIGHBOR
+# prep11-projtype: ER
+# prep11-projparameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+# prep11-pixelsize: 1000

@@ -191,7 +191,7 @@ namespace modis_api
 		}
 
 		/**
-		 * \brief 
+		 * \brief
 		 * \return 默认值"NN"
 		 */
 		std::string resampling_type() const
@@ -200,7 +200,7 @@ namespace modis_api
 		}
 
 		/**
-		 * \brief 
+		 * \brief
 		 * \return 默认值"CEA"
 		 */
 		std::string output_projection_type() const
@@ -209,7 +209,7 @@ namespace modis_api
 		}
 
 		/**
-		 * \brief 
+		 * \brief
 		 * \return 默认值"WGS84"
 		 */
 		std::string ellipsoid_code() const
@@ -218,7 +218,7 @@ namespace modis_api
 		}
 
 		/**
-		 * \brief 
+		 * \brief
 		 * \return 默认值"( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0  )"
 		 */
 		std::string output_projection_parameters() const
@@ -232,7 +232,7 @@ namespace modis_api
 		}
 
 		/**
-		 * \brief 
+		 * \brief
 		 * \return 默认值"GEO"
 		 */
 		std::string output_type() const

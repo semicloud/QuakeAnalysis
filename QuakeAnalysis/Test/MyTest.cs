@@ -64,9 +64,9 @@ namespace QuakeAnalysis.Test
         public static void TestGenerateBtPreprocessInputFile()
         {
             // 生成亮温预处理的InputFile
-            string workspaceDir = @"D:\modis\";
+            string workspaceDir = @"E:\modis_workspace\";
             string type = "MOD";
-            string dateStr = "2018001";
+            string dateStr = "2016352";
 
             string year = dateStr.Substring(0, 4);
             string day = dateStr.Substring(4, 3);
@@ -97,7 +97,7 @@ namespace QuakeAnalysis.Test
                 }
             }
 
-            File.WriteAllText(@"D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\ymlsamples_desktop\proc_MxD021km_hdf_list" + dateStr + ".txt", sb.ToString());
+            File.WriteAllText(@"D:\proc_MxD021km_hdf_list.txt", sb.ToString());
         }
 
         /// <summary>

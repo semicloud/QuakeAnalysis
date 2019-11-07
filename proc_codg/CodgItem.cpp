@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "../commons/collections.h"
 #include "CodgItem.h"
 #include "codg_parser.h"
-#include "../commons/collections.h"
 #include <boost/assert.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/log/trivial.hpp>
@@ -10,11 +10,11 @@
 
 CodgItem::CodgItem(const std::vector<std::string>& dataSec)
 {
-	const int i = parse_epoch(dataSec, m_year, m_month, m_day, m_hour);
+	const int i = proc_codg::parse_epoch(dataSec, m_year, m_month, m_day, m_hour);
 	assert(i == EXIT_SUCCESS);
 	BOOST_LOG_TRIVIAL(debug) << "m_year:" << m_year << ", m_month:"
 		<< m_month << ", m_day:" << m_day << ", m_hour:" << m_hour;
-	m_mat = parse_fmat(dataSec);
+	m_mat = proc_codg::parse_fmat(dataSec);
 }
 
 CodgItem::~CodgItem()

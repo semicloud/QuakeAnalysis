@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuakeAnalysis.Properties;
+using System;
 using System.Windows.Forms;
-using QuakeAnalysis.Properties;
 
 namespace QuakeAnalysis
 {
@@ -23,6 +16,7 @@ namespace QuakeAnalysis
         private void FrmDataArchive_Load(object sender, EventArgs e)
         {
             this.Font = Font.ChangeFontSize(GlobalModisMain.Config.FontSize);
+            this.txtDataFolder.Text = GlobalModisMain.Config.DataDir;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -35,6 +29,8 @@ namespace QuakeAnalysis
             }
 
             this.DataFolder = txtDataFolder.Text.Trim();
+            GlobalModisMain.Config.DataDir = txtDataFolder.Text.Trim();
+            GlobalModisMain.Config.SaveToFile();
             this.DialogResult = DialogResult.OK;
         }
 
@@ -45,11 +41,14 @@ namespace QuakeAnalysis
 
         private void btnFolder_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderBrowserDialog = 
+            FolderBrowserDialog folderBrowserDialog =
                 new FolderBrowserDialog();
+            folderBrowserDialog.SelectedPath = GlobalModisMain.Config.DataDir;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 txtDataFolder.Text = folderBrowserDialog.SelectedPath;
+                GlobalModisMain.Config.DataDir = folderBrowserDialog.SelectedPath;
+                GlobalModisMain.Config.SaveToFile();
             }
         }
     }
