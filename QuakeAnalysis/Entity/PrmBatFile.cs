@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Antlr4.StringTemplate;
 using NLog;
+using QuakeAnalysis.Cfg;
 
 namespace QuakeAnalysis.Entity
 {
@@ -42,7 +43,7 @@ namespace QuakeAnalysis.Entity
         public string GetPrmBatContent()
         {
             var template = new Template(File.ReadAllText(@"Template/Prm/run_prm.st"));
-            template.Add("mrt_swath_path", QuakeAnalysis.Config.GetMrtSwathPath());
+            template.Add("mrt_swath_path", Config.GetMrtSwathPath());
             template.Add("prm_file_path", _prmFilePath);
             var content = template.Render();
             g.Debug("Prm Bat Content:");

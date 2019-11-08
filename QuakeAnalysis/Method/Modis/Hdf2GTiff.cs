@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NLog;
+using QuakeAnalysis.Cfg;
 using QuakeAnalysis.Entity;
 
 namespace QuakeAnalysis.Method.Modis

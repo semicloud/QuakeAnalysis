@@ -1,12 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace QuakeAnalysis
+namespace QuakeAnalysis.Cfg
 {
     public class ModisMainConfig
     {
-        private const string CONFIG_FILE = "modis_main.yml";
+        private const string CONFIG_FILE = "Yml\\modis_main.yml";
 
         [YamlMember(Alias = "font-size", ApplyNamingConventions = false)]
         public float FontSize { get; set; }
@@ -16,6 +17,15 @@ namespace QuakeAnalysis
 
         [YamlMember(Alias = "workspace-dir", ApplyNamingConventions = false)]
         public string WorkspaceDir { get; set; }
+
+        [YamlMember(Alias = "script-dir", ApplyNamingConventions = false)]
+        public string ScriptDir { get; set; }
+
+        [YamlMember(Alias = "tmp-dir", ApplyNamingConventions = false)]
+        public string TmpDir { get; set; }
+
+        [YamlMember(Alias = "stdmap-dir")]
+        public string StdMapDir { get; set; }
 
         [YamlMember(Alias = "data-dir", ApplyNamingConventions = false)]
         public string DataDir { get; set; }
@@ -48,6 +58,125 @@ namespace QuakeAnalysis
 
         [YamlMember(Alias = "modis-plot", ApplyNamingConventions = false)]
         public string ModisPlot { get; set; }
+
+        #endregion
+
+        #region 输出路径和文件名规则
+
+        public string Hdf02Dir(string type, DateTime date)
+        {
+            return $"{WorkspaceDir}\\{type}021KM\\{date.Year}\\{date.DayOfYear}";
+        }
+
+        public string Hdf03Dir(string type, DateTime date)
+        {
+            return $"{WorkspaceDir}\\{type}03\\{date.Year}\\{date.DayOfYear}";
+        }
+
+        public string Hdf35Dir(string type, DateTime date)
+        {
+            return $"{WorkspaceDir}\\{type}35_L2\\{date.Year}\\{date.DayOfYear}";
+        }
+
+        public string Hdf04Dir(string type, DateTime date)
+        {
+            return $"{WorkspaceDir}\\{type}04_3K\\{date.Year}\\{date.DayOfYear}";
+        }
+
+        public string Hdf05Dir(string type, DateTime date)
+        {
+            return $"{WorkspaceDir}\\{type}05_L2\\{date.Year}\\{date.DayOfYear}";
+        }
+
+        /// <summary>
+        /// 亮温的预处理文件的存放目录
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <returns></returns>
+        public string Std02Dir(string type)
+        {
+            return $"{WorkspaceDir}\\Standard\\{type}_BT";
+        }
+
+        public string Std04Dir(string type)
+        {
+            return $"{WorkspaceDir}\\Standard\\{type}_AOD";
+        }
+
+        public string Std05Dir(string type)
+        {
+            return $"{WorkspaceDir}\\Standard\\{type}_TPW";
+        }
+
+        public string Std11Dir(string type)
+        {
+            return $"{WorkspaceDir}\\Standard\\{type}_LST";
+        }
+
+        public string Std02TifPath(string type, DateTime d)
+        {
+            return $"{Std02Dir(type)}\\bt_{d.Year}_{d.DayOfYear}.tif";
+        }
+
+        public string Std04TifPath(string type, DateTime d)
+        {
+            return $"{Std04Dir(type)}\\aod_{d.Year}_{d.DayOfYear}.tif";
+        }
+
+        public string Std05TifPath(string type, DateTime d)
+        {
+            return $"{Std05Dir(type)}\\tpw_{d.Year}_{d.DayOfYear}.tif";
+        }
+
+        public string Std11TifPath(string type, DateTime d)
+        {
+            return $"{Std11Dir(type)}\\lst_{d.Year}_{d.DayOfYear}.tif";
+        }
+
+        public string Script02HdfListPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}021KM_{d.Year}_{d.DayOfYear}_hdflist.txt";
+        }
+
+        public string Script02YmlPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}021KM_{d.Year}_{d.DayOfYear}.yml";
+        }
+
+        public string Script04HdfListPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}04_3K_{d.Year}_{d.DayOfYear}_hdflist.txt";
+        }
+
+        public string Script04YmlPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}04_3K_{d.Year}_{d.DayOfYear}.yml";
+        }
+
+        public string Script05HdfListPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}05_L2_{d.Year}_{d.DayOfYear}_hdflist.txt";
+        }
+
+        public string Script05YmlPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}05_L2_{d.Year}_{d.DayOfYear}.yml";
+        }
+
+        public string Script11HdfListPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}11_{d.Year}_{d.DayOfYear}_hdflist.txt";
+        }
+
+        public string Script11YmlPath(string type, DateTime d)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{type}11_{d.Year}_{d.DayOfYear}.yml";
+        }
+
+        public string ScriptBatPath(string fileName)
+        {
+            return $"{WorkspaceDir}\\Scripts\\{fileName}.bat";
+        }
 
         #endregion
 
@@ -85,6 +214,8 @@ namespace QuakeAnalysis
 
         [YamlMember(Alias = "prep02-mrtpixelsize", ApplyNamingConventions = false)]
         public double Prep02MrtPixelSize { get; set; }
+
+
 
         #endregion
 
@@ -138,7 +269,7 @@ namespace QuakeAnalysis
         public static ModisMainConfig CreateInstance()
         {
             var deserializer = new DeserializerBuilder().
-                WithNamingConvention(new CamelCaseNamingConvention()).Build();
+                WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
             var configFileText = File.ReadAllText(CONFIG_FILE);
             var cfg = deserializer.Deserialize<ModisMainConfig>(configFileText);
             return cfg;

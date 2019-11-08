@@ -19,7 +19,7 @@ namespace QuakeAnalysis.Entity
 
         public static QuakeAnalysisConfig CreateInstance()
         {
-            var deserializer = new DeserializerBuilder().WithNamingConvention(new CamelCaseNamingConvention()).Build();
+            var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
             var cfg =
                 deserializer.Deserialize<QuakeAnalysisConfig>(File.ReadAllText(CONFIG_FILE));
             return cfg;

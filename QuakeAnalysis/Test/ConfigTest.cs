@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
+using QuakeAnalysis.Cfg;
 
-namespace QuakeAnalysis
+namespace QuakeAnalysis.Test
 {
-  public static   class ConfigTest
+    public static class ConfigTest
     {
         [Test]
         public static void TestConfig()
@@ -18,9 +15,8 @@ namespace QuakeAnalysis
             TestContext.Out.WriteLine(Config.GetModisTmpDir());
         }
 
-
         [OneTimeSetUp]
-        public static  void RunBeforeAnyTests()
+        public static void RunBeforeAnyTests()
         {
             var dir = Path.GetDirectoryName(typeof(ConfigTest).Assembly.Location);
             if (dir != null)
@@ -31,8 +27,5 @@ namespace QuakeAnalysis
             else
                 throw new Exception("Path.GetDirectoryName(typeof(TestingWithReferencedFiles).Assembly.Location) returned null");
         }
-
-
-
     }
 }

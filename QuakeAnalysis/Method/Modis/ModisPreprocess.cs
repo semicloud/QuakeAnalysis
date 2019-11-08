@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using NLog;
 using OSGeo.GDAL;
 using QuakeAnalysis.Entity;
+using QuakeAnalysis.Method.Gdal;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using QuakeAnalysis.Cfg;
 
 namespace QuakeAnalysis.Method.Modis
 {
@@ -163,7 +164,7 @@ namespace QuakeAnalysis.Method.Modis
                 g.Debug("after select value greater than 85, mod03: " + mod03.Description());
 
                 // 35数据集处理
-                mod35.MapInplace(d => ((int) d & 6) == 6 ? 1 : 0);
+                mod35.MapInplace(d => ((int)d & 6) == 6 ? 1 : 0);
                 g.Debug("after and opertion, mod35: " + mod35.Description());
 
                 // 最终计算结果
@@ -174,12 +175,12 @@ namespace QuakeAnalysis.Method.Modis
                 //调用GDAL将最终计算结果保存到GTiff
                 var tiff02FloatPath =
                     @"e:\CodeWorld\VSProjects\QuakeAnalysis\QuakeAnalysis\QuakeAnalysis\bin\Debug\modis_workspace\Tmp\MXD02_EV_1KM_Emissive_b0_Float.tif";
-                var dataSet02 = Gdal.OpenShared(tiff02Path, Access.GA_ReadOnly);
-                Gdal.wrapper_GDALTranslate(tiff02FloatPath, dataSet02,
-                    new GDALTranslateOptions(new[] {"-ot", "Float32"}), null, null);
+                var dataSet02 = OSGeo.GDAL.Gdal.OpenShared(tiff02Path, Access.GA_ReadOnly);
+                OSGeo.GDAL.Gdal.wrapper_GDALTranslate(tiff02FloatPath, dataSet02,
+                    new GDALTranslateOptions(new[] { "-ot", "Float32" }), null, null);
                 dataSet02.Dispose();
 
-                var dataSet02Float = Gdal.OpenShared(tiff02FloatPath, Access.GA_Update);
+                var dataSet02Float = OSGeo.GDAL.Gdal.OpenShared(tiff02FloatPath, Access.GA_Update);
                 dataSet02Float.GetRasterBand(1).WriteRaster(0, 0, resultMatrix.RowCount, resultMatrix.ColumnCount,
                     resultMatrix.Enumerate().ToArray(), resultMatrix.RowCount, resultMatrix.ColumnCount, 0, 0);
                 dataSet02Float.FlushCache();
@@ -204,7 +205,7 @@ namespace QuakeAnalysis.Method.Modis
                 throw new FileNotFoundException("读取GTiff文件错误，不存在的GTiff文件：\n" + gTiffPath);
             g.Debug("read value from {0} at band {1}", gTiffPath, bandNum);
 
-            var dataSet = Gdal.OpenShared(gTiffPath, Access.GA_ReadOnly);
+            var dataSet = OSGeo.GDAL.Gdal.OpenShared(gTiffPath, Access.GA_ReadOnly);
             g.Debug("file {0} has {1} bands", Path.GetFileName(gTiffPath), dataSet.RasterCount);
 
             var band = dataSet.GetRasterBand(1);

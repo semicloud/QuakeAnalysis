@@ -3,7 +3,14 @@ font-size: 9
 test-attr: 12
 # MODIS工作空间目录
 workspace-dir: D:\modis
-# 数据目录
+# 存放生成脚本的目录
+script-dir: D:\modis\Scripts
+# tmp目录
+tmp-dir: D:\modis\tmp
+# 标准数据出图目录
+stdmap-dir: D:\modis\Std_Map
+
+# 归档使用的数据目录
 data-dir: D:\modis_download
 
 # modis归档程序路径

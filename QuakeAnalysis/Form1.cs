@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using MathNet.Numerics.LinearAlgebra.Double;
 using OSGeo.GDAL;
 using QuakeAnalysis.Entity;
+using QuakeAnalysis.Method.Gdal;
 
 namespace QuakeAnalysis
 {

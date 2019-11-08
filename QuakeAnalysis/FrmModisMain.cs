@@ -1,4 +1,5 @@
 ﻿using NLog;
+using QuakeAnalysis.Cfg;
 using QuakeAnalysis.Entity;
 using QuakeAnalysis.Properties;
 using System;
@@ -172,6 +173,12 @@ namespace QuakeAnalysis
                 return;
             }
 
+            if (!Directory.Exists(GlobalModisMain.Config.ScriptDir))
+                Directory.CreateDirectory(GlobalModisMain.Config.ScriptDir);
+
+            if (!Directory.Exists(GlobalModisMain.Config.TmpDir))
+                Directory.CreateDirectory(GlobalModisMain.Config.TmpDir);
+
             if (MessageBox.Show("确定保存配置吗？", Settings.Default.DT, MessageBoxButtons.OKCancel, MessageBoxIcon.Question) ==
                 DialogResult.OK)
             {
@@ -190,7 +197,7 @@ namespace QuakeAnalysis
                 sb.AppendLine($"{cfg.ModisArchive} -w {cfg.WorkspaceDir} -a {cfg.DataDir}");
             }
 
-            if (ckBoxPreprocess.Checked)
+            if (ckBoxPreprocess.Checked)  // 预处理
             {
                 foreach (var product in GetCheckedProducts())
                 {
@@ -203,11 +210,13 @@ namespace QuakeAnalysis
                             break;
                         case "MOD04":
                         case "MYD04":
-
+                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc04).DirectoryName}");
+                            sb.AppendLine(Get04PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
                             break;
-
                         case "MOD05":
                         case "MYD05":
+                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc05).DirectoryName}");
+                            sb.AppendLine(Get05PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
                             break;
                         case "MOD11":
                         case "MYD11":
@@ -215,8 +224,7 @@ namespace QuakeAnalysis
                     }
                 }
             }
-
-            File.WriteAllText($@"{GlobalModisMain.Config.WorkspaceDir}\Scripts\a.bat", sb.ToString());
+            File.WriteAllText($@"{GlobalModisMain.Config.ScriptBatPath("a")}", sb.ToString());
         }
 
         public static string Get02PreprocessScript(string product, DateTime start, DateTime end)
@@ -224,163 +232,32 @@ namespace QuakeAnalysis
             StringBuilder sb = new StringBuilder();
             for (DateTime date = start; date <= end; date = date.AddDays(1))
             {
-                string ymlPath = Generate02PreprocessYml(product.Substring(0, 3), date);
+                string ymlPath = YmlGenerator.Generate02PreprocessYml(product.Substring(0, 3), date);
                 sb.AppendLine($@"{GlobalModisMain.Config.ModisProc02} -y {ymlPath}");
             }
             return sb.ToString();
         }
 
-        public static string Generate02PreprocessYml(string type, DateTime date)
-        {
-            var cfg = GlobalModisMain.Config;
-            var hdfListFile = Generate02HdfListFile(type, date);
-            StringBuilder sb = new StringBuilder($"HDFListFile: {hdfListFile}\n");
-            sb.AppendLine($@"TmpPath: {cfg.WorkspaceDir}\tmp");
-            sb.AppendLine($"MinLon: {cfg.PrepMinLon}");
-            sb.AppendLine($"MaxLon: {cfg.PrepMaxLon}");
-            sb.AppendLine($"MinLat: {cfg.PrepMinLat}");
-            sb.AppendLine($"MaxLat: {cfg.PrepMaxLat}");
-            sb.AppendLine($"Band: {cfg.Prep02Band}");
-            sb.AppendLine($"MRTKernelType: {cfg.Prep02MrtKernelType}");
-            sb.AppendLine($"MRTProjectionType: {cfg.Prep02MrtProjType}");
-            sb.AppendLine($"MRTProjectionArgs: {cfg.Prep02MrtProjArgs}");
-            sb.AppendLine($"MRTPixelSize: {cfg.Prep02MrtPixelSize}");
-            sb.AppendLine($@"OutputImageFile: {cfg.WorkspaceDir}\Standard\{type}_BT\bt_{date.Year}_{date.DayOfYear}.tif");
-            string outputPath = $@"{cfg.WorkspaceDir}\Scripts\{type}021KM_{date.Year}_{date.DayOfYear}.yml";
-            if (File.Exists(outputPath)) File.Delete(outputPath);
-            File.WriteAllText(outputPath, sb.ToString());
-            return outputPath;
-        }
-
-        public static string Generate02HdfListFile(string type, DateTime date)
-        {
-            var cfg = GlobalModisMain.Config;
-            string year = date.Year.ToString();
-            string day = date.DayOfYear.ToString();
-            string btHdfDir = $@"{cfg.WorkspaceDir}\{type}021KM\{year}\{day}\";
-            string szaHdfDir = $@"{cfg.WorkspaceDir}\{type}03\{year}\{day}\";
-            string cmHdfDir = $@"{cfg.WorkspaceDir}\{type}35_L2\{year}\{day}\";
-            DirectoryInfo directoryInfo = new DirectoryInfo(btHdfDir);
-            StringBuilder sb = new StringBuilder();
-            foreach (FileInfo file in directoryInfo.EnumerateFiles("*.hdf"))
-            {
-                string searchStr = file.Name.Substring(9, 13);
-                var szaFiles = Directory.EnumerateFiles(szaHdfDir, "*.hdf").ToList();
-                string szaFileName = szaFiles.Find(s => s.Contains(searchStr));
-                var cmFiles = Directory.EnumerateFiles(cmHdfDir, "*.hdf").ToList();
-                string cmFileName = cmFiles.Find(s => s.Contains(searchStr));
-                if (!string.IsNullOrEmpty(szaFileName) && !string.IsNullOrEmpty(cmFileName))
-                {
-                    sb.AppendLine("#"); //#开头
-                    sb.AppendLine(file.FullName);
-                    sb.AppendLine(szaFileName);
-                    sb.AppendLine(cmFileName);
-                }
-                else
-                {
-                    MessageBox.Show($"不存在{date}的云掩膜或太阳天顶角文件！", Settings.Default.DT,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return "";
-                }
-            }
-            string path = $@"{cfg.WorkspaceDir}\Scripts\{type}021KM_{year}_{day}_hdflist.txt";
-            if (File.Exists(path)) File.Delete(path);
-            File.WriteAllText(path, sb.ToString());
-            return path;
-        }
-
         public static string Get04PreprocessScript(string product, DateTime start, DateTime end)
         {
-            return "";
-
-        }
-
-        public static string Generate04PreprocessYml(string type, DateTime date)
-        {
-            return "";
-
-        }
-
-        public static string Generate04HdfListFile(string product, DateTime date)
-        {
-            return "";
-
+            StringBuilder sb = new StringBuilder();
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = YmlGenerator.Generate04PreprocessYml(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc04} -y {ymlPath}");
+            }
+            return sb.ToString();
         }
 
         public static string Get05PreprocessScript(string product, DateTime start, DateTime end)
         {
-            return "";
-
-        }
-
-        public static string Generate05PreprocessYml(string type, DateTime date)
-        {
-            return "";
-
-        }
-
-        public static string Generate05HdfListFile(string product, DateTime date)
-        {
-            return "";
-
-        }
-
-        public static string Get11PreprocessScript(string product, DateTime start, DateTime end)
-        {
-            return "";
-
-        }
-
-        public static string Generate11PreprocessYml(string type, DateTime date)
-        {
-            return "";
-
-        }
-
-        public static string Generate11HdfListFile(string product, DateTime date)
-        {
-            return "";
-        }
-
-
-
-        private void GeneratePreprocessScripts()
-        {
-            var start = dtpStart.Value;
-            var end = dtpEnd.Value;
-            var type = "MOD";
-            var cfg = GlobalModisMain.Config;
-            for (DateTime date = start; date != end;)
+            StringBuilder sb = new StringBuilder();
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
             {
-                string year = date.Year.ToString();
-                string day = date.DayOfYear.ToString();
-                string btHdfDir = $@"{cfg.WorkspaceDir}\{type}021KM\{year}\{day}\";
-                string szaHdfDir = $@"{cfg.WorkspaceDir}\{type}03\{year}\{day}\";
-                string cmHdfDir = $@"{cfg.WorkspaceDir}\{type}35_L2\{year}\{day}\";
-                DirectoryInfo directoryInfo = new DirectoryInfo(btHdfDir);
-                StringBuilder sb = new StringBuilder();
-                foreach (FileInfo file in directoryInfo.EnumerateFiles("*.hdf"))
-                {
-                    string searchStr = file.Name.Substring(9, 13);
-                    var szaFiles = Directory.EnumerateFiles(szaHdfDir, "*.hdf").ToList();
-                    string szaFileName = szaFiles.Find(s => s.Contains(searchStr));
-                    var cmFiles = Directory.EnumerateFiles(cmHdfDir, "*.hdf").ToList();
-                    string cmFileName = cmFiles.Find(s => s.Contains(searchStr));
-                    if (!string.IsNullOrEmpty(szaFileName) && !string.IsNullOrEmpty(cmFileName))
-                    {
-                        sb.AppendLine("#"); //#开头
-                        sb.AppendLine(file.FullName);
-                        sb.AppendLine(szaFileName);
-                        sb.AppendLine(cmFileName);
-                    }
-                    else
-                    {
-                        Console.WriteLine("不存在的Sza或CM文件！");
-                    }
-                }
-
-                date = date.AddDays(1);
+                string ymlPath = YmlGenerator.Generate05PreprocessYml(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc05} -y {ymlPath}");
             }
+            return sb.ToString();
         }
 
         private void rbtnYMD_CheckedChanged(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 ﻿using QuakeAnalysis.Properties;
 using System;
 using System.Windows.Forms;
+using QuakeAnalysis.Cfg;
 
 namespace QuakeAnalysis
 {

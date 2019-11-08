@@ -8,6 +8,7 @@ using OSGeo.GDAL;
 using OSGeo.OGR;
 using OSGeo.OSR;
 using QuakeAnalysis.Entity;
+using QuakeAnalysis.Method.Gdal;
 using QuakeAnalysis.Method.Modis;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;

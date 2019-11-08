@@ -30,10 +30,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Gdal = OSGeo.GDAL.Gdal;
 using Ogr = OSGeo.OGR.Ogr;
 
-namespace QuakeAnalysis
+namespace QuakeAnalysis.Method.Gdal
 {
     public static partial class GdalConfiguration
     {
@@ -77,18 +76,18 @@ namespace QuakeAnalysis
                 // Set the additional GDAL environment variables.
                 string gdalData = Path.Combine(gdalPath, "data");
                 Environment.SetEnvironmentVariable("GDAL_DATA", gdalData);
-                Gdal.SetConfigOption("GDAL_DATA", gdalData);
+                OSGeo.GDAL.Gdal.SetConfigOption("GDAL_DATA", gdalData);
 
                 string driverPath = Path.Combine(nativePath, "plugins");
                 Environment.SetEnvironmentVariable("GDAL_DRIVER_PATH", driverPath);
-                Gdal.SetConfigOption("GDAL_DRIVER_PATH", driverPath);
+                OSGeo.GDAL.Gdal.SetConfigOption("GDAL_DRIVER_PATH", driverPath);
 
                 Environment.SetEnvironmentVariable("GEOTIFF_CSV", gdalData);
-                Gdal.SetConfigOption("GEOTIFF_CSV", gdalData);
+                OSGeo.GDAL.Gdal.SetConfigOption("GEOTIFF_CSV", gdalData);
 
                 string projSharePath = Path.Combine(gdalPath, "share");
                 Environment.SetEnvironmentVariable("PROJ_LIB", projSharePath);
-                Gdal.SetConfigOption("PROJ_LIB", projSharePath);
+                OSGeo.GDAL.Gdal.SetConfigOption("PROJ_LIB", projSharePath);
             }
         }
 
@@ -116,7 +115,7 @@ namespace QuakeAnalysis
             if (_configuredGdal) return;
 
             // Register drivers
-            Gdal.AllRegister();
+            OSGeo.GDAL.Gdal.AllRegister();
             _configuredGdal = true;
 
             PrintDriversGdal();
@@ -159,10 +158,10 @@ namespace QuakeAnalysis
         private static void PrintDriversGdal()
         {
 #if DEBUG
-            var num = Gdal.GetDriverCount();
+            var num = OSGeo.GDAL.Gdal.GetDriverCount();
             for (var i = 0; i < num; i++)
             {
-                var driver = Gdal.GetDriver(i);
+                var driver = OSGeo.GDAL.Gdal.GetDriver(i);
                 Console.WriteLine(string.Format("GDAL {0}: {1}-{2}", i, driver.ShortName, driver.LongName));
             }
 #endif
