@@ -41,6 +41,10 @@ namespace QuakeAnalysis
 
         private void FrmModisMain_Load(object sender, EventArgs e)
         {
+            txtShowParameters.WordWrap = false;
+            txtShowParameters.ScrollBars = ScrollBars.Both;
+            txtShowParameters.ReadOnly = true;
+
             cboxFontSize.DataSource = SUPPORT_FONT_SIZES;
             cboxFontSize.SelectedIndexChanged += cboxFontSize_SelectedIndexChanged;
             cboxFontSize.SelectedIndex = SUPPORT_FONT_SIZES.ToList()
@@ -54,7 +58,6 @@ namespace QuakeAnalysis
 
         private void button4_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnArchive_Click(object sender, EventArgs e)
@@ -64,6 +67,7 @@ namespace QuakeAnalysis
             if (frmModisArchive.ShowDialog() == DialogResult.OK)
             {
                 _dataFolder = frmModisArchive.DataFolder;
+                RefreshDescription();
             }
         }
 
@@ -94,7 +98,6 @@ namespace QuakeAnalysis
             //// 预处理
             //if (ckBoxPreprocess.Checked)
             //{
-
             //}
 
             await CmdRunner.RunProcessAsync("cmd.exe", $@"/c {GlobalModisMain.Config.WorkspaceDir}\Scripts\a.bat");
@@ -159,6 +162,7 @@ namespace QuakeAnalysis
         private void btnSave_Click(object sender, EventArgs e)
         {
             var checkedProducts = GetCheckedProducts();
+
             if (checkedProducts.Count == 0)
             {
                 MessageBox.Show("未选择数据！", Settings.Default.DT,
@@ -208,24 +212,61 @@ namespace QuakeAnalysis
                             sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc02).DirectoryName}");
                             sb.AppendLine(Get02PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
                             break;
+
                         case "MOD04":
                         case "MYD04":
                             sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc04).DirectoryName}");
                             sb.AppendLine(Get04PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
                             break;
+
                         case "MOD05":
                         case "MYD05":
                             sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc05).DirectoryName}");
                             sb.AppendLine(Get05PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
                             break;
+
                         case "MOD11":
                         case "MYD11":
                             break;
                     }
                 }
             }
+
+            if (ckBoxPlotStd.Checked)  // 标准数据出图
+            {
+                foreach (var product in GetCheckedProducts())
+                {
+                    switch (product)
+                    {
+                        case "MOD02":
+                        case "MYD02":
+                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
+                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate02PlotStdYml));
+                            break;
+
+                        case "MOD04":
+                        case "MYD04":
+                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
+                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate04PlotStdYml));
+                            break;
+
+                        case "MOD05":
+                        case "MYD05":
+                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
+                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate05PlotStdYml));
+                            break;
+
+                        case "MOD11":
+                        case "MYD11":
+                            break;
+                    }
+                }
+            }
+
             File.WriteAllText($@"{GlobalModisMain.Config.ScriptBatPath("a")}", sb.ToString());
         }
+
+        #region Generate Preprocess Scripts
 
         public static string Get02PreprocessScript(string product, DateTime start, DateTime end)
         {
@@ -256,6 +297,20 @@ namespace QuakeAnalysis
             {
                 string ymlPath = YmlGenerator.Generate05PreprocessYml(product.Substring(0, 3), date);
                 sb.AppendLine($@"{GlobalModisMain.Config.ModisProc05} -y {ymlPath}");
+            }
+            return sb.ToString();
+        }
+
+        #endregion Generate Preprocess Scripts
+
+        public static string GetPlotScript(string product, DateTime start, DateTime end,
+            Func<string, DateTime, string> ymlGenerator)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = ymlGenerator(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisPlot} -y {ymlPath}");
             }
             return sb.ToString();
         }
@@ -305,13 +360,6 @@ namespace QuakeAnalysis
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            FrmEddySetting frmEddySetting = new FrmEddySetting();
-            frmEddySetting.ShowDialog();
         }
 
         private void btnPreprocess_Click_1(object sender, EventArgs e)
@@ -319,8 +367,63 @@ namespace QuakeAnalysis
             var checkedProducts = GetCheckedProducts();
             FrmModisPreprocess frmModisPreprocess =
                 new FrmModisPreprocess(checkedProducts);
-            frmModisPreprocess.ShowDialog();
+            if (frmModisPreprocess.ShowDialog() == DialogResult.OK)
+            {
+                RefreshDescription();
+            }
         }
 
+        private void btnPlotStd_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btnEddyField_Click(object sender, EventArgs e)
+        {
+            FrmEddySetting frmEddySetting = new FrmEddySetting();
+            if (frmEddySetting.ShowDialog() == DialogResult.OK)
+            {
+            };
+        }
+
+        private string GetProcessDescription()
+        {
+            StringBuilder builder = new StringBuilder("处理流程:");
+
+            if (ckBoxArchive.Checked)
+            {
+                builder.AppendLine("数据归档：");
+                builder.AppendLine($"\t工作空间目录：{GlobalModisMain.Config.WorkspaceDir}");
+                builder.AppendLine($"\t数据目录：{GlobalModisMain.Config.DataDir}");
+                builder.AppendLine("");
+            }
+
+            if (ckBoxPreprocess.Checked)
+            {
+                builder.AppendLine($"数据预处理：");
+                builder.AppendLine($"范围:");
+                builder.AppendLine(
+                          $"\t最小经度：{GlobalModisMain.Config.PrepMinLon}，最大经度：{GlobalModisMain.Config.PrepMaxLon}");
+                builder.AppendLine(
+                    $"\t最小纬度：{GlobalModisMain.Config.PrepMinLat}，最大纬度：{GlobalModisMain.Config.PrepMaxLat}");
+
+                if (ckBoxMOD02.Checked || ckBoxMYD02.Checked)
+                {
+                    builder.AppendLine($"亮温处理：");
+                    builder.AppendLine($"\t波段：{GlobalModisMain.Config.Prep02Band}");
+                    builder.AppendLine($"\tMRTKernelType：{GlobalModisMain.Config.Prep02MrtKernelType}");
+                    builder.AppendLine($"\tMRTProjectType：{GlobalModisMain.Config.Prep02MrtProjType}");
+                    builder.AppendLine($"\tMRTProjectArgs：{GlobalModisMain.Config.Prep02MrtProjArgs}");
+                    builder.AppendLine($"\tMRTPixelSize：{GlobalModisMain.Config.Prep02MrtPixelSize}");
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private void RefreshDescription()
+        {
+            txtShowParameters.Clear();
+            txtShowParameters.Text = GetProcessDescription();
+        }
     }
 }

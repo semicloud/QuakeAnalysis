@@ -5,7 +5,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace QuakeAnalysis.Cfg
 {
-    public class ModisMainConfig
+    public partial class ModisMainConfig
     {
         private const string CONFIG_FILE = "Yml\\modis_main.yml";
 
@@ -24,7 +24,7 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "tmp-dir", ApplyNamingConventions = false)]
         public string TmpDir { get; set; }
 
-        [YamlMember(Alias = "stdmap-dir")]
+        [YamlMember(Alias = "stdmap-dir", ApplyNamingConventions = false)]
         public string StdMapDir { get; set; }
 
         [YamlMember(Alias = "data-dir", ApplyNamingConventions = false)]
@@ -56,10 +56,13 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "modis-rsten", ApplyNamingConventions = false)]
         public string ModisRstEn { get; set; }
 
+        /// <summary>
+        /// Plot程序的路径
+        /// </summary>
         [YamlMember(Alias = "modis-plot", ApplyNamingConventions = false)]
         public string ModisPlot { get; set; }
 
-        #endregion
+        #endregion Modis程序路径
 
         #region 输出路径和文件名规则
 
@@ -113,6 +116,12 @@ namespace QuakeAnalysis.Cfg
             return $"{WorkspaceDir}\\Standard\\{type}_LST";
         }
 
+        /// <summary>
+        /// 获取由类型和日期所指定的亮温tif文件所在的路径
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <param name="d">日期</param>
+        /// <returns>路径</returns>
         public string Std02TifPath(string type, DateTime d)
         {
             return $"{Std02Dir(type)}\\bt_{d.Year}_{d.DayOfYear}.tif";
@@ -178,7 +187,7 @@ namespace QuakeAnalysis.Cfg
             return $"{WorkspaceDir}\\Scripts\\{fileName}.bat";
         }
 
-        #endregion
+        #endregion 输出路径和文件名规则
 
         #region 预处理配置
 
@@ -196,7 +205,7 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "prep-max-lat", ApplyNamingConventions = false)]
         public double PrepMaxLat { get; set; }
 
-        #endregion
+        #endregion 经纬度
 
         #region 亮温
 
@@ -215,9 +224,7 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "prep02-mrtpixelsize", ApplyNamingConventions = false)]
         public double Prep02MrtPixelSize { get; set; }
 
-
-
-        #endregion
+        #endregion 亮温
 
         #region 气溶胶、水汽
 
@@ -239,7 +246,7 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "prep05-projparameters", ApplyNamingConventions = false)]
         public string Prep05ProjParameters { get; set; }
 
-        #endregion
+        #endregion 气溶胶、水汽
 
         #region 地表温度
 
@@ -261,8 +268,62 @@ namespace QuakeAnalysis.Cfg
         //[YamlMember(Alias = "prep11-pixelsize", ApplyNamingConventions = false)]
         //public double Prep11PixelSize { get; set; }
 
+        #endregion 地表温度
+
+        #endregion 预处理配置
+
+        #region 标准数据出图配置
+
+        public string GetStdPlotTitle(string dataType, DateTime date)
+        {
+            return $"{dataType}_Std_{date.Year}_{date.DayOfYear}";
+        }
+
+        [YamlMember(Alias = "plot-stdtitle-size", ApplyNamingConventions = false)]
+        public int PlotStdTitleSize { get; set; }
+
+        [YamlMember(Alias = "plot-stdextent", ApplyNamingConventions = false)]
+        public string PlotStdExtent { get; set; }
+
+        [YamlMember(Alias = "plot-stdbarname", ApplyNamingConventions = false)]
+        public string PlotStdBarName { get; set; }
+
+        [YamlMember(Alias = "plot-stdbartitle02", ApplyNamingConventions = false)]
+        public string PlotBarTitle02 { get; set; }
+
+        [YamlMember(Alias = "plot-stdbartitle04", ApplyNamingConventions = false)]
+        public string PlotBarTitle04 { get; set; }
+
+        [YamlMember(Alias = "plot-stdbartitle05", ApplyNamingConventions = false)]
+        public string PlotBarTitle05 { get; set; }
+
+        [YamlMember(Alias = "plot-stdbartitle11", ApplyNamingConventions = false)]
+        public string PlotBarTitle11 { get; set; }
+
+        [YamlMember(Alias = "plot-stdbarsize", ApplyNamingConventions = false)]
+        public int PlotStdBarTitleSize { get; set; }
+
+        [YamlMember(Alias = "plot-outputdpi", ApplyNamingConventions = false)]
+        public int plotOutputDpi { get; set; }
+
+        [YamlMember(Alias = "plot-outputsize", ApplyNamingConventions = false)]
+        public string PlotOutputSize { get; set; }
+
         #endregion
 
+        #region ShapeFile和地震目录设置
+
+        [YamlMember(Alias = "plot-shpboundary", ApplyNamingConventions = false)]
+        public string PlotShpBoundary { get; set; }
+
+        [YamlMember(Alias = "plot-shpfault", ApplyNamingConventions = false)]
+        public string PlotShpFault { get; set; }
+
+        [YamlMember(Alias = "plot-shpcity", ApplyNamingConventions = false)]
+        public string PlotShpCity { get; set; }
+
+        [YamlMember(Alias = "plot-quakerecord", ApplyNamingConventions = false)]
+        public string PlotQuakeRecord { get; set; }
 
         #endregion
 

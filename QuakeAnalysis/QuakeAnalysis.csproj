@@ -105,8 +105,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cfg\EddyConfig.cs" />
     <Compile Include="CmdRunner.cs" />
     <Compile Include="Cfg\Config.cs" />
+    <Compile Include="FrmPlotStd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPlotStd.Designer.cs">
+      <DependentUpon>FrmPlotStd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Test\ConfigTest.cs" />
     <Compile Include="Entity\CODGData.cs" />
     <Compile Include="Entity\CODGDataElement.cs" />
@@ -191,6 +198,7 @@
     <Compile Include="Test\StringTemplateTest.cs" />
     <Compile Include="Test\MyTest.cs" />
     <Compile Include="YmlAbnormal.cs" />
+    <Compile Include="YmlPlotStd.cs" />
     <Compile Include="YmlPreprocess.cs" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -226,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmModisPreprocess.resx">
       <DependentUpon>FrmModisPreprocess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPlotStd.resx">
+      <DependentUpon>FrmPlotStd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRstenSetting.resx">
       <DependentUpon>FrmRstenSetting.cs</DependentUpon>

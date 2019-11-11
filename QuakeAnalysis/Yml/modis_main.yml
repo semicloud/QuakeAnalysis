@@ -22,7 +22,7 @@ modis-proc_mxd11a1: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\p
 modis-eddyfield: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\eddy_field_ano.exe
 modis-generalano: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\juping_ano.exe.exe
 modis-rsten: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\rst_en_ano.exe
-modis-plot: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\modis_plot.exe
+modis-plot: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\modis_plot.py
 
 # 预处理部分的设置
 prep-min-lon: 110
@@ -45,3 +45,36 @@ prep05-projparameters: ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
 # prep11-projtype: ER
 # prep11-projparameters: 6370997.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
 # prep11-pixelsize: 1000
+
+# 标准数据出图设置
+# plot-stdtitle: <data_type>_std_<doy>.png
+plot-stdtitle-size: 12
+plot-stdextent: 110,115,1,45,50,1
+plot-stdbarname: nipy_spectral
+plot-stdbartitle02: Brightness Temperature(K)
+plot-stdbartitle04: Aerosol
+plot-stdbartitle05: Water Vapor
+plot-stdbartitle11: LST
+plot-stdbarsize: 12
+plot-outputdpi: 600
+plot-outputsize: 12,8
+
+# ShapeFile设置
+plot-shpboundary: D:\modis\ShapeFiles\faults\ne_50m_admin_0_countries_polyline
+plot-shpfault: D:\modis\ShapeFiles\faults\faults_deng_simple
+plot-shpcity: D:\modis\ShapeFiles\faults\cities
+plot-quakerecord: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\earthquakes.csv
+
+# 涡度设置
+# 是否使用模式1
+eddy-mode1: true
+# 是否使用模式2
+eddy-mode2: false
+# 是否生成背景场
+eddy-bg: true
+# 背景场是否出图
+eddy-plot-bg: true
+# 异常是否出图
+eddy-plot-ano: true
+# 是否绘制等值线
+eddy-contour: false

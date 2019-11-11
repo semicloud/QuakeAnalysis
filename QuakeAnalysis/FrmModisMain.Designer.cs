@@ -77,15 +77,15 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnEddyField = new System.Windows.Forms.Button();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.ckBoxEddyField = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnPreprocess = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnPlotStd = new System.Windows.Forms.Button();
             this.btnArchive = new System.Windows.Forms.Button();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.ckBoxPlotStd = new System.Windows.Forms.CheckBox();
             this.ckBoxPreprocess = new System.Windows.Forms.CheckBox();
             this.ckBoxArchive = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
@@ -628,10 +628,10 @@
             // 
             this.groupBox4.Controls.Add(this.button4);
             this.groupBox4.Controls.Add(this.button2);
-            this.groupBox4.Controls.Add(this.button1);
+            this.groupBox4.Controls.Add(this.btnEddyField);
             this.groupBox4.Controls.Add(this.checkBox3);
             this.groupBox4.Controls.Add(this.checkBox2);
-            this.groupBox4.Controls.Add(this.checkBox1);
+            this.groupBox4.Controls.Add(this.ckBoxEddyField);
             this.groupBox4.Location = new System.Drawing.Point(4, 184);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
@@ -661,16 +661,16 @@
             this.button2.Text = "设置";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnEddyField
             // 
-            this.button1.Location = new System.Drawing.Point(252, 36);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 29);
-            this.button1.TabIndex = 30;
-            this.button1.Text = "设置";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnEddyField.Location = new System.Drawing.Point(252, 36);
+            this.btnEddyField.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEddyField.Name = "btnEddyField";
+            this.btnEddyField.Size = new System.Drawing.Size(100, 29);
+            this.btnEddyField.TabIndex = 30;
+            this.btnEddyField.Text = "设置";
+            this.btnEddyField.UseVisualStyleBackColor = true;
+            this.btnEddyField.Click += new System.EventHandler(this.btnEddyField_Click);
             // 
             // checkBox3
             // 
@@ -694,23 +694,23 @@
             this.checkBox2.Text = "距平法";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // ckBoxEddyField
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(32, 41);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(74, 19);
-            this.checkBox1.TabIndex = 30;
-            this.checkBox1.Text = "涡度法";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.ckBoxEddyField.AutoSize = true;
+            this.ckBoxEddyField.Location = new System.Drawing.Point(32, 41);
+            this.ckBoxEddyField.Margin = new System.Windows.Forms.Padding(4);
+            this.ckBoxEddyField.Name = "ckBoxEddyField";
+            this.ckBoxEddyField.Size = new System.Drawing.Size(74, 19);
+            this.ckBoxEddyField.TabIndex = 30;
+            this.ckBoxEddyField.Text = "涡度法";
+            this.ckBoxEddyField.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnPreprocess);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.btnPlotStd);
             this.groupBox2.Controls.Add(this.btnArchive);
-            this.groupBox2.Controls.Add(this.checkBox7);
+            this.groupBox2.Controls.Add(this.ckBoxPlotStd);
             this.groupBox2.Controls.Add(this.ckBoxPreprocess);
             this.groupBox2.Controls.Add(this.ckBoxArchive);
             this.groupBox2.Location = new System.Drawing.Point(4, 0);
@@ -734,15 +734,16 @@
             this.btnPreprocess.UseVisualStyleBackColor = true;
             this.btnPreprocess.Click += new System.EventHandler(this.btnPreprocess_Click_1);
             // 
-            // button3
+            // btnPlotStd
             // 
-            this.button3.Location = new System.Drawing.Point(252, 125);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 29);
-            this.button3.TabIndex = 22;
-            this.button3.Text = "设置";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnPlotStd.Location = new System.Drawing.Point(252, 125);
+            this.btnPlotStd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPlotStd.Name = "btnPlotStd";
+            this.btnPlotStd.Size = new System.Drawing.Size(100, 29);
+            this.btnPlotStd.TabIndex = 22;
+            this.btnPlotStd.Text = "设置";
+            this.btnPlotStd.UseVisualStyleBackColor = true;
+            this.btnPlotStd.Click += new System.EventHandler(this.btnPlotStd_Click);
             // 
             // btnArchive
             // 
@@ -756,16 +757,16 @@
             this.btnArchive.UseVisualStyleBackColor = true;
             this.btnArchive.Click += new System.EventHandler(this.btnArchive_Click);
             // 
-            // checkBox7
+            // ckBoxPlotStd
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(32, 130);
-            this.checkBox7.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(119, 19);
-            this.checkBox7.TabIndex = 16;
-            this.checkBox7.Text = "标准数据出图";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.ckBoxPlotStd.AutoSize = true;
+            this.ckBoxPlotStd.Location = new System.Drawing.Point(32, 130);
+            this.ckBoxPlotStd.Margin = new System.Windows.Forms.Padding(4);
+            this.ckBoxPlotStd.Name = "ckBoxPlotStd";
+            this.ckBoxPlotStd.Size = new System.Drawing.Size(119, 19);
+            this.ckBoxPlotStd.TabIndex = 16;
+            this.ckBoxPlotStd.Text = "标准数据出图";
+            this.ckBoxPlotStd.UseVisualStyleBackColor = true;
             // 
             // ckBoxPreprocess
             // 
@@ -874,15 +875,15 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnPreprocess;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnPlotStd;
         private System.Windows.Forms.Button btnArchive;
-        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.CheckBox ckBoxPlotStd;
         private System.Windows.Forms.CheckBox ckBoxPreprocess;
         private System.Windows.Forms.CheckBox ckBoxArchive;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox ckBoxEddyField;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnEddyField;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button2;
     }

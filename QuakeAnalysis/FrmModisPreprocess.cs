@@ -69,17 +69,17 @@ namespace QuakeAnalysis
 
                 MessageBox.Show("预处理配置已保存！", Settings.Default.DT, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                Close();
+                this.DialogResult = DialogResult.OK;
             }
             else
             {
-                Close();
+                this.DialogResult = DialogResult.Cancel;
             }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Close();
+            this.DialogResult = DialogResult.Cancel;
         }
     }
 }
