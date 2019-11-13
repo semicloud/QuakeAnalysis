@@ -14,6 +14,26 @@ namespace QuakeAnalysis
 
         #region 亮温
 
+        /// <summary>
+        /// 获取亮温的bat运行脚本
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string GetPrep02Scripts(string product, DateTime start, DateTime end)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"cd {new FileInfo(GlobalModisMain.Config.ModisProc02).DirectoryName}");
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = Generate02PreprocessYml(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc02} -y {ymlPath}");
+            }
+
+            return sb.ToString();
+        }
+
         public static string Generate02PreprocessYml(string type, DateTime date)
         {
             var cfg = GlobalModisMain.Config;
@@ -78,6 +98,26 @@ namespace QuakeAnalysis
 
         #region 气溶胶
 
+        /// <summary>
+        /// 获取气溶胶bat运行脚本
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string GetPrep04Scripts(string product, DateTime start, DateTime end)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"cd {new FileInfo(GlobalModisMain.Config.ModisProc04).DirectoryName}");
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = Generate04PreprocessYml(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc04} -y {ymlPath}");
+            }
+
+            return sb.ToString();
+        }
+
         public static string Generate04PreprocessYml(string type, DateTime date)
         {
             string hdfListFile = Generate04HdfListFile(type, date);
@@ -119,6 +159,27 @@ namespace QuakeAnalysis
         #endregion 气溶胶
 
         #region 水汽
+
+        /// <summary>
+        /// 获取水汽bat运行脚本
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static string GetPrep05Scripts(string product, DateTime start, DateTime end)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"cd {new FileInfo(GlobalModisMain.Config.ModisProc05).DirectoryName}");
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = Generate05PreprocessYml(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc05} -y {ymlPath}");
+            }
+
+            return sb.ToString();
+        }
+
 
         public static string Generate05PreprocessYml(string type, DateTime date)
         {

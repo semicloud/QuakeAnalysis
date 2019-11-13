@@ -209,22 +209,16 @@ namespace QuakeAnalysis
                     {
                         case "MOD02":
                         case "MYD02":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc02).DirectoryName}");
-                            sb.AppendLine(Get02PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
+                            sb.AppendLine(YmlGenerator.GetPrep02Scripts(product, dtpStart.Value, dtpEnd.Value));
                             break;
-
                         case "MOD04":
                         case "MYD04":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc04).DirectoryName}");
-                            sb.AppendLine(Get04PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
+                            sb.AppendLine(YmlGenerator.GetPrep04Scripts(product, dtpStart.Value, dtpEnd.Value));
                             break;
-
                         case "MOD05":
                         case "MYD05":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisProc05).DirectoryName}");
-                            sb.AppendLine(Get05PreprocessScript(product, dtpStart.Value, dtpEnd.Value));
+                            sb.AppendLine(YmlGenerator.GetPrep05Scripts(product, dtpStart.Value, dtpEnd.Value));
                             break;
-
                         case "MOD11":
                         case "MYD11":
                             break;
@@ -240,22 +234,19 @@ namespace QuakeAnalysis
                     {
                         case "MOD02":
                         case "MYD02":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
-                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate02PlotStdYml));
+                            sb.AppendLine(YmlGenerator.GetStdPlotScript(product, dtpStart.Value, dtpEnd.Value,
+                                YmlGenerator.Generate02PlotStdYml));
                             break;
-
                         case "MOD04":
                         case "MYD04":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
-                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate04PlotStdYml));
+                            sb.AppendLine(YmlGenerator.GetStdPlotScript(product, dtpStart.Value, dtpEnd.Value,
+                                YmlGenerator.Generate04PlotStdYml));
                             break;
-
                         case "MOD05":
                         case "MYD05":
-                            sb.AppendLine($@"cd {new FileInfo(cfg.ModisPlot).DirectoryName}");
-                            sb.AppendLine(GetPlotScript(product, dtpStart.Value, dtpEnd.Value, YmlGenerator.Generate05PlotStdYml));
+                            sb.AppendLine(YmlGenerator.GetStdPlotScript(product, dtpStart.Value, dtpEnd.Value,
+                                YmlGenerator.Generate05PlotStdYml));
                             break;
-
                         case "MOD11":
                         case "MYD11":
                             break;
@@ -263,56 +254,21 @@ namespace QuakeAnalysis
                 }
             }
 
+            if (ckBoxEddyField.Checked) // 计算涡度
+            {
+                sb.AppendLine($@"cd {new FileInfo(cfg.ModisEddyField).DirectoryName}");
+                foreach (var product in GetCheckedProducts())
+                {
+                    sb.AppendLine(YmlGenerator.GetEddyScript(product, dtpStart.Value, dtpEnd.Value));
+                }
+            }
+
             File.WriteAllText($@"{GlobalModisMain.Config.ScriptBatPath("a")}", sb.ToString());
         }
 
-        #region Generate Preprocess Scripts
-
-        public static string Get02PreprocessScript(string product, DateTime start, DateTime end)
+        public static string GetEddyScript(string product, DateTime start, DateTime end)
         {
-            StringBuilder sb = new StringBuilder();
-            for (DateTime date = start; date <= end; date = date.AddDays(1))
-            {
-                string ymlPath = YmlGenerator.Generate02PreprocessYml(product.Substring(0, 3), date);
-                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc02} -y {ymlPath}");
-            }
-            return sb.ToString();
-        }
-
-        public static string Get04PreprocessScript(string product, DateTime start, DateTime end)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (DateTime date = start; date <= end; date = date.AddDays(1))
-            {
-                string ymlPath = YmlGenerator.Generate04PreprocessYml(product.Substring(0, 3), date);
-                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc04} -y {ymlPath}");
-            }
-            return sb.ToString();
-        }
-
-        public static string Get05PreprocessScript(string product, DateTime start, DateTime end)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (DateTime date = start; date <= end; date = date.AddDays(1))
-            {
-                string ymlPath = YmlGenerator.Generate05PreprocessYml(product.Substring(0, 3), date);
-                sb.AppendLine($@"{GlobalModisMain.Config.ModisProc05} -y {ymlPath}");
-            }
-            return sb.ToString();
-        }
-
-        #endregion Generate Preprocess Scripts
-
-        public static string GetPlotScript(string product, DateTime start, DateTime end,
-            Func<string, DateTime, string> ymlGenerator)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (DateTime date = start; date <= end; date = date.AddDays(1))
-            {
-                string ymlPath = ymlGenerator(product.Substring(0, 3), date);
-                sb.AppendLine($@"{GlobalModisMain.Config.ModisPlot} -y {ymlPath}");
-            }
-            return sb.ToString();
+            return "";
         }
 
         private void rbtnYMD_CheckedChanged(object sender, EventArgs e)
@@ -375,6 +331,7 @@ namespace QuakeAnalysis
 
         private void btnPlotStd_Click(object sender, EventArgs e)
         {
+
         }
 
         private void btnEddyField_Click(object sender, EventArgs e)
@@ -382,6 +339,7 @@ namespace QuakeAnalysis
             FrmEddySetting frmEddySetting = new FrmEddySetting();
             if (frmEddySetting.ShowDialog() == DialogResult.OK)
             {
+                Console.WriteLine("涡度已设置");
             };
         }
 

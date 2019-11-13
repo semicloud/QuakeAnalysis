@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOk = new System.Windows.Forms.Button();
             this.gboxPlottingEddyField = new System.Windows.Forms.GroupBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -72,6 +70,8 @@
             this.ckBoxEddyPlotAno = new System.Windows.Forms.CheckBox();
             this.ckBoxEddyPlotBg = new System.Windows.Forms.CheckBox();
             this.ckBoxEddyBg = new System.Windows.Forms.CheckBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -88,7 +88,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -104,31 +104,9 @@
             this.splitContainer1.Panel2.Controls.Add(this.btnCancel);
             this.splitContainer1.Panel2.Controls.Add(this.btnOk);
             this.splitContainer1.Size = new System.Drawing.Size(855, 757);
-            this.splitContainer1.SplitterDistance = 702;
+            this.splitContainer1.SplitterDistance = 701;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(747, 10);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 29);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "取消";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnOk
-            // 
-            this.btnOk.Location = new System.Drawing.Point(639, 10);
-            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(100, 29);
-            this.btnOk.TabIndex = 0;
-            this.btnOk.Text = "确定";
-            this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // gboxPlottingEddyField
             // 
@@ -526,6 +504,7 @@
             this.ckBoxEddyPlotCont.TabIndex = 3;
             this.ckBoxEddyPlotCont.Text = "生成等值线";
             this.ckBoxEddyPlotCont.UseVisualStyleBackColor = true;
+            this.ckBoxEddyPlotCont.Visible = false;
             // 
             // ckBoxEddyPlotAno
             // 
@@ -537,6 +516,7 @@
             this.ckBoxEddyPlotAno.TabIndex = 2;
             this.ckBoxEddyPlotAno.Text = "涡度出图";
             this.ckBoxEddyPlotAno.UseVisualStyleBackColor = true;
+            this.ckBoxEddyPlotAno.Visible = false;
             // 
             // ckBoxEddyPlotBg
             // 
@@ -548,6 +528,7 @@
             this.ckBoxEddyPlotBg.TabIndex = 1;
             this.ckBoxEddyPlotBg.Text = "背景场出图";
             this.ckBoxEddyPlotBg.UseVisualStyleBackColor = true;
+            this.ckBoxEddyPlotBg.Visible = false;
             // 
             // ckBoxEddyBg
             // 
@@ -559,6 +540,29 @@
             this.ckBoxEddyBg.TabIndex = 0;
             this.ckBoxEddyBg.Text = "生成背景场";
             this.ckBoxEddyBg.UseVisualStyleBackColor = true;
+            this.ckBoxEddyBg.Visible = false;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(747, 10);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(100, 29);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "取消";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnOk
+            // 
+            this.btnOk.Location = new System.Drawing.Point(639, 10);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(100, 29);
+            this.btnOk.TabIndex = 0;
+            this.btnOk.Text = "确定";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // FrmEddySetting
             // 
@@ -567,7 +571,7 @@
             this.ClientSize = new System.Drawing.Size(855, 757);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmEddySetting";
             this.Text = "涡度法设置";
             this.Load += new System.EventHandler(this.FrmEddySetting_Load);

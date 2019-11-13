@@ -198,6 +198,7 @@
     <Compile Include="Test\StringTemplateTest.cs" />
     <Compile Include="Test\MyTest.cs" />
     <Compile Include="YmlAbnormal.cs" />
+    <Compile Include="YmlEddyField.cs" />
     <Compile Include="YmlPlotStd.cs" />
     <Compile Include="YmlPreprocess.cs" />
     <None Include="NLog.xsd">

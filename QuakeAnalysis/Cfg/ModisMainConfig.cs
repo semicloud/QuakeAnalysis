@@ -21,6 +21,9 @@ namespace QuakeAnalysis.Cfg
         [YamlMember(Alias = "script-dir", ApplyNamingConventions = false)]
         public string ScriptDir { get; set; }
 
+        [YamlMember(Alias = "std-dir", ApplyNamingConventions = false)]
+        public string StdDir { get; set; }
+
         [YamlMember(Alias = "tmp-dir", ApplyNamingConventions = false)]
         public string TmpDir { get; set; }
 

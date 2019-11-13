@@ -1,12 +1,33 @@
 ﻿using QuakeAnalysis.Cfg;
 using System;
 using System.IO;
+using System.Text;
 
 namespace QuakeAnalysis
 {
+    // 标准数据出图部分
     public partial class YmlGenerator
     {
-        // 标准数据出图部分
+        /// <summary>
+        /// 获取标准数据出图的运行脚本
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="ymlGenerator"></param>
+        /// <returns></returns>
+        public static string GetStdPlotScript(string product, DateTime start, DateTime end,
+            Func<string, DateTime, string> ymlGenerator)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"cd {new FileInfo(GlobalModisMain.Config.ModisPlot).DirectoryName}");
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                string ymlPath = ymlGenerator(product.Substring(0, 3), date);
+                sb.AppendLine($@"{GlobalModisMain.Config.ModisPlot} -y {ymlPath}");
+            }
+            return sb.ToString();
+        }
 
         public static string Generate02PlotStdYml(string type, DateTime date)
         {
