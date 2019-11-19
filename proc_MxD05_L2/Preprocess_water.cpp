@@ -48,13 +48,25 @@ void proc_MxD05_L2::Preprocess_water::preprocess(const std::string& yml_path, co
 		const path scaled_tif_file(tmp_name(hdf_file, "heg_gdal_scaled"));
 
 		heg_process(hdf_file, heg_tif_file, tmp_dir);
-		assert(std::filesystem::exists(heg_tif_file));
+		if (!std::filesystem::exists(heg_tif_file))
+		{
+			BOOST_LOG_TRIVIAL(error) << "HEG转换失败";
+			exit(EXIT_FAILURE);
+		}
 
 		gdal_process(heg_tif_file, gdal_tif_file, param.min_lon(), param.max_lon(), param.min_lat(), param.max_lat());
-		assert(std::filesystem::exists(gdal_tif_file));
+		if (!std::filesystem::exists(gdal_tif_file))
+		{
+			BOOST_LOG_TRIVIAL(error) << "gdal转换失败";
+			exit(EXIT_FAILURE);
+		}
 
 		scale_process(gdal_tif_file, scaled_tif_file);
-		assert(std::filesystem::exists(scaled_tif_file));
+		if (!std::filesystem::exists(scaled_tif_file))
+		{
+			BOOST_LOG_TRIVIAL(error) << "数据标定失败";
+			exit(EXIT_FAILURE);
+		}
 
 		processed_files.push_back(scaled_tif_file);
 		BOOST_LOG_TRIVIAL(info) << hdf_file << "文件处理完成";
@@ -97,9 +109,9 @@ void proc_MxD05_L2::Preprocess_water::scale_process(path const& in_file, path co
 	scale(*oMat);
 	BOOST_LOG_TRIVIAL(debug) << "after scale: \n" << modis_api::Mat_operation::mat_desc(*oMat);
 
-	modis_api::Gdal_operation::write_fmat_to_tif(out_file.string(), *oMat);
-	modis_api::Gdal_operation::set_no_data_value(out_file, NO_DATA_VALUE);
-	BOOST_LOG_TRIVIAL(debug) << "set no_data_value=" << NO_DATA_VALUE << " to " << out_file;
+	modis_api::Gdal_operation::write_fmat_to_tif(out_file.string(), *oMat, NO_DATA_VALUE);
+	//modis_api::Gdal_operation::set_no_data_value(out_file, NO_DATA_VALUE);
+	//BOOST_LOG_TRIVIAL(debug) << "set no_data_value=" << NO_DATA_VALUE << " to " << out_file;
 }
 
 int proc_MxD05_L2::Preprocess_water::scale(arma::fmat& m)
@@ -127,11 +139,11 @@ void proc_MxD05_L2::Preprocess_water::combine(std::vector<path> const& in_file_v
 	std::filesystem::copy_file(in_file_vec.at(0), out_file);
 	BOOST_LOG_TRIVIAL(debug) << "复制文件：" << in_file_vec.at(0) << " -> " << out_file;
 
-	modis_api::Gdal_operation::write_fmat_to_tif(out_file.string(), *oMeanMat);
+	modis_api::Gdal_operation::write_fmat_to_tif(out_file.string(), *oMeanMat, NO_DATA_VALUE);
 	BOOST_LOG_TRIVIAL(debug) << "成功向最终结果文件" << out_file << "写入DN值";
 
-	modis_api::Gdal_operation::set_no_data_value(out_file, NO_DATA_VALUE);
-	BOOST_LOG_TRIVIAL(debug) << "设置" << out_file << "的NODATAVALUE为" << NO_DATA_VALUE;
+	//modis_api::Gdal_operation::set_no_data_value(out_file, NO_DATA_VALUE);
+	//BOOST_LOG_TRIVIAL(debug) << "设置" << out_file << "的NODATAVALUE为" << NO_DATA_VALUE;
 }
 
 

@@ -90,8 +90,6 @@ bool modis_api::Gdal_operation::get_geo_trans_and_proj(const std::string& fn,
 
 boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const std::string& tif_path)
 {
-#pragma region 防御代码
-
 	if (!std::filesystem::exists(tif_path) || !std::filesystem::is_regular_file(tif_path))
 	{
 		BOOST_LOG_TRIVIAL(error) << boost::str(boost::format("非法的tif文件：%1%，读取失败！") % tif_path);
@@ -108,8 +106,6 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const st
 		BOOST_LOG_TRIVIAL(error) << boost::str(boost::format("打开%1%文件失败！") % tif_path);
 		throw std::runtime_error("read tif file failed!");
 	}
-
-# pragma endregion
 
 	auto band = static_cast<GDALRasterBand*>(data_set->GetRasterBand(1));
 	// x_size是列数，y_size是行数
@@ -146,12 +142,10 @@ boost::optional<arma::fmat> modis_api::Gdal_operation::read_tif_to_fmat(const st
 	return boost::optional<arma::fmat>(f_mat);
 }
 
-bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, arma::fmat& mat)
+bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, arma::fmat& mat, float no_data_value)
 {
 	BOOST_LOG_TRIVIAL(debug) << "准备向" << tif_path << "文件写入DN值..";
 	//BOOST_LOG_TRIVIAL(info) << "in write fmat to tif:" << mat.row(0);
-
-#pragma region 防御代码
 
 	if (!std::filesystem::exists(tif_path) || !std::filesystem::is_regular_file(tif_path))
 	{
@@ -168,15 +162,13 @@ bool modis_api::Gdal_operation::write_fmat_to_tif(const std::string& tif_path, a
 		return false;
 	}
 
-#pragma endregion
-
 	GDALRasterBand* band = data_set->GetRasterBand(1);
 	const int x_size = band->GetXSize();
 	const int y_size = band->GetYSize();
 	arma::frowvec row_vec = vectorise(mat, 1);
 	//BOOST_LOG_TRIVIAL(info) << "row_vec: " << row_vec(arma::span(0, 10));
 	band->RasterIO(GF_Write, 0, 0, x_size, y_size, row_vec.memptr(), x_size, y_size, GDT_Float32, 0, 0);
-	band->SetNoDataValue(0);
+	band->SetNoDataValue(no_data_value);
 	GDALClose(data_set);
 	BOOST_LOG_TRIVIAL(debug) << "成功！已向" << tif_path << "文件写入DN值";
 	return true;

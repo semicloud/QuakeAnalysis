@@ -24,12 +24,13 @@ namespace modis_api
 		 * \return
 		 */
 		static boost::optional<arma::fmat> read_tif_to_fmat(const std::string& tif_path);
+
 		/**
 		 * \brief 将矩阵值写入tif文件，写入成功返回true，失败返回false
 		 * \param tif_path tif文件路径
 		 * \param mat 矩阵对象
 		 */
-		static bool write_fmat_to_tif(const std::string& tif_path, arma::fmat& mat);
+		static bool write_fmat_to_tif(const std::string& tif_path, arma::fmat& mat, float no_data_value = 0);
 
 		/**
 		 * \brief 调用gdal_translate.exe转换tif文件
@@ -79,10 +80,10 @@ namespace modis_api
 		/**
 		 * \brief 读取0或05数据集的geo_bound
 		 * \param hdf_path 04或05的hdf文件路径
-		 * \param ulx 
-		 * \param uly 
-		 * \param lrx 
-		 * \param lry 
+		 * \param ulx
+		 * \param uly
+		 * \param lrx
+		 * \param lry
 		 * \return 读取成功返回true，失败返回false
 		 */
 		static bool read_geo_bound(std::filesystem::path const& hdf_path, double& ulx, double& uly,
@@ -96,8 +97,11 @@ namespace modis_api
 		 * \param max_lat 最大纬度
 		 * \return arg
 		 */
-		static std::string get_reproj_arg(double min_lon, double max_lon, double min_lat, double max_lat) { return (boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"") % min_lon % max_lat % max_lon % min_lat).str(); }
-		
+		static std::string get_reproj_arg(double min_lon, double max_lon, double min_lat, double max_lat)
+		{
+			return (boost::format("-ot Float32 -projwin %1% %2% %3% %4% -projwin_srs EPSG:4326 -of GTiff -co \"COMPRESS = LZW\" -co \"INTERLEAVE = BAND\"") % min_lon % max_lat % max_lon % min_lat).str();
+		}
+
 	private:
 		static bool read_min_max_loc(std::string const&, double&, double&);
 
