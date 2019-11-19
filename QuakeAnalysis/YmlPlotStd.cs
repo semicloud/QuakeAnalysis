@@ -34,7 +34,7 @@ namespace QuakeAnalysis
             var cfg = GlobalModisMain.Config;
             string plotExtent = cfg.PlotStdExtent.Replace(',', ' ');
             string inputFile = cfg.Std02TifPath(type, date);
-            string outputFile = $"{cfg.StdMapDir}\\{type}_BT\\bt_{date.Year}_{date.DayOfYear}.png";
+            string outputFile = $"{cfg.StdMapDir}\\{type}_BT\\{date.Year}\\bt_{date.Year}_{date.DayOfYear}.png";
             string ymlStr = $"PlotTitle: {cfg.GetStdPlotTitle($"{type}02", date)}\n" +
                             $"PlotTitleSize: {cfg.PlotStdTitleSize}\n" +
                             $"PlotExtent: {plotExtent}\n" +
@@ -59,7 +59,7 @@ namespace QuakeAnalysis
             var cfg = GlobalModisMain.Config;
             string plotExtent = cfg.PlotStdExtent.Replace(',', ' ');
             string inputFile = cfg.Std04TifPath(type, date);  //! Here
-            string outputFile = $"{cfg.StdMapDir}\\{type}_AOD\\aod_{date.Year}_{date.DayOfYear}.png";  //! Here
+            string outputFile = $"{cfg.StdMapDir}\\{type}_AOD\\{date.Year}\\aod_{date.Year}_{date.DayOfYear}.png";  //! Here
             string ymlStr = $"PlotTitle: {cfg.GetStdPlotTitle($"{type}04", date)}\n" +  //! Here
                             $"PlotTitleSize: {cfg.PlotStdTitleSize}\n" +
                             $"PlotExtent: {plotExtent}\n" +
@@ -84,7 +84,7 @@ namespace QuakeAnalysis
             var cfg = GlobalModisMain.Config;
             string plotExtent = cfg.PlotStdExtent.Replace(',', ' ');
             string inputFile = cfg.Std05TifPath(type, date);  //! Here
-            string outputFile = $"{cfg.StdMapDir}\\{type}_TPW\\tpw_{date.Year}_{date.DayOfYear}.png";  //! Here
+            string outputFile = $"{cfg.StdMapDir}\\{type}_TPW\\{date.Year}\\tpw_{date.Year}_{date.DayOfYear}.png";  //! Here
             string ymlStr = $"PlotTitle: {cfg.GetStdPlotTitle($"{type}05", date)}\n" +  //! Here
                             $"PlotTitleSize: {cfg.PlotStdTitleSize}\n" +
                             $"PlotExtent: {plotExtent}\n" +

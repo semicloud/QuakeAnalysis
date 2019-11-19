@@ -115,7 +115,7 @@ namespace QuakeAnalysis
         {
             string type = product.Substring(0, 3);
             string code = product.Substring(3, 2);
-            string dataFolder = GetStdFolder(type, code);
+            string dataFolder = GetStdFolder(type, code, date);
             StringBuilder builder = new StringBuilder();
             foreach (string file in Directory.EnumerateFiles(dataFolder, "*.tif"))
             {
@@ -141,9 +141,9 @@ namespace QuakeAnalysis
             return fileName.Split('_')[2];
         }
 
-        private static string GetStdFolder(string type, string code)
+        private static string GetStdFolder(string type, string code, DateTime date)
         {
-            return $"{GlobalModisMain.Config.StdDir}\\{type}_{GetProductName(code)}";
+            return $"{GlobalModisMain.Config.StdDir}\\{type}_{GetProductName(code)}\\{date.Year}";
         }
 
         /// <summary>

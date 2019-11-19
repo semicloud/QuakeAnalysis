@@ -127,22 +127,22 @@ namespace QuakeAnalysis.Cfg
         /// <returns>路径</returns>
         public string Std02TifPath(string type, DateTime d)
         {
-            return $"{Std02Dir(type)}\\bt_{d.Year}_{d.DayOfYear}.tif";
+            return $"{Std02Dir(type)}\\{d.Year}\\bt_{d.Year}_{d.DayOfYear}.tif";
         }
 
         public string Std04TifPath(string type, DateTime d)
         {
-            return $"{Std04Dir(type)}\\aod_{d.Year}_{d.DayOfYear}.tif";
+            return $"{Std04Dir(type)}\\{d.Year}\\aod_{d.Year}_{d.DayOfYear}.tif";
         }
 
         public string Std05TifPath(string type, DateTime d)
         {
-            return $"{Std05Dir(type)}\\tpw_{d.Year}_{d.DayOfYear}.tif";
+            return $"{Std05Dir(type)}\\{d.Year}\\tpw_{d.Year}_{d.DayOfYear}.tif";
         }
 
         public string Std11TifPath(string type, DateTime d)
         {
-            return $"{Std11Dir(type)}\\lst_{d.Year}_{d.DayOfYear}.tif";
+            return $"{Std11Dir(type)}\\{d.Year}\\lst_{d.Year}_{d.DayOfYear}.tif";
         }
 
         public string Script02HdfListPath(string type, DateTime d)

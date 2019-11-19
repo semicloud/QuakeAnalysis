@@ -108,6 +108,12 @@
     <Compile Include="Cfg\EddyConfig.cs" />
     <Compile Include="CmdRunner.cs" />
     <Compile Include="Cfg\Config.cs" />
+    <Compile Include="FrmTecMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTecMain.Designer.cs">
+      <DependentUpon>FrmTecMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPlotStd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,7 @@
     <Compile Include="Test\MyTest.cs" />
     <Compile Include="YmlAbnormal.cs" />
     <Compile Include="YmlEddyField.cs" />
+    <Compile Include="YmlJuPing.cs" />
     <Compile Include="YmlPlotStd.cs" />
     <Compile Include="YmlPreprocess.cs" />
     <None Include="NLog.xsd">
@@ -229,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmEddySetting.resx">
       <DependentUpon>FrmEddySetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTecMain.resx">
+      <DependentUpon>FrmTecMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmModisMain.resx">
       <DependentUpon>FrmModisMain.cs</DependentUpon>

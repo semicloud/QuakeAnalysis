@@ -5,12 +5,12 @@ test-attr: 12
 workspace-dir: D:\modis
 # 标准数据存放目录
 std-dir: D:\modis\Standard
+# 标准数据出图目录
+stdmap-dir: D:\modis\Std_Map
 # 存放生成脚本的目录
 script-dir: D:\modis\Scripts
 # tmp目录
 tmp-dir: D:\modis\tmp
-# 标准数据出图目录
-stdmap-dir: D:\modis\Std_Map
 
 # 归档使用的数据目录
 data-dir: D:\modis_download
@@ -22,7 +22,7 @@ modis-proc_mxd04_3k: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\
 modis-proc_mxd05_l2: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD05_L2.exe
 modis-proc_mxd11a1: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\proc_MxD11A1.exe
 modis-eddyfield: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\eddy_field_ano.exe
-modis-generalano: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\juping_ano.exe.exe
+modis-generalano: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\juping_ano.exe
 modis-rsten: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\rst_en_ano.exe
 modis-plot: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\x64\Release\modis_plot.py
 

@@ -1,6 +1,6 @@
 ﻿namespace QuakeAnalysis
 {
-    partial class FrmModisMain
+    partial class FrmTecMain
     {
         /// <summary>
         /// Required designer variable.
@@ -798,15 +798,15 @@
             this.ckBoxArchive.UseVisualStyleBackColor = true;
             this.ckBoxArchive.CheckedChanged += new System.EventHandler(this.ckBoxArchive_CheckedChanged);
             // 
-            // FrmModisMain
+            // FrmTecMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1188, 640);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FrmModisMain";
-            this.Text = "震前多参数异常自动提取软件 ADSMA V1.0";
+            this.Name = "FrmTecMain";
+            this.Text = "震前多参数异常自动提取软件 ADSMA V1.0 - TEC";
             this.Load += new System.EventHandler(this.FrmModisMain_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

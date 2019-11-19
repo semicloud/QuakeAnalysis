@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace QuakeAnalysis
 {
-    public partial class FrmModisMain : Form
+    public partial class FrmTecMain : Form
     {
         /// <summary>
         /// 数据目录
@@ -32,7 +32,7 @@ namespace QuakeAnalysis
             GlobalModisMain.Config.SaveToFile();
         }
 
-        public FrmModisMain()
+        public FrmTecMain()
         {
             InitializeComponent();
             this.Font = this.Font.ChangeFontSize(GlobalModisMain.Config.FontSize);
