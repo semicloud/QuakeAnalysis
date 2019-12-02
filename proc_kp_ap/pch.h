@@ -8,27 +8,12 @@
 
 #ifndef PCH_H
 #define PCH_H
-
 #define BOOST_ALL_DYN_LINK
-
 // TODO: 添加要在此处预编译的标头
+
 #include <string>
-#include <vector>
-#include <boost/algorithm/string.hpp>
+#include <iostream>
+#include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/format.hpp>
-#include <boost/filesystem/string_file.hpp>
-#include <boost/date_time.hpp>
-#include <armadillo>
-#include <xtensor/xadapt.hpp>
-#include <xtensor/xarray.hpp>
-#include <xtensor/xindex_view.hpp>
-#include <xtensor/xio.hpp>
-#include <xtensor/xnpy.hpp>
-#include <xtensor/xpad.hpp>
-#include <xtensor/xreducer.hpp>
-#include <xtensor/xrandom.hpp>
-#include <xtensor/xsort.hpp>
-#include <xtensor/xview.hpp>
 
 #endif //PCH_H

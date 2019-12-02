@@ -47,6 +47,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tec_api", "tec_api\tec_api.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tec_api_test", "tec_api_test\tec_api_test.vcxproj", "{99EE04D4-6283-4171-A7B9-EE9784B1D024}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "proc_kp_ap", "proc_kp_ap\proc_kp_ap.vcxproj", "{F9150F08-ABAE-4210-A8B1-A7336A028B0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -263,6 +265,16 @@ Global
 		{99EE04D4-6283-4171-A7B9-EE9784B1D024}.Release|x64.Build.0 = Release|x64
 		{99EE04D4-6283-4171-A7B9-EE9784B1D024}.Release|x86.ActiveCfg = Release|Win32
 		{99EE04D4-6283-4171-A7B9-EE9784B1D024}.Release|x86.Build.0 = Release|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Debug|x64.ActiveCfg = Debug|x64
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Debug|x64.Build.0 = Debug|x64
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Debug|x86.ActiveCfg = Debug|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Debug|x86.Build.0 = Debug|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Release|x64.ActiveCfg = Release|x64
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Release|x64.Build.0 = Release|x64
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Release|x86.ActiveCfg = Release|Win32
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,6 +297,7 @@ Global
 		{38C1C90E-6FBC-4DB4-AD8B-A31E5843193E} = {0165A516-7C62-439C-8D5D-FFD926D0E81C}
 		{169BC1FA-6D86-4433-BDE5-BFFC3695EB13} = {0165A516-7C62-439C-8D5D-FFD926D0E81C}
 		{99EE04D4-6283-4171-A7B9-EE9784B1D024} = {0165A516-7C62-439C-8D5D-FFD926D0E81C}
+		{F9150F08-ABAE-4210-A8B1-A7336A028B0E} = {0165A516-7C62-439C-8D5D-FFD926D0E81C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F4216F7C-9F2D-47D1-84E5-BE8226FC706B}

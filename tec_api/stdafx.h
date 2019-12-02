@@ -14,11 +14,22 @@
 #include <windows.h>
 
 // 在此处引用程序需要的其他标头
-#include <string>
-#include <vector>
+// TODO 语言的混合模式修改成了否
 #include <boost/algorithm/string.hpp>
+#include <boost/date_time.hpp>
+#include <boost/date_time/gregorian/greg_date.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/string_file.hpp>
-#include <boost/date_time.hpp>
 #include <boost/format.hpp>
-#include <boost/date_time/gregorian/greg_date.hpp>
+#include <gsl/gsl_statistics_double.h>
+#include <string>
+#include <vector>
+#include <xtensor/xarray.hpp>
+#include <xtensor/xbuilder.hpp>
+#include <xtensor/xindex_view.hpp>
+#include <xtensor/xio.hpp>
+#include <xtensor/xpad.hpp>
+#include <xtensor/xrandom.hpp>
+#include <xtensor/xsort.hpp>
+#include <xtensor/xview.hpp>
+

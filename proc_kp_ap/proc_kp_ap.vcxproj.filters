@@ -18,27 +18,15 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="proc_kp_ap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="tec_api_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="process_dst_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="process_kp_ap_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="arma_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="xtensor_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="quantile_test.cpp">
+    <ClCompile Include="proc_kp_ap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
