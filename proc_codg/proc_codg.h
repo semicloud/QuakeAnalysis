@@ -11,5 +11,6 @@ namespace proc_codg
 	std::optional<YAML::Node> load_variables(const std::string& yml_path);
 
 	bool check_variables(const YAML::Node& node);
+
 }
 

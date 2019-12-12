@@ -12,6 +12,8 @@ namespace modis_api
 		Gdal_operation();
 		~Gdal_operation();
 
+		static std::string proj4_to_wkt(std::string const& proj4str);
+		
 		static bool create_tif(const std::string& fn, double* geo_trans,
 			const std::string& proj, arma::fmat mat);
 

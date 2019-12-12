@@ -12,12 +12,17 @@
 #include <gdal_utils.h>
 #include <filesystem>
 
-modis_api::Gdal_operation::Gdal_operation()
-{
-}
+modis_api::Gdal_operation::Gdal_operation() { }
 
-modis_api::Gdal_operation::~Gdal_operation()
+modis_api::Gdal_operation::~Gdal_operation() { }
+
+std::string modis_api::Gdal_operation::proj4_to_wkt(std::string const& proj4str)
 {
+	char* wkt;
+	OGRSpatialReference spatial;
+	spatial.importFromProj4(proj4str.c_str());
+	spatial.exportToWkt(&wkt);
+	return wkt;
 }
 
 bool modis_api::Gdal_operation::create_tif(const std::string& fn,
@@ -49,7 +54,7 @@ bool modis_api::Gdal_operation::create_tif(const std::string& fn,
 
 	if (proj.length() > 0)
 	{
-		po_dataset->SetProjection(proj.c_str());
+		po_dataset->SetProjection(proj4_to_wkt(proj).c_str());
 		po_dataset->SetGeoTransform(geo_trans);
 	}
 

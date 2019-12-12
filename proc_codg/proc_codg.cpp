@@ -2,16 +2,16 @@
 //
 
 #include "pch.h"
+#include "../modis_api/Gdal_operation.h"
+#include "../modis_api/Logger_setting.h"
 #include "CodgItem.h"
 #include "proc_codg.h"
-#include "../modis_api/Logger_setting.h"
-#include "../modis_api/Gdal_operation.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/program_options.hpp>
-#include <yaml-cpp/yaml.h>
 #include <filesystem>
-#include <vector>
 #include <iostream>
+#include <vector>
+#include <yaml-cpp/yaml.h>
 
 const std::string version = "1.0";
 
@@ -75,40 +75,37 @@ int main(int argc, char** argv)
 
 int proc_codg::process_codg(const std::string& yml_path_str, bool is_debug)
 {
-	using namespace std;
-	using namespace filesystem;
-	using namespace YAML;
-
-	const optional<Node> node = load_variables(yml_path_str);
+	const std::optional<YAML::Node> node = load_variables(yml_path_str);
 	if (!node.has_value())
 		return EXIT_FAILURE;
 	if (!check_variables(*node))
 		return EXIT_FAILURE;
-	const path yml_path(yml_path_str);
-	const path tmp_folder_path((*node)["TmpPath"].as<string>());
-	const path codg_file_path((*node)["CodgFile"].as<string>());
-	const path output_folder_path((*node)["OutputPath"].as<string>());
+	const std::filesystem::path yml_path(yml_path_str);
+	const std::filesystem::path tmp_folder_path((*node)["TmpPath"].as<std::string>());
+	const std::filesystem::path codg_file_path((*node)["CodgFile"].as<std::string>());
+	const std::filesystem::path output_folder_path((*node)["OutputPath"].as<std::string>());
 	BOOST_LOG_TRIVIAL(debug) << "TmpPath: " << tmp_folder_path;
 	BOOST_LOG_TRIVIAL(debug) << "CodgFilePath: " << codg_file_path;
 	BOOST_LOG_TRIVIAL(debug) << "OutputPath: " << output_folder_path;
-	if (!exists(tmp_folder_path))
-		create_directories(tmp_folder_path);
+	if (!std::filesystem::exists(tmp_folder_path))
+		std::filesystem::create_directories(tmp_folder_path);
 	if (!exists(output_folder_path))
-		create_directories(output_folder_path);
-	const vector<CodgItem> items = CodgItem::load_items(codg_file_path.string());
+		std::filesystem::create_directories(output_folder_path);
+	const std::vector<CodgItem> items = CodgItem::load_items(codg_file_path.string());
 	assert(!items.empty());
-	double* geo_trans = new  double[6]{ -179.5, 5.0, 0.0, 89.5, 0.0, -2.5 };
-	const string projection = "+proj=longlat +datum=WGS84 +no_defs";
+	std::unique_ptr<double> geo_trans{ new  double[6]{ -179.5, 5.0, 0.0, 89.5, 0.0, -2.5 } };
+	const std::string projection = "+proj=longlat +datum=WGS84 +no_defs";
 	for (const CodgItem& item : items)
 	{
-		optional<arma::fmat> optional_mat = item.mat();
-		using namespace boost;
-		path output_file_path = output_folder_path / to_string(item.year()) /
-			to_string(item.month()) / to_string(item.day()) /
-			str(format("%1%.tif") % item.hour());
-		if (!exists(output_file_path.parent_path()))
-			create_directories(output_file_path.parent_path());
-		modis_api::Gdal_operation::create_tif(output_file_path.string(), geo_trans, projection, *item.mat());
+		std::optional<arma::fmat> optional_mat = item.mat();
+		boost::gregorian::date d{ static_cast<unsigned short>(item.year()), static_cast<unsigned short>(item.month()), static_cast<unsigned short>(item.day()) };
+		std::string file_name{ (boost::format("CODG_%1%_%2$03d_%3$02d.tif") % d.year() % d.day_of_year() % item.hour()).str() };
+		std::filesystem::path output_file_path = output_folder_path / std::to_string(d.year()) / (boost::format("%1$03d") % d.day_of_year()).str() / file_name;
+		if (!std::filesystem::exists(output_file_path.parent_path()))
+			std::filesystem::create_directories(output_file_path.parent_path());
+		if (std::filesystem::exists(output_file_path))
+			std::filesystem::remove(output_file_path);
+		modis_api::Gdal_operation::create_tif(output_file_path.string(), geo_trans.get(), projection, *item.mat());
 	}
 	return EXIT_SUCCESS;
 }

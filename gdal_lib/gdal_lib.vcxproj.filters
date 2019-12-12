@@ -21,19 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="process_dst.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="process_kp_ap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="quantile.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="timed_tensor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="tec_ano.h">
+    <ClInclude Include="gdal_lib.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,26 +29,14 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="tec_api.cpp">
+    <ClCompile Include="gdal_lib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="process_dst.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="process_kp_ap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="quantile.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="timed_tensor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="tec_ano.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>
