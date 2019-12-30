@@ -93,6 +93,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +145,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="swin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -162,7 +165,19 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="swin.cpp" />
     <ClCompile Include="swin_ano.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\gdal_lib\gdal_lib.vcxproj">
+      <Project>{2bb426c7-ebe0-4713-af96-acf6348f4d6f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\modis_api\modis_api.vcxproj">
+      <Project>{2e8b7f32-78f3-4c40-a68d-6f5f95590feb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\tec_api\tec_api.vcxproj">
+      <Project>{169bc1fa-6d86-4433-bde5-bffc3695eb13}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

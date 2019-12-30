@@ -1,5 +1,29 @@
 #include "stdafx.h"
 #include "tec_ano.h"
+#include "timed_tensor.h"
+
+std::vector<boost::filesystem::path> tec_api::list_all_files(boost::filesystem::path const& dir, std::string const& ext)
+{
+	std::vector<boost::filesystem::path> all_files;
+	boost::filesystem::recursive_directory_iterator it{ dir };
+	for (; it != boost::filesystem::recursive_directory_iterator{}; ++it)
+	{
+		if (it->path().extension() == ext)
+			all_files.push_back(it->path());
+	}
+	return all_files;
+}
+
+int tec_api::sort_files_by_time_asc(std::vector<boost::filesystem::path>& paths)
+{
+	std::sort(paths.begin(), paths.end(), [](auto p1, auto p2)
+	{
+		boost::posix_time::ptime pt1 = parse_time(p1);
+		boost::posix_time::ptime pt2 = parse_time(p2);
+		return p1 <= p2;
+	});
+	return 0;
+}
 
 /**
  * \brief 根据基目录、起止日期、窗长获取tif文件路径
@@ -12,32 +36,26 @@
 std::vector<boost::filesystem::path> tec_api::get_data_paths(boost::filesystem::path const& based_dir,
 	boost::gregorian::date start, boost::gregorian::date stop, size_t wlen)
 {
-	std::vector<boost::filesystem::path> ans{
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\0.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\1.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\2.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\3.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\4.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\5.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\6.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\7.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\8.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\9.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\10.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\11.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\12.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\13.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\14.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\15.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\16.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\17.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\18.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\19.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\20.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\21.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\22.tif",
-"D:\\tec\\Standard\\Codg\\2017\\7\\14\\23.tif"
-	};
+	auto all_files = list_all_files(based_dir, ".tif");
+	sort_files_by_time_asc(all_files);
+
+	boost::posix_time::ptime start_time{ start, boost::posix_time::hours(0) };
+	
+	auto it1 = std::find_if(all_files.begin(), all_files.end(), [&start_time](boost::filesystem::path const& p) {return parse_time(p) == start_time; });
+	if (it1 == all_files.end()) throw std::runtime_error("the file in start file not found!");
+	if ((it1 - wlen) < all_files.begin()) throw std::runtime_error("no sufficient file!");
+	const auto itw = it1 - wlen;
+	std::vector<boost::filesystem::path> ans{ itw,it1 };
+
+	for (; it1 != all_files.end(); ++it1)
+	{
+		const boost::gregorian::date file_date = parse_time(*it1).date();
+		if (file_date >= start && file_date <= stop)
+			ans.push_back(*it1);
+	}
+
+	sort_files_by_time_asc(ans);
+	
 	return ans;
 }
 

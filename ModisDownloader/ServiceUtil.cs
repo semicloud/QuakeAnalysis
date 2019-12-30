@@ -110,7 +110,7 @@ namespace ModisDownloader
                     // Header必须
                     webClient.Headers.Add("User-Agent", Global.Config.UserAgent);
                     // 不加AppKey也能下载了，接口留在这里，如果需要AppKey的话可以直接加上
-                    //webClient.Headers.Add("Authorization", $@"Bearer {Global.Config.AppKey}");
+                    webClient.Headers.Add("Authorization", $@"Bearer {Global.Config.AppKey}");
                     webClient.DownloadProgressChanged += (sender, args) =>
                     {
                         // 如果用户取消下载，则不再报告下载进度

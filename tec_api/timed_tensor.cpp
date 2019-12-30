@@ -4,11 +4,15 @@
 
 boost::posix_time::ptime tec_api::parse_time(boost::filesystem::path const& file_path)
 {
-	const std::string hour = file_path.filename().stem().string();
-	const std::string day = file_path.parent_path().stem().string();
-	const std::string month = file_path.parent_path().parent_path().stem().string();
-	const std::string year = file_path.parent_path().parent_path().parent_path().stem().string();
-	const std::string tstr = (boost::format("%1%-%2%-%3% %4%:00:00") % year % month % day % hour).str();
+	const std::string filename = file_path.filename().stem().string();
+	std::vector<std::string> strs;
+	boost::split(strs, filename, boost::is_any_of("_"));
+	const std::string year = strs.at(1);
+	const std::string hour = strs.at(3);
+	const long day_of_year = boost::lexical_cast<long>(strs.at(2));
+	const boost::gregorian::date d{ boost::lexical_cast<unsigned short>(year) ,1,1 };
+	const boost::gregorian::date d2 = d + boost::gregorian::days(day_of_year - 1);
+	const std::string tstr = (boost::format("%1%-%2%-%3% %4%:00:00") % year % d2.month() % d2.day() % hour).str();
 	const boost::posix_time::ptime time(boost::posix_time::time_from_string(tstr));
 	return time;
 }

@@ -58,9 +58,11 @@ bool modis_api::Gdal_operation::create_tif(const std::string& fn,
 		po_dataset->SetGeoTransform(geo_trans);
 	}
 
+
+
 	GDALClose(static_cast<GDALDatasetH>(po_dataset));
 
-	return write_fmat_to_tif(fn, mat);
+	return write_fmat_to_tif(fn, mat, -1);
 }
 
 bool modis_api::Gdal_operation::get_geo_trans_and_proj(const std::string& fn,
@@ -288,7 +290,7 @@ bool modis_api::Gdal_operation::gdal_translate(
 bool modis_api::Gdal_operation::read_geo_bound(std::filesystem::path const& hdf_path,
 	double& ulx, double& uly, double& lrx, double& lry)
 {
-	// ! x是纬度，y是经度
+// ! x是纬度，y是经度
 // ! ulx：最大纬度
 // ! lrx：最小纬度
 // ! uly：最小经度

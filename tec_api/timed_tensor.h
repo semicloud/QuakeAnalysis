@@ -159,7 +159,7 @@ namespace tec_api
 		for (const boost::filesystem::path& path : paths)
 		{
 			boost::posix_time::ptime time = parse_time(path);
-			std::shared_ptr<xt::xtensor<T, D>> ptr = std::make_shared<xt::xtensor<double, 2>>(load_tif(path));
+			std::shared_ptr<xt::xtensor<T, D>> ptr = std::make_shared<xt::xtensor<T, 2>>(load_tif(path));
 			series.add(timed_tensor<T, D>(time, ptr));
 		}
 		series.sort();

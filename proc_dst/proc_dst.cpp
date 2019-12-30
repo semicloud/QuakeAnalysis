@@ -5,7 +5,7 @@
 int main(int argc, char** argv)
 {
 	std::string  in_file{  };
-	std::string out_file{};
+	std::string out_file{ };
 	const bool b = process_command_line(argc, argv, in_file, out_file);
 	if (!b)
 		return  EXIT_FAILURE;
@@ -33,8 +33,8 @@ bool process_command_line(int argc, char** argv, std::string& in_file, std::stri
 		desc.add_options()
 			("help,h", "show help message")
 			("version,v", "show version")
-			("input-file,i", boost::program_options::value<std::string>(&in_file)->required(), "input dst file path")
-			("output-file,o", boost::program_options::value<std::string>(&out_file)->required(), "output txt file path");
+			("input-file,i", boost::program_options::value<std::string>(&in_file)->required(), "input dst file")
+			("output-file,o", boost::program_options::value<std::string>(&out_file)->required(), "output txt file");
 
 		boost::program_options::variables_map vm;
 		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -51,7 +51,7 @@ bool process_command_line(int argc, char** argv, std::string& in_file, std::stri
 			return false;
 		}
 
-		boost::program_options::notify(vm); // check it!
+		boost::program_options::notify(vm);
 	}
 	catch (std::exception& e)
 	{

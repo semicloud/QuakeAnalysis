@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore", category=matplotlib.cbook.mplDeprecation)
 
 ### Used constants ###
 
-NO_DATA = -1
+NO_DATA = 0
 
 ### Used constants end ###
 

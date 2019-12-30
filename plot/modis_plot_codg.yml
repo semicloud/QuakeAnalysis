@@ -1,14 +1,14 @@
 # 图件标题
-PlotTitle: JPLG 
+PlotTitle: CODG 
 # 图件标题字号
 PlotTitleSize: 12
 # 图件地理范围：最小经度,最大经度,经度跨度,最小纬度,最大纬度,纬度跨度
-PlotExtent: 110 115 1 45 50 1
+PlotExtent: -180 180 20 -90 90 20
 
 # color map name
 BarName: nipy_spectral
 # Color Bar 标题
-BarTitle: Brightness Temperature(K)
+BarTitle: CODG
 # Color Bar 标题字号
 BarTitleSize: 12
 
@@ -22,9 +22,9 @@ ShpCity: D:\modis\ShapeFiles\faults\cities
 QuakeRecord: D:\Code\VSProjects\QuakeAnalysis\QuakeAnalysis\plot\earthquakes.csv
 
 # 输入文件
-InputFile: D:\modis\Standard\MOD_BT\bt_2019_274.tif
+InputFile: D:\tec\Standard\Codg\2017\195\CODG_2017_195_01.tif
 # 输出文件，注意后缀名
-OutputFile: D:\modis\Std_Map\MOD_BT\bt_2019_274.png
+OutputFile: D:\tec\Std_Map\Codg\2017\195\CODG_2017_195_01.jpg
 # 输出文件dpi
 OutputDpi: 600
 # 输出文件大小，单位为英寸

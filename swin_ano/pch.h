@@ -9,6 +9,34 @@
 #ifndef PCH_H
 #define PCH_H
 
-// TODO: 添加要在此处预编译的标头
+#pragma warning(disable:4251)
 
+#define NOMINMAX
+#define BOOST_ALL_DYN_LINK
+// TODO: 添加要在此处预编译的标头
+#include <boost/date_time.hpp>
+#include <boost/date_time/gregorian/greg_date.hpp>
+#include <boost/filesystem.hpp>
+#include	 <boost/format.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/program_options.hpp>
+#include <iostream>
+#include <string>
+
+#include <xtl/xoptional.hpp>
+#include <xtensor/xadapt.hpp>
+#include <xtensor/xarray.hpp>
+#include <xtensor/xaccumulator.hpp>
+#include <xtensor/xindex_view.hpp>
+#include <xtensor/xio.hpp>
+#include <xtensor/xcsv.hpp>
+#include <xtensor/xnpy.hpp>
+#include <xtensor/xpad.hpp>
+#include <xtensor/xreducer.hpp>
+#include <xtensor/xrandom.hpp>
+#include <xtensor/xsort.hpp>
+#include <xtensor/xview.hpp>
+#include <xtensor/xmasked_view.hpp>
+#include <xtensor/xoptional.hpp>
+#include <xtensor/xoptional_assembly.hpp>
 #endif //PCH_H

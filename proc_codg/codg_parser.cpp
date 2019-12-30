@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "codg_parser.h"
 #include "../commons/collections.h"
 #include "../commons/strings.h"
-#include <boost/log/trivial.hpp>
+#include "codg_parser.h"
 #include <boost/algorithm/string.hpp>
+#include <boost/log/trivial.hpp>
 
 std::optional<arma::fmat> proc_codg::parse_fmat(const std::vector<std::string>& dataSec)
 {

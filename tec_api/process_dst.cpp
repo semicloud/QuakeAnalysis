@@ -77,7 +77,7 @@ std::vector<std::string> proc_dst::get_time_vec(int year, int month, std::vector
 	{
 		for (size_t hour = 1; hour != 25; ++hour)
 		{
-			ans.push_back((boost::format("%1%%2$02d%3$02d%4$02d") % year % month % day % hour).str());
+			ans.push_back((boost::format("%1%   %2$02d   %3$02d   %4$02d") % year % month % day % hour).str());
 		}
 	}
 	return ans;
@@ -94,8 +94,9 @@ std::string proc_dst::process_dst(std::string const& content)
 	const std::vector<int> values = get_value_vec(content);
 	assert(times.size() == values.size());
 	std::stringstream ss;
+	ss << "Year   Month   day   hour   dst\n";
 	for (size_t i = 0; i != times.size(); ++i)
-		ss << times.at(i) << " " << values.at(i) << "\n";
+		ss << times.at(i) << "   " << values.at(i) << "\n";
 	return boost::trim_copy(ss.str());
 }
 

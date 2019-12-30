@@ -2,101 +2,101 @@
 //
 
 #include "pch.h"
-#include "../modis_api/Gdal_operation.h"
+#include "../gdal_lib/gdal_lib.h"
 #include "../modis_api/Logger_setting.h"
 #include "CodgItem.h"
 #include "proc_codg.h"
 #include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
 #include <boost/program_options.hpp>
 #include <filesystem>
 #include <iostream>
 #include <vector>
-#include <yaml-cpp/yaml.h>
 
 const std::string version = "1.0";
 
 int main(int argc, char** argv)
 {
-	using namespace std;
-	using namespace filesystem;
-	using namespace boost::program_options;
-	using namespace boost::log::trivial;
-	modis_api::init_console_logger();
-	modis_api::set_logger_severity(debug);
-	/*std::cout << "Hello World!\n";
-	vector<CodgItem> codg_items = CodgItem::load_items("CODG1950.17I");
-	for (CodgItem& item : codg_items)
-	{
-		cout << item.year() << ", " << item.month() << ", " << item.day() << ", " << item.hour() << endl;
-	}*/
-	string yml_path;
+	std::string in_file{};
+	std::string out_dir{};
 	bool is_debug = false;
-	variables_map vm;
-	options_description desc("Usage:");
-	desc.add_options()
-		("help,h", "显示帮助信息")
-		("version,v", "显示版本信息")
-		("yml,y", value(&yml_path), "yml文件路径")
-		("debug,d", "以Debug模式运行本程序");
-	try
+	bool err = false;
+	const bool b = proc_codg::process_command_line(argc, argv, in_file, out_dir, is_debug, err);
+	if (err) return EXIT_FAILURE;
+	if (!b) return EXIT_SUCCESS;
+	modis_api::init_console_logger();
+	modis_api::set_logger_severity(is_debug ? boost::log::trivial::debug : boost::log::trivial::info);
+	if (!std::filesystem::exists(in_file))
 	{
-		store(command_line_parser(argc, argv).options(desc).run(), vm);
-		notify(vm);
-	}
-	catch (exception& e)
-	{
-		cerr << e.what() << endl;
+		std::cerr << "Error. Input file " << in_file << " not found!\n";
 		return EXIT_FAILURE;
 	}
-
-	if (vm.count("debug"))
+	if (!std::filesystem::exists(out_dir))
 	{
-		is_debug = true;
+		BOOST_LOG_TRIVIAL(debug) << "Output dir " << out_dir << " does not exist, create it..";
+		std::filesystem::create_directories(out_dir);
 	}
-
-	if (vm.count("help") || vm.count("version"))
-	{
-		cout << "CODG Preprocess Program, Version: " << version << endl;
-		cout << desc << endl;
-		return EXIT_SUCCESS;
-	}
-
-	if (!exists(yml_path))
-	{
-		cerr << "None of -y or --yml arguments found!" << endl;
-		return EXIT_FAILURE;
-	}
-
-	const int ans = proc_codg::process_codg(yml_path, is_debug);
+	const int ans = proc_codg::process_codg(in_file, out_dir, is_debug);
 
 	assert(ans == EXIT_SUCCESS);
 	return 0;
 }
 
-int proc_codg::process_codg(const std::string& yml_path_str, bool is_debug)
+bool proc_codg::process_command_line(int argc, char** argv,
+	std::string& in_file,
+	std::string& out_dir, bool& debug,
+	bool& has_err)
 {
-	const std::optional<YAML::Node> node = load_variables(yml_path_str);
-	if (!node.has_value())
-		return EXIT_FAILURE;
-	if (!check_variables(*node))
-		return EXIT_FAILURE;
-	const std::filesystem::path yml_path(yml_path_str);
-	const std::filesystem::path tmp_folder_path((*node)["TmpPath"].as<std::string>());
-	const std::filesystem::path codg_file_path((*node)["CodgFile"].as<std::string>());
-	const std::filesystem::path output_folder_path((*node)["OutputPath"].as<std::string>());
-	BOOST_LOG_TRIVIAL(debug) << "TmpPath: " << tmp_folder_path;
+	try
+	{
+		boost::program_options::options_description desc("Usage");
+		desc.add_options()
+			("help,h", "show help message")
+			("version,v", "show version")
+			("input-file,i", boost::program_options::value<std::string>(&in_file)->required(), "input CODG file.")
+			("output-dir,o", boost::program_options::value<std::string>(&out_dir)->required(), "output DIRECTORY")
+			("debug,d", boost::program_options::bool_switch()->default_value(false), "run in debug node");
+		boost::program_options::variables_map vm;
+		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+		if (vm.count("help"))
+		{
+			std::cout << desc << "\n";
+			return false;
+		}
+		if (vm.count("version"))
+		{
+			std::cout << "CODG preprocess program version 1.0\n" << desc << "\n";
+			return false;
+		}
+		if (vm["debug"].as<bool>())
+		{
+			debug = true;
+			BOOST_LOG_TRIVIAL(debug) << "this program will running in DEBUG mode..";
+		}
+		boost::program_options::notify(vm);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error." << e.what() << "\n";
+		has_err = true;
+		return false;
+	}
+	return true;
+}
+
+int proc_codg::process_codg(const std::string& in_file, const std::string& out_dir, bool is_debug)
+{
+	const std::filesystem::path codg_file_path(in_file);
+	const std::filesystem::path output_folder_path(out_dir);
 	BOOST_LOG_TRIVIAL(debug) << "CodgFilePath: " << codg_file_path;
 	BOOST_LOG_TRIVIAL(debug) << "OutputPath: " << output_folder_path;
-	if (!std::filesystem::exists(tmp_folder_path))
-		std::filesystem::create_directories(tmp_folder_path);
-	if (!exists(output_folder_path))
-		std::filesystem::create_directories(output_folder_path);
 	const std::vector<CodgItem> items = CodgItem::load_items(codg_file_path.string());
 	assert(!items.empty());
-	std::unique_ptr<double> geo_trans{ new  double[6]{ -179.5, 5.0, 0.0, 89.5, 0.0, -2.5 } };
-	const std::string projection = "+proj=longlat +datum=WGS84 +no_defs";
-	for (const CodgItem& item : items)
+	const double ndv = 0.0;
+	const size_t bn = 1;
+	for (std::vector<CodgItem>::const_iterator p = items.cbegin(); p != items.cend() - 1; ++p)
 	{
+		const CodgItem&  item = *p;
 		std::optional<arma::fmat> optional_mat = item.mat();
 		boost::gregorian::date d{ static_cast<unsigned short>(item.year()), static_cast<unsigned short>(item.month()), static_cast<unsigned short>(item.day()) };
 		std::string file_name{ (boost::format("CODG_%1%_%2$03d_%3$02d.tif") % d.year() % d.day_of_year() % item.hour()).str() };
@@ -105,44 +105,20 @@ int proc_codg::process_codg(const std::string& yml_path_str, bool is_debug)
 			std::filesystem::create_directories(output_file_path.parent_path());
 		if (std::filesystem::exists(output_file_path))
 			std::filesystem::remove(output_file_path);
-		modis_api::Gdal_operation::create_tif(output_file_path.string(), geo_trans.get(), projection, *item.mat());
+
+		arma::u32_mat um = arma::conv_to<arma::u32_mat>::from(*optional_mat);
+		std::vector<unsigned> vec = arma::conv_to<std::vector<unsigned>>::from(um.as_row());
+		std::unique_ptr<unsigned, std::default_delete<unsigned[]>> arr{ new unsigned[vec.size()], std::default_delete<unsigned[]>() };
+		std::copy(vec.begin(), vec.end(), arr.get());
+		const auto ans = gdal_lib::create_tif<unsigned>(output_file_path.string(), arr.get(), static_cast<unsigned>(ndv), item.mat()->n_cols, item.mat()->n_rows, bn,
+			gdal_lib::get_wgs84_proj(), gdal_lib::get_default_geo_trans().get(), gdal_lib::tif_options_for_grey());
+		if (!ans)
+			BOOST_LOG_TRIVIAL(info) << "save " << output_file_path.string() << " success";
+		else
+			BOOST_LOG_TRIVIAL(error) << "save " << output_file_path.string() << " failed";
 	}
 	return EXIT_SUCCESS;
 }
-
-std::optional<YAML::Node> proc_codg::load_variables(const std::string& yml_path)
-{
-	using namespace std;
-	using namespace YAML;
-	optional<Node> optional_node;
-	try
-	{
-		optional_node = LoadFile(yml_path);
-	}
-	catch (exception& e)
-	{
-		cerr << "解析yml文件出错，错误信息为：" << e.what() << endl;
-	}
-	return optional_node;
-}
-
-bool proc_codg::check_variables(const YAML::Node& node)
-{
-	using namespace std;
-	vector<string> names{ "CodgFile", "TmpPath","OutputPath" };
-	vector<string> no_exist_names;
-	for_each(names.begin(), names.end(), [&node, &no_exist_names](const string& name)
-	{
-		if (!node[name].IsDefined()) no_exist_names.push_back(name);
-	});
-	if (!no_exist_names.empty())
-	{
-		cerr << "未找到配置项：" << boost::join(no_exist_names, ", ") << endl;
-		return false;
-	}
-	return true;
-}
-
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单

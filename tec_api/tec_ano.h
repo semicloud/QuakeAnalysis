@@ -2,7 +2,11 @@
 #include "timed_tensor.h"
 namespace tec_api
 {
-	std::vector<boost::filesystem::path> get_data_paths(boost::filesystem::path const& based_dir,
+	__declspec(dllexport) std::vector<boost::filesystem::path> __cdecl list_all_files(boost::filesystem::path const& dir, std::string const& ext);
+
+	__declspec(dllexport) int __cdecl sort_files_by_time_asc(std::vector<boost::filesystem::path>& paths);
+
+	__declspec(dllexport) std::vector<boost::filesystem::path> __cdecl get_data_paths(boost::filesystem::path const& based_dir,
 		boost::gregorian::date start, boost::gregorian::date stop, size_t wlen);
 
 	std::vector<boost::filesystem::path> get_output_paths(boost::filesystem::path const& base_dir,
@@ -39,8 +43,8 @@ namespace tec_api
 		for (size_t row = 0; row != n_rows; ++row)
 		{
 			xt::xtensor<size_t, 1> win{ xt::view(windows, row, xt::all()) };
-			timed_tensor_series<double, 2> sub_series = data.sub_series(win.at(0), win.at(1));
-			timed_tensor<double, 2> last = sub_series[sub_series.size() - 1];
+			timed_tensor_series<T, 2> sub_series = data.sub_series(win.at(0), win.at(1));
+			timed_tensor<T, 2> last = sub_series[sub_series.size() - 1];
 			xt::xtensor<T, ID + 1> cube = sub_series.get_tensor_as_whole();
 			xt::xtensor<T, ID> mean = xt::nanmean(cube, { 0 });
 			xt::xtensor<T, ID> diff = *last.tensor_ptr() - mean;

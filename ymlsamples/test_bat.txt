@@ -1,0 +1,2 @@
+.\proc_jplg.exe -i D:\tec\Jplg\jplg0010.18i -o D:\tec\Standard\Jplg
+.\proc_codg.exe -i D:\tec\Codg\CODG1960.17I -o D:\tec\Standard\Codg -d
