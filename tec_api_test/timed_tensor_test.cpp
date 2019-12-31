@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(test_parse_time)
 BOOST_AUTO_TEST_CASE(load_tif_test)
 {
 	auto x = tec_api::load_tif("D:\\tec\\Standard\\Codg\\2017\\195\\CODG_2017_195_09.tif");
-	std::ofstream ofs("D:\\tec\\Standard\\Codg\\2017\\195\\CODG_2017_195_09.tif");
+	std::ofstream ofs("D:\\tec\\Standard\\Codg\\2017\\195\\CODG_2017_195_09.csv");
 	xt::dump_csv(ofs, x);
 	BOOST_TEST(x.shape(0) = 71);
 	BOOST_TEST(x.shape(1) = 73);
@@ -88,3 +88,5 @@ BOOST_AUTO_TEST_CASE(get_tensor_test)
 	xt::xtensor<double, 3>::shape_type shp{ 3,71,73 };
 	BOOST_TEST(cube.shape() == shp, "wrong shape");
 }
+
+

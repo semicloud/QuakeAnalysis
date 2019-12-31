@@ -57,3 +57,22 @@ BOOST_AUTO_TEST_CASE(nan_operation_test)
 	xt::xtensor<double, 2> sum_expected{ {2,3},{4,0} };
 	BOOST_TEST(sum == sum_expected);
 }
+
+BOOST_AUTO_TEST_CASE(nan_replace_test)
+{
+	xt::xtensor<double, 2> x{ {1,1},{2,3} };
+	BOOST_TEST_MESSAGE(x);
+	xt::filtration(x, xt::equal(x, 1)) = std::nan(0);
+	BOOST_TEST_MESSAGE(x);
+
+	xt::xtensor<double, 2> x_expected{ {std::nan(0), std::nan(0)}, {2,3} };
+	BOOST_TEST_MESSAGE(x_expected);
+	//BOOST_TEST(x == x_expected);
+
+	x = xt::nan_to_num(x);
+	BOOST_TEST_MESSAGE(x);
+	xt::filtration(x, xt::equal(x, 0)) = 9;
+	xt::xtensor<double, 2> x_expected2{ {9,9}, {2,3} };
+	BOOST_TEST_MESSAGE(x);
+	BOOST_TEST(x == x_expected2);
+}

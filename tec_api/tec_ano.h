@@ -46,11 +46,13 @@ namespace tec_api
 			timed_tensor_series<T, 2> sub_series = data.sub_series(win.at(0), win.at(1));
 			timed_tensor<T, 2> last = sub_series[sub_series.size() - 1];
 			xt::xtensor<T, ID + 1> cube = sub_series.get_tensor_as_whole();
-			xt::xtensor<T, ID> mean = xt::nanmean(cube, { 0 });
-			xt::xtensor<T, ID> diff = *last.tensor_ptr() - mean;
-			xt::xtensor<T, ID> sigma = xt::nanstd(cube, { 0 });
+			xt::xtensor<T, ID> mean = xt::nan_to_num(xt::nanmean(cube, { 0 }));
+			xt::xtensor<T, ID> diff = xt::nan_to_num(*last.tensor_ptr() - mean);
+			xt::xtensor<T, ID> sigma = xt::nan_to_num(xt::nanstd(cube, { 0 }));
 			std::shared_ptr<xt::xtensor<T, OD>> ptr =
 				std::make_shared<xt::xtensor<T, OD>>(xt::stack(xt::xtuple(diff, mean, sigma)));
+			// std::shared_ptr<xt::xtensor<T, OD>> ptr =
+			// 	std::make_shared<xt::xtensor<T, OD>>(xt::stack(xt::xtuple(diff, sigma)));
 			timed_tensor<T, OD> tt{ last.time(), ptr };
 			ans.add(tt);
 		}

@@ -88,20 +88,28 @@ boost::filesystem::path get_output_path(boost::filesystem::path const& p, boost:
 int swin(boost::gregorian::date start, boost::gregorian::date endd, size_t wlen,
 	boost::filesystem::path input_dir, boost::filesystem::path output_dir, bool debug)
 {
+	constexpr size_t out_dim = 3;
 	std::vector<boost::filesystem::path> files = tec_api::get_data_paths(input_dir, start, endd, wlen);
 	tec_api::timed_tensor_series<float, 2> series = tec_api::timed_tensor_series<float, 2>::load_from_files(files);
-	tec_api::timed_tensor_series<float, 3> ano = ano_slid_win(series, wlen);
+	tec_api::timed_tensor_series<float, out_dim> ano = ano_slid_win(series, wlen);
 	const size_t xs = ano[0].tensor_ptr()->shape(2);
 	const size_t ys = ano[0].tensor_ptr()->shape(1);
 	BOOST_LOG_TRIVIAL(debug) << "output xs: " << xs << ", ys: " << ys;
+
 	const std::string proj = gdal_lib::get_wgs84_proj();
 	std::shared_ptr<double> geo_trans = gdal_lib::get_default_geo_trans();
 	std::map<std::string, std::string> options = gdal_lib::tif_options_for_rgb();
+
+	const double ndv = 0;
+	const size_t bn = 3;
+	
 	for (size_t i = 0; i != ano.size(); ++i)
 	{
-		tec_api::timed_tensor<float, 3>& t = ano[i];
+		tec_api::timed_tensor<float, out_dim>& t = ano[i];
 		const boost::filesystem::path outpath{ get_output_path(output_dir, t.time()) };
-		gdal_lib::create_tif<float>(outpath.string(), t.tensor_ptr()->data(), 0, xs, ys, 3, proj, geo_trans.get(), options);
+		if (!boost::filesystem::exists(outpath.parent_path()))
+			boost::filesystem::create_directories(outpath.parent_path());
+		gdal_lib::create_tif<float>(outpath.string(), t.tensor_ptr()->data(), ndv, xs, ys, bn, proj, geo_trans.get(), options);
 		BOOST_LOG_TRIVIAL(info) << outpath << " saved..";
 	}
 	return 0;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "timed_tensor.h"
-
+#include "../gdal_lib/gdal_lib.h"
 
 boost::posix_time::ptime tec_api::parse_time(boost::filesystem::path const& file_path)
 {
@@ -17,22 +17,14 @@ boost::posix_time::ptime tec_api::parse_time(boost::filesystem::path const& file
 	return time;
 }
 
-xt::xtensor<double, 2> tec_api::load_tif(boost::filesystem::path const& p)
+xt::xtensor<float, 2> tec_api::load_tif(boost::filesystem::path const& p)
 {
-	GDALAllRegister();
-	std::unique_ptr<GDALDataset> ds{ static_cast<GDALDataset*>(GDALOpenShared(p.string().data(), GA_ReadOnly)) };
-	if (!ds) throw std::exception("read tif file to xt::xtensor error!");
-	std::unique_ptr<GDALRasterBand> band{ static_cast<GDALRasterBand*>(ds->GetRasterBand(1)) };
-	if (!band) throw std::exception("read tif band to xt::xtensor error!");
-	const int x_size = band->GetXSize();
-	const int y_size = band->GetYSize();
-	float* data = static_cast<float*>(CPLMalloc(sizeof(float) * x_size * y_size));
-	band->RasterIO(GF_Read, 0, 0, x_size, y_size, data, x_size, y_size, GDT_Float32, 0, 0);
-	const size_t n_col = static_cast<size_t>(x_size);
-	const size_t n_row = static_cast<size_t>(y_size);
-	const std::vector<size_t> shape{ n_row,n_col };
-	xt::xtensor<double, 2> ans{ xt::adapt(data, n_col * n_row, xt::no_ownership() ,shape) };
-	CPLFree(data);
-	band.release();  // band指针不可析构，在析构dataset对象时将自动析构band对象
+	std::vector<float> data;
+	size_t xs = 0, ys = 0, bn = 0;
+	double ndv = 0;
+	gdal_lib::read_tif(p.string(), data, xs, ys, bn, ndv);
+	const std::vector<size_t> shape = boost::assign::list_of(ys)(xs);
+	xt::xtensor<float, 2> ans{ xt::adapt(data.data(), ys * xs, xt::no_ownership(),shape) };
+	xt::filtration(ans, xt::equal(ans, ndv)) = std::nanf(0);
 	return ans;
 }

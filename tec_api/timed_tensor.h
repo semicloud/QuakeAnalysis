@@ -31,57 +31,7 @@ namespace tec_api
 	};
 
 	__declspec(dllexport) boost::posix_time::ptime __cdecl parse_time(boost::filesystem::path const&);
-	__declspec(dllexport) xt::xtensor<double, 2 > __cdecl load_tif(boost::filesystem::path const&);
-
-	template<typename T = double, size_t D = 2>
-	xt::xtensor<T, D - 1> skipped_sum(xt::xtensor<T, D> const& tensor, size_t axis, T skipped_val)
-	{
-		auto reducer = [=](T t1, T t2)
-		{
-			if (t1 == skipped_val && t2 == skipped_val)
-				return skipped_val;
-			if (t1 == skipped_val && t2 != skipped_val)
-				return t2;
-			if (t1 != skipped_val && t2 == skipped_val)
-				return t1;
-			return t1 + t2;
-		};
-		return xt::reduce(reducer, tensor, { axis });
-	}
-
-	template<typename T = double, size_t D = 2>
-	xt::xtensor<size_t, D - 1> skipped_count(xt::xtensor<T, D> const& tensor, size_t axis, T skipped_val)
-	{
-		xt::xtensor<size_t, D - 1> ans = xt::sum(xt::not_equal(tensor, skipped_val), { axis });
-		return ans;
-	}
-
-	template<typename T = double, size_t D = 2>
-	xt::xtensor<T, D - 1> skipped_mean(xt::xtensor<T, D> const& tensor, size_t axis, T skipped_val)
-	{
-		xt::xtensor<T, D - 1> sums = skipped_sum(tensor, axis, skipped_val);
-		xt::xtensor<size_t, D - 1> cnt = skipped_count(tensor, axis, skipped_val);
-		return xt::xtensor<T, D - 1>{sums / cnt};
-	}
-
-	template<typename T = double>
-	xt::xtensor<double, 2> skipped_stddev(xt::xtensor<T, 3> const& tensor, T skipped_val)
-	{
-		const typename xt::xtensor<T, 3>::shape_type shp = tensor.shape();
-		const size_t row_num = shp.at(1);
-		const size_t col_num = shp.at(2);
-		std::vector<size_t> ans_shp{ shp(1),shp(2) };
-		xt::xtensor<double, 2> ans{ xt::zeros<double>{ans_shp} };
-		for (size_t row = 0; row != row_num; ++row)
-		{
-			for (size_t col = 0; col != col_num; ++col)
-			{
-				xt::xtensor<double, 1> z{ xt::view(tensor, xt::all(), row, col) };
-			}
-		}
-	}
-
-	// template<typename T=double, size_t D=2>
+	__declspec(dllexport) xt::xtensor<float, 2 > __cdecl load_tif(boost::filesystem::path const&);
 
 	/**
 	 * \brief 时间张量序列
