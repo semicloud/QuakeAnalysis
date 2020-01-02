@@ -5,17 +5,30 @@
 
 #pragma once
 
-#include "targetver.h"
+#pragma warning(disable:4251)
 
+#include "targetver.h"
+#define BOOST_ALL_DYN_LINK
 #define WIN32_LEAN_AND_MEAN             // 从 Windows 头文件中排除极少使用的内容
 #define NOMINMAX
 // Windows 头文件
 #include <windows.h>
 
-#include <string>
-#include <vector>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/format.hpp>
+#include <boost/log/attributes/scoped_attribute.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/expressions/formatters/date_time.hpp>
+#include <boost/log/support/date_time.hpp> 
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/file.hpp>
 #include <gdal.h>
 #include <gdal_priv.h>
+#include <string>
+#include <vector>
 #include <xtensor/xaccumulator.hpp>
 #include <xtensor/xadapt.hpp>
 #include <xtensor/xarray.hpp>

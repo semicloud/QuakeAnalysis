@@ -13,4 +13,23 @@
 // TODO: 添加要在此处预编译的标头
 #define BOOST_ALL_DYN_LINK
 
+#include <boost/algorithm/string.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/format.hpp>
+#include <boost/format.hpp>
+#include <boost/log/attributes/scoped_attribute.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/expressions/formatters/date_time.hpp>
+#include <boost/log/support/date_time.hpp> 
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/program_options.hpp>
+#include <filesystem>
+#include <iostream>
+#include <string>
+#include <vector>
+
 #endif //PCH_H

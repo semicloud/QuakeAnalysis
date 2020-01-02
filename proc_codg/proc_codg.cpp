@@ -3,15 +3,10 @@
 
 #include "pch.h"
 #include "../gdal_lib/gdal_lib.h"
-#include "../modis_api/Logger_setting.h"
+#include "../logging/log_setting.h"
 #include "CodgItem.h"
 #include "proc_codg.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
-#include <boost/program_options.hpp>
-#include <filesystem>
-#include <iostream>
-#include <vector>
+
 
 const std::string version = "1.0";
 
@@ -24,8 +19,8 @@ int main(int argc, char** argv)
 	const bool b = proc_codg::process_command_line(argc, argv, in_file, out_dir, is_debug, err);
 	if (err) return EXIT_FAILURE;
 	if (!b) return EXIT_SUCCESS;
-	modis_api::init_console_logger();
-	modis_api::set_logger_severity(is_debug ? boost::log::trivial::debug : boost::log::trivial::info);
+	logger::init_console_logger();
+	logger::set_severity(is_debug ? boost::log::trivial::debug : boost::log::trivial::info);
 	if (!std::filesystem::exists(in_file))
 	{
 		std::cerr << "Error. Input file " << in_file << " not found!\n";
@@ -111,7 +106,7 @@ int proc_codg::process_codg(const std::string& in_file, const std::string& out_d
 		std::unique_ptr<unsigned, std::default_delete<unsigned[]>> arr{ new unsigned[vec.size()], std::default_delete<unsigned[]>() };
 		std::copy(vec.begin(), vec.end(), arr.get());
 		const auto ans = gdal_lib::create_tif<unsigned>(output_file_path.string(), arr.get(), static_cast<unsigned>(ndv), item.mat()->n_cols, item.mat()->n_rows, bn,
-			gdal_lib::get_wgs84_proj(), gdal_lib::get_default_geo_trans().get(), gdal_lib::tif_options_for_grey());
+			gdal_lib::wgs84_proj4(), gdal_lib::default_geo_trans().get(), gdal_lib::tif_options_for_grey());
 		if (!ans)
 			BOOST_LOG_TRIVIAL(info) << "save " << output_file_path.string() << " success";
 		else

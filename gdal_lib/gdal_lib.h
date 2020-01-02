@@ -15,9 +15,9 @@ namespace gdal_lib
 		return m.find(s) != m.end() ? m.find(s)->second : -1;
 	}
 
-	inline std::string get_wgs84_proj() { return "+proj=longlat +datum=WGS84 +no_defs"; }
+	inline std::string wgs84_proj4() { return "+proj=longlat +datum=WGS84 +no_defs"; }
 
-	inline std::shared_ptr<double> get_default_geo_trans() { return std::shared_ptr<double>{new double[6]{ -179.5, 5.0, 0.0, 89.5, 0.0, -2.5 }, std::default_delete<double[]>()}; }
+	inline std::shared_ptr<double> default_geo_trans() { return std::shared_ptr<double>{new double[6]{ -179.5, 5.0, 0.0, 89.5, 0.0, -2.5 }, std::default_delete<double[]>()}; }
 
 	inline  std::map<std::string, std::string> tif_options_for_grey() { return  { {"COMPRESS", "LZW"}, { "INTERLEAVE","BAND" } }; }
 

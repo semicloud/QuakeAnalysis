@@ -172,9 +172,6 @@
     <ProjectReference Include="..\gdal_lib\gdal_lib.vcxproj">
       <Project>{2bb426c7-ebe0-4713-af96-acf6348f4d6f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\modis_api\modis_api.vcxproj">
-      <Project>{2e8b7f32-78f3-4c40-a68d-6f5f95590feb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\tec_api\tec_api.vcxproj">
       <Project>{169bc1fa-6d86-4433-bde5-bffc3695eb13}</Project>
     </ProjectReference>

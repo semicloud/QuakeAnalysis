@@ -16,8 +16,5 @@
 #include <string>
 #include <vector>
 //#include <filesystem>
-#include <boost/filesystem/string_file.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/program_options.hpp>
 
 #endif //PCH_H

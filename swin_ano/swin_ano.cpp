@@ -3,7 +3,7 @@
 
 #include "pch.h"
 #include "../gdal_lib/gdal_lib.h"
-#include "../modis_api/Logger_setting.h"
+#include "../logging/log_setting.h"
 #include "../tec_api/tec_ano.h"
 
 std::string to_doy_string(boost::gregorian::date const& d)
@@ -96,13 +96,13 @@ int swin(boost::gregorian::date start, boost::gregorian::date endd, size_t wlen,
 	const size_t ys = ano[0].tensor_ptr()->shape(1);
 	BOOST_LOG_TRIVIAL(debug) << "output xs: " << xs << ", ys: " << ys;
 
-	const std::string proj = gdal_lib::get_wgs84_proj();
-	std::shared_ptr<double> geo_trans = gdal_lib::get_default_geo_trans();
+	const std::string proj = gdal_lib::wgs84_proj4();
+	std::shared_ptr<double> geo_trans = gdal_lib::default_geo_trans();
 	std::map<std::string, std::string> options = gdal_lib::tif_options_for_rgb();
 
 	const double ndv = 0;
 	const size_t bn = 3;
-	
+
 	for (size_t i = 0; i != ano.size(); ++i)
 	{
 		tec_api::timed_tensor<float, out_dim>& t = ano[i];
@@ -124,11 +124,11 @@ int main(int argc, char** argv)
 	boost::filesystem::path output_dir{};
 	bool debug = false;
 	bool err = false;
-	modis_api::init_console_logger();
+	logger::init_console_logger();
 	const bool b = process_command_line(argc, argv, start, end, wlen, input_dir, output_dir, debug, err);
 	if (err) return EXIT_FAILURE;
 	if (!b) return EXIT_SUCCESS;
-	modis_api::set_logger_severity(debug ? boost::log::trivial::debug : boost::log::trivial::info);
+	logger::set_severity(debug ? boost::log::trivial::debug : boost::log::trivial::info);
 
 	swin(start, end, wlen, input_dir, output_dir, debug);
 }

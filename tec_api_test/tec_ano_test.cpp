@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(ano_slid_win_test)
 	const size_t ys = ano[0].tensor_ptr()->shape(1);
 	const size_t band_num = ano[0].tensor_ptr()->shape(0);
 	xt::xtensor<float, 3> d = xt::cast<float>(*ano[0].tensor_ptr());
-	int i = gdal_lib::create_tif<float>("d:\\ano.tif", d.data(), 0, xs, ys, band_num, gdal_lib::get_wgs84_proj(), gdal_lib::get_default_geo_trans().get(), gdal_lib::tif_options_for_rgb());
+	int i = gdal_lib::create_tif<float>("d:\\ano.tif", d.data(), 0, xs, ys, band_num, gdal_lib::wgs84_proj4(), gdal_lib::default_geo_trans().get(), gdal_lib::tif_options_for_rgb());
 	BOOST_TEST(i == 0);
 }
 

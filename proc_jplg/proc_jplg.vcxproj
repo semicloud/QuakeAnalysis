@@ -182,9 +182,6 @@
     <ProjectReference Include="..\gdal_lib\gdal_lib.vcxproj">
       <Project>{2bb426c7-ebe0-4713-af96-acf6348f4d6f}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\modis_api\modis_api.vcxproj">
-      <Project>{2e8b7f32-78f3-4c40-a68d-6f5f95590feb}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
