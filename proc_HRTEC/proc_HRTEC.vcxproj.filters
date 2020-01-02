@@ -18,5 +18,25 @@
     <ClCompile Include="proc_HRTEC.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="hrtec_parser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HrtecItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hrtec_parser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HrtecItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="proc_hrtec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
